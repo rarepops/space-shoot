@@ -8,7 +8,8 @@ class PhysicsComponent;
 
 
 
-class Component {                                           // Abstract class that adds behavior to a GameObject
+class Component
+{                                           // Abstract class that adds behavior to a GameObject
 public:
     explicit Component(GameObject *gameObject);
     virtual ~Component() = default;

@@ -6,14 +6,15 @@
 #include "Box2D/Dynamics/b2Body.h"
 #include "Component.hpp"
 
-class PhysicsComponent : public Component {
+class PhysicsComponent : public Component
+{
 public:
     explicit PhysicsComponent(GameObject *gameObject);
     virtual ~PhysicsComponent();
 
-    void initCircle(b2BodyType type, float radius,glm::vec2 center,float density);
+    void initCircle(b2BodyType type, float radius, glm::vec2 center, float density);
 
-    void initBox(b2BodyType type, glm::vec2 size,glm::vec2 center,float density);
+    void initBox(b2BodyType type, glm::vec2 size, glm::vec2 center, float density);
 
     void addForce(glm::vec2 force);     // Force gradually affects the velocity over time
 
@@ -43,7 +44,7 @@ public:
     //  update sprite transform based on ridig body
     void setAutoUpdate(bool autoUpdate);
 
-    b2Body * getBody ();
+    b2Body * getBody();
 
     b2Fixture* getFixture();
 private:

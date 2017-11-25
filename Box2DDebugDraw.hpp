@@ -6,7 +6,8 @@
 
 
 // Captures debug information from Box2D as lines (polygon fill and color is discarded)
-class Box2DDebugDraw : public b2Draw{
+class Box2DDebugDraw : public b2Draw
+{
 public:
     Box2DDebugDraw(float scale);
 
