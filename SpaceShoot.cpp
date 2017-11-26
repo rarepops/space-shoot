@@ -4,6 +4,7 @@
 #include "sre/RenderPass.hpp"
 #include "SpaceShoot.hpp"
 #include "PhysicsComponent.hpp"
+#include "SpriteComponent.hpp"
 
 using namespace glm;
 using namespace std;
@@ -22,6 +23,8 @@ SpaceShoot::SpaceShoot() :debugDraw(physicsScale)
     bool useVsync = true;
 
     bgColor = glm::vec4(0.01, 0.01, 0.02, 1);
+
+	atlas = SpriteAtlas::create("spaceshooter.json", "spaceshooter.png");
 
     srand(time(NULL));
 
@@ -51,6 +54,11 @@ void SpaceShoot::EndContact(b2Contact * contact)
 
 void SpaceShoot::init()
 {
+	auto player = createGameObject();
+	auto playerSprite = player->addComponent<SpriteComponent>();
+	auto sprite = atlas->get("ufoBlue.png");
+	sprite.setPosition({ 0,0 });
+	playerSprite->setSprite(sprite);
 
 }
 
@@ -150,4 +158,11 @@ void SpaceShoot::deregisterPhysicsComponent(PhysicsComponent *r)
     {
         assert(false); // cannot find physics object
     }
+}
+
+std::shared_ptr<GameObject> SpaceShoot::createGameObject()
+{
+	auto obj = shared_ptr<GameObject>(new GameObject());
+	sceneObjects.push_back(obj);
+	return obj;
 }

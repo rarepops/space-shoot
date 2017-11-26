@@ -18,6 +18,7 @@ public:
     static SpaceShoot* instance;
     static const glm::vec2 windowSize;
 
+	std::shared_ptr<GameObject> createGameObject();
     void BeginContact(b2Contact *contact) override;
     void EndContact(b2Contact *contact) override;
 

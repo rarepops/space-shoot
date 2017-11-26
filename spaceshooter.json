@@ -1,0 +1,75 @@
+{"frames": [
+
+{
+	"filename": "frame0.png",
+	"frame": {"x":0,"y":0,"w":128,"h":180},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":180},
+	"sourceSize": {"w":128,"h":180},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "frame1.png",
+	"frame": {"x":128,"y":0,"w":78,"h":77},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":77},
+	"sourceSize": {"w":78,"h":77},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "frame2.png",
+	"frame": {"x":0,"y":180,"w":65,"h":89},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":65,"h":89},
+	"sourceSize": {"w":65,"h":89},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "frame3.png",
+	"frame": {"x":65,"y":180,"w":142,"h":156},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":142,"h":156},
+	"sourceSize": {"w":142,"h":156},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "frame4.png",
+	"frame": {"x":0,"y":336,"w":64,"h":82},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":82},
+	"sourceSize": {"w":64,"h":82},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "frame5.png",
+	"frame": {"x":64,"y":336,"w":80,"h":81},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":81},
+	"sourceSize": {"w":80,"h":81},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "ufoBlue.png",
+	"frame": {"x":144,"y":336,"w":91,"h":91},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":91,"h":91},
+	"sourceSize": {"w":91,"h":91},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "spaceshooter.png",
+	"format": "RGBA8888",
+	"size": {"w":235,"h":427},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:126ffab93a820e1cb1768b863df6edf2:077635b7d8c9fb73a4ef45e0925faa76:2b0614e2bfe6d9f853cae928c214d566$"
+}
+}

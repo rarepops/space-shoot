@@ -11,7 +11,7 @@ class Component;
 class GameObject
 {
 public:
-
+	GameObject() = default;
     ~GameObject();
 
     template <class T> // Add component of a given type to a gameObject. example:
@@ -40,7 +40,7 @@ public:
 
     std::string name = "_";
 private:
-    GameObject() = default;
+    
     std::vector<std::shared_ptr<Component>> components;
 
     glm::vec2 position;
