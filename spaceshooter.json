@@ -1,75 +1,39 @@
 {"frames": [
 
 {
-	"filename": "frame0.png",
-	"frame": {"x":0,"y":0,"w":128,"h":180},
+	"filename": "bullet.PNG",
+	"frame": {"x":1,"y":117,"w":4,"h":4},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":180},
-	"sourceSize": {"w":128,"h":180},
+	"spriteSourceSize": {"x":0,"y":0,"w":4,"h":4},
+	"sourceSize": {"w":4,"h":4},
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
-	"filename": "frame1.png",
-	"frame": {"x":128,"y":0,"w":78,"h":77},
+	"filename": "Spaceship.png",
+	"frame": {"x":1,"y":1,"w":100,"h":100},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":77},
-	"sourceSize": {"w":78,"h":77},
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":100,"h":100},
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
-	"filename": "frame2.png",
-	"frame": {"x":0,"y":180,"w":65,"h":89},
+	"filename": "Turret1.png",
+	"frame": {"x":1,"y":103,"w":12,"h":12},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":65,"h":89},
-	"sourceSize": {"w":65,"h":89},
-	"pivot": {"x":0.5,"y":0.5}
-},
-{
-	"filename": "frame3.png",
-	"frame": {"x":65,"y":180,"w":142,"h":156},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":142,"h":156},
-	"sourceSize": {"w":142,"h":156},
-	"pivot": {"x":0.5,"y":0.5}
-},
-{
-	"filename": "frame4.png",
-	"frame": {"x":0,"y":336,"w":64,"h":82},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":82},
-	"sourceSize": {"w":64,"h":82},
-	"pivot": {"x":0.5,"y":0.5}
-},
-{
-	"filename": "frame5.png",
-	"frame": {"x":64,"y":336,"w":80,"h":81},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":81},
-	"sourceSize": {"w":80,"h":81},
-	"pivot": {"x":0.5,"y":0.5}
-},
-{
-	"filename": "ufoBlue.png",
-	"frame": {"x":144,"y":336,"w":91,"h":91},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":91,"h":91},
-	"sourceSize": {"w":91,"h":91},
+	"spriteSourceSize": {"x":0,"y":0,"w":12,"h":12},
+	"sourceSize": {"w":12,"h":12},
 	"pivot": {"x":0.5,"y":0.5}
 }],
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "spaceshooter.png",
+	"image": "sprites.png",
 	"format": "RGBA8888",
-	"size": {"w":235,"h":427},
+	"size": {"w":128,"h":128},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:126ffab93a820e1cb1768b863df6edf2:077635b7d8c9fb73a4ef45e0925faa76:2b0614e2bfe6d9f853cae928c214d566$"
+	"smartupdate": "$TexturePacker:SmartUpdate:0219ca1340344e5915d302f152280abb:b5dcc595f9ab1f3268cd56db045c5ad4:1eabdf11f75e3a4fe3147baf7b5be24b$"
 }
 }
