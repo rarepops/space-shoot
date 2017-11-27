@@ -2,26 +2,26 @@
 // Created by Morten Nobel-Jørgensen on 10/10/2017.
 //
 
-#include "Camera.hpp"
+#include "FollowCamera.hpp"
 #include "SpaceShoot.hpp"
 
 using namespace glm;
 
-Camera::Camera(GameObject *gameObject)
+FollowCamera::FollowCamera(GameObject *gameObject)
         : Component(gameObject)
 {
 }
 
-sre::Camera &Camera::getCamera() {
+sre::Camera &FollowCamera::getCamera() {
     return camera;
 }
 
-void Camera::update(float deltaTime) {
+void FollowCamera::update(float deltaTime) {
     if (followObject != nullptr){
         auto position = followObject->getPosition();
 
-        position.x += offset.x;
-        position.y = offset.y;
+//        position.x += offset.x;
+//        position.y += offset.y;
 
         gameObject->setPosition(position);
         vec3 eye (position, 0);
@@ -31,7 +31,7 @@ void Camera::update(float deltaTime) {
     }
 }
 
-void Camera::setFollowObject(std::shared_ptr<GameObject> followObject, glm::vec2 offset) {
+void FollowCamera::setFollowObject(std::shared_ptr<GameObject> followObject, glm::vec2 offset) {
     this->followObject = followObject;
     this->offset = offset;
 }

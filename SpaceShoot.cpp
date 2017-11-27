@@ -30,7 +30,6 @@ SpaceShoot::SpaceShoot() :debugDraw(physicsScale)
     srand(time(NULL));
 
     init();
-    camera.setWindowCoordinates();
 
     renderer.keyEvent = [&](SDL_Event& e) {
         onKey(e);
@@ -59,9 +58,15 @@ void SpaceShoot::init()
 
 	auto player = createGameObject();
 	auto playerSprite = player->addComponent<SpriteComponent>();
-	auto sprite = atlas->get("Spaceship.png");
-	sprite.setPosition({ 0,0 });
+	auto sprite = atlas->get("ufoBlue.png");
+	sprite.setPosition(windowSize * 0.5f);
 	playerSprite->setSprite(sprite);
+
+	auto cam = createGameObject();
+	cam->name = "Camera";
+	this->camera = cam->addComponent<FollowCamera>();
+	cam->setPosition(windowSize * 0.5f);
+//	camera->setFollowObject(player, windowSize * 0.5f);
 
 }
 
@@ -149,7 +154,7 @@ void SpaceShoot::onKey(SDL_Event & event)
 void SpaceShoot::render()
 {
     auto rp = RenderPass::create()
-        .withCamera(camera)
+        .withCamera(camera->getCamera())
         .withClearColor(true, bgColor)
         .build();
 

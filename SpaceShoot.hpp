@@ -6,6 +6,7 @@
 #include "Box2D/Dynamics/b2World.h"
 #include "Box2DDebugDraw.hpp"
 #include "GameObject.hpp"
+#include "FollowCamera.hpp"
 
 class PhysicsComponent;
 
@@ -36,13 +37,14 @@ private:
 
     glm::vec4 bgColor;
     std::shared_ptr<sre::SpriteAtlas> atlas;
-    sre::Camera camera;
     sre::SDLRenderer renderer;
 
     void registerPhysicsComponent(PhysicsComponent *r);
     void deregisterPhysicsComponent(PhysicsComponent *r);
     void handleContact(b2Contact *contact, bool begin);
     std::map<b2Fixture*, PhysicsComponent*> physicsComponentLookup;
+
+	std::shared_ptr<FollowCamera> camera;
 
     b2World *world = nullptr;
     Box2DDebugDraw debugDraw;

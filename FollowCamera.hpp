@@ -4,9 +4,9 @@
 #include "glm/glm.hpp"
 #include "Component.hpp"
 
-class Camera : public Component {
+class FollowCamera : public Component {
 public:
-    explicit Camera(GameObject *gameObject);
+    explicit FollowCamera(GameObject *gameObject);
 
     void update(float deltaTime) override;
 
