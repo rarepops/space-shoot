@@ -10,6 +10,8 @@ using namespace glm;
 FollowCamera::FollowCamera(GameObject *gameObject)
         : Component(gameObject)
 {
+	camera.setWindowCoordinates();
+
 }
 
 sre::Camera &FollowCamera::getCamera() {
@@ -20,8 +22,8 @@ void FollowCamera::update(float deltaTime) {
     if (followObject != nullptr){
         auto position = followObject->getPosition();
 
-//        position.x += offset.x;
-//        position.y += offset.y;
+        position.x += offset.x;
+        position.y += offset.y;
 
         gameObject->setPosition(position);
         vec3 eye (position, 0);

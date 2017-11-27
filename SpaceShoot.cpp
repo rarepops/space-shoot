@@ -59,14 +59,14 @@ void SpaceShoot::init()
 	auto player = createGameObject();
 	auto playerSprite = player->addComponent<SpriteComponent>();
 	auto sprite = atlas->get("ufoBlue.png");
-	sprite.setPosition(windowSize * 0.5f);
+	sprite.setPosition(windowSize*0.5f);
 	playerSprite->setSprite(sprite);
 
 	auto cam = createGameObject();
 	cam->name = "Camera";
 	this->camera = cam->addComponent<FollowCamera>();
-	cam->setPosition(windowSize * 0.5f);
-//	camera->setFollowObject(player, windowSize * 0.5f);
+	cam->setPosition(windowSize*0.5f);
+	camera->setFollowObject(player, {0,0});
 
 }
 
