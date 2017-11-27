@@ -28,6 +28,7 @@ private:
     void init();
     void initPhysics();
     void update(float time);
+    void updatePhysics();
     void onKey(SDL_Event &event);
     void render();
 
@@ -40,6 +41,7 @@ private:
 
     void registerPhysicsComponent(PhysicsComponent *r);
     void deregisterPhysicsComponent(PhysicsComponent *r);
+    void handleContact(b2Contact *contact, bool begin);
     std::map<b2Fixture*, PhysicsComponent*> physicsComponentLookup;
 
     b2World *world = nullptr;

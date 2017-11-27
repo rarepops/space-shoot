@@ -5,6 +5,7 @@
 #include "SpaceShoot.hpp"
 #include "PhysicsComponent.hpp"
 #include "SpriteComponent.hpp"
+#include "Box2D/Dynamics/Contacts/b2Contact.h"
 
 using namespace glm;
 using namespace std;
@@ -22,7 +23,7 @@ SpaceShoot::SpaceShoot() :debugDraw(physicsScale)
     renderer.init(SDL_INIT_EVERYTHING, SDL_WINDOW_OPENGL);
     bool useVsync = true;
 
-    bgColor = glm::vec4(0.01, 0.01, 0.02, 1);
+    bgColor = glm::vec4(0.01, 0.01, 0.01, 1);
 
 	atlas = SpriteAtlas::create("spaceshooter.json", "spaceshooter.png");
 
@@ -54,6 +55,8 @@ void SpaceShoot::EndContact(b2Contact * contact)
 
 void SpaceShoot::init()
 {
+    initPhysics();
+
 	auto player = createGameObject();
 	auto playerSprite = player->addComponent<SpriteComponent>();
 	auto sprite = atlas->get("ufoBlue.png");
@@ -77,6 +80,33 @@ void SpaceShoot::initPhysics()
 
 void SpaceShoot::update(float time)
 {
+    updatePhysics();
+    if(time > 0.03) // if framerate approx 30 fps then run two physics steps
+    {
+        updatePhysics();
+    }
+    for(int i = 0; i < sceneObjects.size(); i++)
+    {
+        sceneObjects[i]->update(time);
+    }
+}
+
+void SpaceShoot::updatePhysics()
+{
+    const int positionIterations = 4;
+    const int velocityIterations = 12;
+    world->Step(timeStep, velocityIterations, positionIterations);
+
+    for(auto phys : physicsComponentLookup)
+    {
+        PhysicsComponent* physicsComponent = phys.second;
+        if(physicsComponent->isAutoUpdate() == false) continue;
+        auto position = physicsComponent->getBody()->GetPosition();
+        float angle = physicsComponent->getBody()->GetAngle();
+        auto gameObject = physicsComponent->getGameObject();
+        gameObject->setPosition(glm::vec2(position.x*physicsScale, position.y*physicsScale));
+        gameObject->setRotation(angle);
+    }
 }
 
 void SpaceShoot::onKey(SDL_Event & event)
@@ -119,7 +149,7 @@ void SpaceShoot::onKey(SDL_Event & event)
 void SpaceShoot::render()
 {
     auto rp = RenderPass::create()
-        //.withCamera(camera->getCamera())
+        .withCamera(camera)
         .withClearColor(true, bgColor)
         .build();
 
@@ -157,6 +187,38 @@ void SpaceShoot::deregisterPhysicsComponent(PhysicsComponent *r)
     else
     {
         assert(false); // cannot find physics object
+    }
+}
+
+void SpaceShoot::handleContact(b2Contact *contact, bool begin)
+{
+    auto fixA = contact->GetFixtureA();
+    auto fixB = contact->GetFixtureB();
+    PhysicsComponent* physA = physicsComponentLookup[fixA];
+    PhysicsComponent* physB = physicsComponentLookup[fixB];
+    auto & aComponents = physA->getGameObject()->getComponents();
+    auto & bComponents = physB->getGameObject()->getComponents();
+    for(auto & c : aComponents)
+    {
+        if(begin)
+        {
+            c->onCollisionStart(physB);
+        }
+        else
+        {
+            c->onCollisionEnd(physB);
+        }
+    }
+    for(auto & c : bComponents)
+    {
+        if(begin)
+        {
+            c->onCollisionStart(physA);
+        }
+        else
+        {
+            c->onCollisionEnd(physA);
+        }
     }
 }
 
