@@ -59,7 +59,7 @@ void SpaceShoot::init()
 
 	auto player = createGameObject();
 	auto playerSprite = player->addComponent<SpriteComponent>();
-	auto sprite = atlas->get("ufoBlue.png");
+	auto sprite = atlas->get("Spaceship.png");
 	sprite.setPosition({ 0,0 });
 	playerSprite->setSprite(sprite);
 
