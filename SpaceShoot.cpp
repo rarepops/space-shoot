@@ -2,10 +2,11 @@
 #include <ctime>
 
 #include "sre/RenderPass.hpp"
-#include "SpaceShoot.hpp"
 #include "PhysicsComponent.hpp"
 #include "SpriteComponent.hpp"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
+#include "SpaceShoot.hpp"
+#include "SpaceShipComponent.hpp"
 
 using namespace glm;
 using namespace std;
@@ -25,7 +26,7 @@ SpaceShoot::SpaceShoot() :debugDraw(physicsScale)
 
     bgColor = glm::vec4(0.01, 0.01, 0.01, 1);
 
-	atlas = SpriteAtlas::create("spaceshooter.json", "spaceshooter.png");
+    atlas = SpriteAtlas::create("spaceshooter.json", "spaceshooter.png");
 
     srand(time(NULL));
 
@@ -56,17 +57,20 @@ void SpaceShoot::init()
 {
     initPhysics();
 
-	auto player = createGameObject();
-	auto playerSprite = player->addComponent<SpriteComponent>();
-	auto sprite = atlas->get("ufoBlue.png");
-	sprite.setPosition(windowSize*0.5f);
-	playerSprite->setSprite(sprite);
+    auto player = createGameObject();
+    auto playerSprite = player->addComponent<SpriteComponent>();
+    auto spaceShip = player->addComponent<SpaceShipComponent>();
+    auto sprite = atlas->get("Spaceship.png");
+    sprite.setPosition(windowSize * 0.5f);
+    playerSprite->setSprite(sprite);
 
-	auto cam = createGameObject();
-	cam->name = "Camera";
-	this->camera = cam->addComponent<FollowCamera>();
-	cam->setPosition(windowSize*0.5f);
-	camera->setFollowObject(player, {0,0});
+    auto cam = createGameObject();
+    cam->name = "Camera";
+    this->camera = cam->addComponent<FollowCamera>();
+    cam->setPosition(windowSize * 0.5f);
+    camera->setFollowObject(player, {0, 0});
+    cam->setPosition(windowSize*0.5f);
+    camera->setFollowObject(player, {0, 0});
 
 }
 
@@ -229,7 +233,7 @@ void SpaceShoot::handleContact(b2Contact *contact, bool begin)
 
 std::shared_ptr<GameObject> SpaceShoot::createGameObject()
 {
-	auto obj = shared_ptr<GameObject>(new GameObject());
-	sceneObjects.push_back(obj);
-	return obj;
+    auto obj = shared_ptr<GameObject>(new GameObject());
+    sceneObjects.push_back(obj);
+    return obj;
 }

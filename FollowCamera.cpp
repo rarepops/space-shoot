@@ -10,8 +10,7 @@ using namespace glm;
 FollowCamera::FollowCamera(GameObject *gameObject)
         : Component(gameObject)
 {
-	camera.setWindowCoordinates();
-
+    camera.setWindowCoordinates();
 }
 
 sre::Camera &FollowCamera::getCamera() {
