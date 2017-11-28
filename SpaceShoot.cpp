@@ -18,6 +18,7 @@ SpaceShoot* SpaceShoot::instance = nullptr;
 SpaceShoot::SpaceShoot() :debugDraw(physicsScale)
 {
     instance = this;
+    srand(time(NULL));
 
     renderer.setWindowSize(windowSize);
     renderer.setWindowTitle("SpaceShoot");
@@ -27,8 +28,6 @@ SpaceShoot::SpaceShoot() :debugDraw(physicsScale)
     bgColor = glm::vec4(0.01, 0.01, 0.01, 1);
 
     atlas = SpriteAtlas::create("spaceshooter.json", "spaceshooter.png");
-
-    srand(time(NULL));
 
     init();
 
@@ -64,13 +63,17 @@ void SpaceShoot::init()
     sprite.setPosition(windowSize * 0.5f);
     playerSprite->setSprite(sprite);
 
+    auto junk = createGameObject();
+    auto junkSprite = player->addComponent<SpriteComponent>();
+    auto spriteJunk = atlas->get("Spaceship.png");
+    spriteJunk.setPosition(windowSize * 0.5f + glm::vec2{25, 25});
+    junkSprite->setSprite(spriteJunk);
+
     auto cam = createGameObject();
     cam->name = "Camera";
     this->camera = cam->addComponent<FollowCamera>();
-    cam->setPosition(windowSize * 0.5f);
-    camera->setFollowObject(player, {0, 0});
     cam->setPosition(windowSize*0.5f);
-    camera->setFollowObject(player, {0, 0});
+   // camera->setFollowObject(player, {0, 0});
 
 }
 
