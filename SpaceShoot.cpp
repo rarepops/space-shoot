@@ -73,7 +73,7 @@ void SpaceShoot::init()
     cam->name = "Camera";
     this->camera = cam->addComponent<FollowCamera>();
     cam->setPosition(windowSize*0.5f);
-   // camera->setFollowObject(player, {0, 0});
+    camera->setFollowObject(player, -windowSize*0.5f);
 
 }
 
