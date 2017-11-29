@@ -59,6 +59,11 @@ void PhysicsComponent::setLinearVelocity(glm::vec2 velocity)
     body->SetLinearVelocity(v);
 }
 
+void PhysicsComponent::setAngularVelocity(float radians)
+{
+	body->SetAngularVelocity(radians);
+}
+
 void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 center, float density)
 {
     assert(body == nullptr);
@@ -145,7 +150,7 @@ void PhysicsComponent::setAutoUpdate(bool autoUpdate)
 b2Body *PhysicsComponent::getBody()
 {
     return body;
-}
+	}
 
 b2Fixture *PhysicsComponent::getFixture()
 {

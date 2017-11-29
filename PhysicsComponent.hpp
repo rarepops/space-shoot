@@ -22,6 +22,8 @@ public:
 
     void setLinearVelocity(glm::vec2 velocity);
 
+    void setAngularVelocity(float radians);
+
     glm::vec2 getLinearVelocity();
 
     bool isSensor();

@@ -25,6 +25,13 @@ private:
 	bool right = false;
 	bool up = false;
 	bool down = false;
+	bool thrust = false;
 
+
+	bool rotateCCW = false;
+	bool rotateCW =false;
+
+	float accelerationSpeed = 10.0f;
+	float drag = 0.950f;
 };
 

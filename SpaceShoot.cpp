@@ -73,9 +73,7 @@ void SpaceShoot::init()
     auto cam = createGameObject();
     cam->name = "Camera";
     this->camera = cam->addComponent<FollowCamera>();
-    cam->setPosition({-245645600,24564564560});
     camera->setFollowObject(player, -windowSize*0.5f);
-
 }
 
 void SpaceShoot::initPhysics()
