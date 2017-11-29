@@ -18,7 +18,7 @@ ShipController::ShipController(GameObject* gameObject) : Component(gameObject)
 	characterPhysics = gameObject->addComponent<PhysicsComponent>();
 
 	auto physicsScale = SpaceShoot::instance->physicsScale;
-	auto radius = 15;
+	auto radius = 0.50f;
 	characterPhysics->initCircle(b2_dynamicBody, radius, {0, 0}, 1);
 	spriteComponent = gameObject->getComponent<SpriteComponent>();
 }
@@ -50,11 +50,11 @@ void ShipController::update(float deltaTime)
 
 	if (rotateCCW)
 	{
-		rotation -= 1000000;
+		rotation += 1000000;
 	}
 	if (rotateCW)
 	{
-		rotation += 1000000;
+		rotation -= 1000000;
 	}
 
 	auto linearVelocity = characterPhysics->getLinearVelocity();
@@ -80,7 +80,6 @@ void ShipController::update(float deltaTime)
 
 bool ShipController::onKey(SDL_Event& keyEvent)
 {
-	thrust = true;
 	switch (keyEvent.key.keysym.sym)
 	{
 	case SDLK_UP:
@@ -115,12 +114,12 @@ bool ShipController::onKey(SDL_Event& keyEvent)
 		}
 		break;
 
-	case SDLK_z:
+	case SDLK_q:
 		{
 			rotateCCW = keyEvent.type == SDL_KEYDOWN;
 		}
 		break;
-	case SDLK_c:
+	case SDLK_e:
 		{
 			rotateCW = keyEvent.type == SDL_KEYDOWN;
 		}

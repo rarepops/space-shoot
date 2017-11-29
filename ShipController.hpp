@@ -31,7 +31,7 @@ private:
 	bool rotateCCW = false;
 	bool rotateCW =false;
 
-	float accelerationSpeed = 10.0f;
+	float accelerationSpeed = 0.001f;
 	float drag = 0.950f;
 };
 
