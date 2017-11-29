@@ -37,33 +37,19 @@ void TurretController::update(float deltaTime)
 
 		float angle = glm::atan(deltaX, deltaY);
 
-		cout << angle << endl;
+//		cout << angle << endl;
 
 		turret->setRotation(180+ glm::degrees(angle));
 	}
 
-	cout << mouseX << " "  << mouseY << endl;
+//	cout << mouseX << " "  << mouseY << endl;
 }
 
 
 bool TurretController::onKey(SDL_Event& keyEvent)
 {
-//	if (keyEvent.type != SDL_MOUSEMOTION) return false;
-//	if (keyEvent.motion.xrel < 0)
-//		deltaX -= 1;
-//	else if (keyEvent.motion.xrel > 0)
-//		deltaX += 1;
-//
-//	if (keyEvent.motion.yrel < 0)
-//		deltaY -= 1;
-//	else if (keyEvent.motion.yrel > 0)
-//		deltaY += 1;
-//
-//	rotationX = deltaX * 0.5;
-//	rotationY = deltaY * 0.5;
 
-	return false;
-	
+	return false;	
 }
 
 bool TurretController::onMouse(SDL_Event& event)
