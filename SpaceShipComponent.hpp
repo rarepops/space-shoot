@@ -11,15 +11,16 @@ public:
     explicit SpaceShipComponent(GameObject *gameObject);
     void init(std::shared_ptr<sre::SpriteAtlas> spriteAtlas, int x, int y, int startSpriteId, int width, bool kinematic);
 
-    float speed=5;
-    float turnSpeed=5;
+    float speed = 60;
+    float turnSpeed = 90;
 
     void update(float deltaTime) override;
-    
+    bool onKey(SDL_Event &event) override;
+
 private:
-    
-    /// Values between -1 and 1.
-    void turn(float direction);
-    /// Values between -1 and 1.
-    void thrust(float direction);
+    void turn(float deltaTime);
+    void thrust(float deltaTime);
+
+    float turnDirection=0;
+    float thrustDirection=0;
 };

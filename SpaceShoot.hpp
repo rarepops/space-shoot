@@ -22,9 +22,10 @@ public:
 	std::shared_ptr<GameObject> createGameObject();
     void BeginContact(b2Contact *contact) override;
     void EndContact(b2Contact *contact) override;
+	const float physicsScale = 100;
+
 
 private:
-    const float physicsScale = 100;
 
     void init();
     void initPhysics();

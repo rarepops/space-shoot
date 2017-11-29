@@ -7,6 +7,7 @@
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 #include "SpaceShoot.hpp"
 #include "SpaceShipComponent.hpp"
+#include "ShipController.hpp"
 
 using namespace glm;
 using namespace std;
@@ -52,34 +53,34 @@ void SpaceShoot::EndContact(b2Contact * contact)
 {
 }
 
+shared_ptr<GameObject> player;
+
 void SpaceShoot::init()
 {
     initPhysics();
 
-    auto player = createGameObject();
+    player = createGameObject();
+	player->name = "Player";
     auto playerSprite = player->addComponent<SpriteComponent>();
-    auto spaceShip = player->addComponent<SpaceShipComponent>();
+    auto spaceShip = player->addComponent<ShipController>();
     auto sprite = atlas->get("Spaceship.png");
-    sprite.setPosition(windowSize * 0.5f);
     playerSprite->setSprite(sprite);
 
     auto junk = createGameObject();
-    auto junkSprite = player->addComponent<SpriteComponent>();
-    auto spriteJunk = atlas->get("Spaceship.png");
-    spriteJunk.setPosition(windowSize * 0.5f + glm::vec2{25, 25});
-    junkSprite->setSprite(spriteJunk);
+    auto junkSprite = junk->addComponent<SpriteComponent>();
+    junkSprite->setSprite(sprite);
 
     auto cam = createGameObject();
     cam->name = "Camera";
     this->camera = cam->addComponent<FollowCamera>();
-    cam->setPosition(windowSize*0.5f);
+    cam->setPosition({-245645600,24564564560});
     camera->setFollowObject(player, -windowSize*0.5f);
 
 }
 
 void SpaceShoot::initPhysics()
 {
-    float gravity = -9.8f; // 9.8 m/s2
+    float gravity = 0; // 9.8 m/s2
     delete world;
     world = new b2World(b2Vec2(0, gravity));
     world->SetContactListener(this);
@@ -142,7 +143,7 @@ void SpaceShoot::onKey(SDL_Event & event)
             case SDLK_z:
                 //camera->setZoomMode(!camera->isZoomMode());
                 break;
-            case SDLK_d:
+            case SDLK_x:
                 // press 'd' for physics debug
                 isDebugDraw = !isDebugDraw;
                 if(isDebugDraw)
@@ -166,6 +167,13 @@ void SpaceShoot::render()
         .build();
 
     //auto pos = camera->getGameObject()->getPosition();
+
+	if (isDebugDraw)
+	{
+		static Profiler profiler;
+		profiler.update();
+		profiler.gui(false);
+	}
 
     auto spriteBatchBuilder = SpriteBatch::create();
     for(auto & go : sceneObjects)
