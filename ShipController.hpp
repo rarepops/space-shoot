@@ -3,7 +3,7 @@
 #include "SpriteComponent.hpp"
 
 
-class ShipController : public Component
+class ShipController : public Component, public b2RayCastCallback
 {
 public:
 	explicit ShipController(GameObject *gameObject);
@@ -16,6 +16,10 @@ public:
 	void onCollisionStart(PhysicsComponent *comp) override;
 
 	void onCollisionEnd(PhysicsComponent *comp) override;
+
+	// raycast callback
+	virtual float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point,
+		const b2Vec2& normal, float32 fraction) override;
     
 private:
 	std::shared_ptr<SpriteComponent> spriteComponent;

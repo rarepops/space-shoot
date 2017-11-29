@@ -68,7 +68,10 @@ void SpaceShoot::init()
 
     auto junk = createGameObject();
     auto junkSprite = junk->addComponent<SpriteComponent>();
+	junk->setPosition( windowSize * 0.5f);
     junkSprite->setSprite(sprite);
+	auto comp = junk->addComponent<PhysicsComponent>();
+	comp->initBox(b2_staticBody, { 0.20, 0.20 }, junk->getPosition()/physicsScale, 1);
 
     auto cam = createGameObject();
     cam->name = "Camera";
