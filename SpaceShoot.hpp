@@ -32,7 +32,8 @@ private:
     void update(float time);
     void updatePhysics();
     void onKey(SDL_Event &event);
-    void render();
+	void onMouse(SDL_Event& event);
+	void render();
 
     std::vector<std::shared_ptr<GameObject>> sceneObjects;
 

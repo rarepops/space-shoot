@@ -71,10 +71,10 @@ void ShipController::update(float deltaTime)
 
 	characterPhysics->setAngularVelocity(glm::radians(rotation));
 	characterPhysics->setLinearVelocity((linearVelocity + direction) * (1.0f - drag * deltaTime));
-
-	cout << getGameObject()->getPosition().x << " " << getGameObject()->getPosition().y << endl;
-	cout << movement.x << " " << movement.y << endl;
-	cout << characterPhysics->getBody()->GetAngle() << endl;
+//
+//	cout << getGameObject()->getPosition().x << " " << getGameObject()->getPosition().y << endl;
+//	cout << movement.x << " " << movement.y << endl;
+//	cout << characterPhysics->getBody()->GetAngle() << endl;
 }
 
 

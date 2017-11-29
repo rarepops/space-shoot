@@ -34,7 +34,7 @@ void FollowCamera::update(float deltaTime) {
 
     }
 
-	std::cout << "CAM:" << getGameObject()->getPosition().x << " " << getGameObject()->getPosition().y << std::endl;
+//	std::cout << "CAM:" << getGameObject()->getPosition().x << " " << getGameObject()->getPosition().y << std::endl;
 
 }
 

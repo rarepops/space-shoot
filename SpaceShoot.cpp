@@ -8,6 +8,7 @@
 #include "SpaceShoot.hpp"
 #include "SpaceShipComponent.hpp"
 #include "ShipController.hpp"
+#include "TurretController.hpp"
 
 using namespace glm;
 using namespace std;
@@ -16,40 +17,50 @@ using namespace sre;
 const glm::vec2 SpaceShoot::windowSize(800, 600);
 SpaceShoot* SpaceShoot::instance = nullptr;
 
-SpaceShoot::SpaceShoot() :debugDraw(physicsScale)
+SpaceShoot::SpaceShoot() : debugDraw(physicsScale)
 {
-    instance = this;
-    srand(time(NULL));
+	instance = this;
+	srand(time(NULL));
 
-    renderer.setWindowSize(windowSize);
-    renderer.setWindowTitle("SpaceShoot");
-    renderer.init(SDL_INIT_EVERYTHING, SDL_WINDOW_OPENGL);
-    bool useVsync = true;
+	renderer.setWindowSize(windowSize);
+	renderer.setWindowTitle("SpaceShoot");
+	renderer.init(SDL_INIT_EVERYTHING, SDL_WINDOW_OPENGL);
 
-    bgColor = glm::vec4(0.01, 0.01, 0.01, 1);
+//	SDL_SetWindowGrab(renderer.getSDLWindow(), SDL_TRUE);
+//	SDL_SetRelativeMouseMode(SDL_TRUE);
+	bool useVsync = true;
 
-    atlas = SpriteAtlas::create("spaceshooter.json", "spaceshooter.png");
+	bgColor = glm::vec4(0.01, 0.01, 0.01, 1);
 
-    init();
+	atlas = SpriteAtlas::create("spaceshooter.json", "spaceshooter.png");
 
-    renderer.keyEvent = [&](SDL_Event& e) {
-        onKey(e);
-    };
-    renderer.frameUpdate = [&](float deltaTime) {
-        update(deltaTime);
-    };
-    renderer.frameRender = [&]() {
-        render();
-    };
+	init();
 
-    renderer.startEventLoop();
+	renderer.keyEvent = [&](SDL_Event& e)
+	{
+		onKey(e);
+	};
+	renderer.mouseEvent = [&](SDL_Event& e)
+	{
+		onMouse(e);
+	};
+	renderer.frameUpdate = [&](float deltaTime)
+	{
+		update(deltaTime);
+	};
+	renderer.frameRender = [&]()
+	{
+		render();
+	};
+
+	renderer.startEventLoop();
 }
 
-void SpaceShoot::BeginContact(b2Contact * contact)
+void SpaceShoot::BeginContact(b2Contact* contact)
 {
 }
 
-void SpaceShoot::EndContact(b2Contact * contact)
+void SpaceShoot::EndContact(b2Contact* contact)
 {
 }
 
@@ -57,117 +68,145 @@ shared_ptr<GameObject> player;
 
 void SpaceShoot::init()
 {
-    initPhysics();
+	initPhysics();
 
-    player = createGameObject();
+	player = createGameObject();
 	player->name = "Player";
-    auto playerSprite = player->addComponent<SpriteComponent>();
-    auto spaceShip = player->addComponent<ShipController>();
-    auto sprite = atlas->get("Spaceship.png");
-    playerSprite->setSprite(sprite);
+	auto playerSprite = player->addComponent<SpriteComponent>();
+	auto spaceShip = player->addComponent<ShipController>();
+	auto sprite = atlas->get("Spaceship.png");
+	playerSprite->setSprite(sprite);
+	auto turretController = player->addComponent<TurretController>();
+	turretController->setSprite(atlas->get("Turret1.png"));
+	turretController->offsetTurrets(
+		{-15,31},
+		{-15,15},
+		{-17,-25},
+		{15,31},
+		{15,15},
+		{17,-25}
+	);
+	turretController->initTurrets();
 
-    auto junk = createGameObject();
-    auto junkSprite = junk->addComponent<SpriteComponent>();
-	junk->setPosition( windowSize * 0.5f);
-    junkSprite->setSprite(sprite);
+	auto junk = createGameObject();
+	auto junkSprite = junk->addComponent<SpriteComponent>();
+	junk->setPosition(windowSize * 0.5f);
+	junkSprite->setSprite(sprite);
 	auto comp = junk->addComponent<PhysicsComponent>();
-	comp->initBox(b2_staticBody, { 0.20, 0.20 }, junk->getPosition()/physicsScale, 1);
+	comp->initBox(b2_staticBody, {0.20, 0.20}, junk->getPosition() / physicsScale, 1);
 
-    auto cam = createGameObject();
-    cam->name = "Camera";
-    this->camera = cam->addComponent<FollowCamera>();
-    camera->setFollowObject(player, -windowSize*0.5f);
+
+	auto cam = createGameObject();
+	cam->name = "Camera";
+	this->camera = cam->addComponent<FollowCamera>();
+	camera->setFollowObject(player, -windowSize * 0.5f);
 }
 
 void SpaceShoot::initPhysics()
 {
-    float gravity = 0; // 9.8 m/s2
-    delete world;
-    world = new b2World(b2Vec2(0, gravity));
-    world->SetContactListener(this);
+	float gravity = 0; // 9.8 m/s2
+	delete world;
+	world = new b2World(b2Vec2(0, gravity));
+	world->SetContactListener(this);
 
-    if(isDebugDraw)
-    {
-        world->SetDebugDraw(&debugDraw);
-    }
+	if (isDebugDraw)
+	{
+		world->SetDebugDraw(&debugDraw);
+	}
 }
 
 void SpaceShoot::update(float time)
 {
-    updatePhysics();
-    if(time > 0.03) // if framerate approx 30 fps then run two physics steps
-    {
-        updatePhysics();
-    }
-    for(int i = 0; i < sceneObjects.size(); i++)
-    {
-        sceneObjects[i]->update(time);
-    }
+	updatePhysics();
+	if (time > 0.03) // if framerate approx 30 fps then run two physics steps
+	{
+		updatePhysics();
+	}
+	for (int i = 0; i < sceneObjects.size(); i++)
+	{
+		sceneObjects[i]->update(time);
+	}
 }
 
 void SpaceShoot::updatePhysics()
 {
-    const int positionIterations = 4;
-    const int velocityIterations = 12;
-    world->Step(timeStep, velocityIterations, positionIterations);
+	const int positionIterations = 4;
+	const int velocityIterations = 12;
+	world->Step(timeStep, velocityIterations, positionIterations);
 
-    for(auto phys : physicsComponentLookup)
-    {
-        PhysicsComponent* physicsComponent = phys.second;
-        if(physicsComponent->isAutoUpdate() == false) continue;
-        auto position = physicsComponent->getBody()->GetPosition();
-        float angle = physicsComponent->getBody()->GetAngle();
-        auto gameObject = physicsComponent->getGameObject();
-        gameObject->setPosition(glm::vec2(position.x*physicsScale, position.y*physicsScale));
-        gameObject->setRotation(angle);
-    }
+	for (auto phys : physicsComponentLookup)
+	{
+		PhysicsComponent* physicsComponent = phys.second;
+		if (physicsComponent->isAutoUpdate() == false) continue;
+		auto position = physicsComponent->getBody()->GetPosition();
+		float angle = physicsComponent->getBody()->GetAngle();
+		auto gameObject = physicsComponent->getGameObject();
+		gameObject->setPosition(glm::vec2(position.x * physicsScale, position.y * physicsScale));
+		gameObject->setRotation(angle);
+	}
 }
 
-void SpaceShoot::onKey(SDL_Event & event)
+void SpaceShoot::onKey(SDL_Event& event)
 {
-    for(auto & gameObject : sceneObjects)
-    {
-        for(auto & c : gameObject->getComponents())
-        {
-            bool consumed = c->onKey(event);
-            if(consumed)
-            {
-                return;
-            }
-        }
-    }
+	for (auto& gameObject : sceneObjects)
+	{
+		for (auto& c : gameObject->getComponents())
+		{
+			bool consumed = c->onKey(event);
+			if (consumed)
+			{
+				return;
+			}
+		}
+	}
 
-    if(event.type == SDL_KEYDOWN)
-    {
-        switch(event.key.keysym.sym)
-        {
-            case SDLK_z:
-                //camera->setZoomMode(!camera->isZoomMode());
-                break;
-            case SDLK_x:
-                // press 'd' for physics debug
-                isDebugDraw = !isDebugDraw;
-                if(isDebugDraw)
-                {
-                    world->SetDebugDraw(&debugDraw);
-                }
-                else
-                {
-                    world->SetDebugDraw(nullptr);
-                }
-                break;
-        }
-    }
+	if (event.type == SDL_KEYDOWN)
+	{
+		switch (event.key.keysym.sym)
+		{
+		case SDLK_z:
+			//camera->setZoomMode(!camera->isZoomMode());
+			break;
+		case SDLK_x:
+			// press 'd' for physics debug
+			isDebugDraw = !isDebugDraw;
+			if (isDebugDraw)
+			{
+				world->SetDebugDraw(&debugDraw);
+			}
+			else
+			{
+				world->SetDebugDraw(nullptr);
+			}
+			break;
+		}
+	}
+}
+
+void SpaceShoot::onMouse(SDL_Event& event)
+{
+	for (auto& gameObject : sceneObjects)
+	{
+		for (auto& c : gameObject->getComponents())
+		{
+			bool consumed = c->onMouse(event);
+			if (consumed)
+			{
+				return;
+			}
+		}
+	}
+
 }
 
 void SpaceShoot::render()
 {
-    auto rp = RenderPass::create()
-        .withCamera(camera->getCamera())
-        .withClearColor(true, bgColor)
-        .build();
+	auto rp = RenderPass::create()
+		.withCamera(camera->getCamera())
+		.withClearColor(true, bgColor)
+		.build();
 
-    //auto pos = camera->getGameObject()->getPosition();
+	//auto pos = camera->getGameObject()->getPosition();
 
 	if (isDebugDraw)
 	{
@@ -176,76 +215,76 @@ void SpaceShoot::render()
 		profiler.gui(false);
 	}
 
-    auto spriteBatchBuilder = SpriteBatch::create();
-    for(auto & go : sceneObjects)
-    {
-        go->renderSprite(spriteBatchBuilder);
-    }
+	auto spriteBatchBuilder = SpriteBatch::create();
+	for (auto& go : sceneObjects)
+	{
+		go->renderSprite(spriteBatchBuilder);
+	}
 
-    auto sb = spriteBatchBuilder.build();
-    rp.draw(sb);
+	auto sb = spriteBatchBuilder.build();
+	rp.draw(sb);
 
-    if(isDebugDraw)
-    {
-        world->DrawDebugData();
-        rp.drawLines(debugDraw.getLines());
-        debugDraw.clear();
-    }
+	if (isDebugDraw)
+	{
+		world->DrawDebugData();
+		rp.drawLines(debugDraw.getLines());
+		debugDraw.clear();
+	}
 }
 
-void SpaceShoot::registerPhysicsComponent(PhysicsComponent *r)
+void SpaceShoot::registerPhysicsComponent(PhysicsComponent* r)
 {
-    physicsComponentLookup[r->getFixture()] = r;
+	physicsComponentLookup[r->getFixture()] = r;
 }
 
-void SpaceShoot::deregisterPhysicsComponent(PhysicsComponent *r)
+void SpaceShoot::deregisterPhysicsComponent(PhysicsComponent* r)
 {
-    auto iter = physicsComponentLookup.find(r->getFixture());
-    if(iter != physicsComponentLookup.end())
-    {
-        physicsComponentLookup.erase(iter);
-    }
-    else
-    {
-        assert(false); // cannot find physics object
-    }
+	auto iter = physicsComponentLookup.find(r->getFixture());
+	if (iter != physicsComponentLookup.end())
+	{
+		physicsComponentLookup.erase(iter);
+	}
+	else
+	{
+		assert(false); // cannot find physics object
+	}
 }
 
-void SpaceShoot::handleContact(b2Contact *contact, bool begin)
+void SpaceShoot::handleContact(b2Contact* contact, bool begin)
 {
-    auto fixA = contact->GetFixtureA();
-    auto fixB = contact->GetFixtureB();
-    PhysicsComponent* physA = physicsComponentLookup[fixA];
-    PhysicsComponent* physB = physicsComponentLookup[fixB];
-    auto & aComponents = physA->getGameObject()->getComponents();
-    auto & bComponents = physB->getGameObject()->getComponents();
-    for(auto & c : aComponents)
-    {
-        if(begin)
-        {
-            c->onCollisionStart(physB);
-        }
-        else
-        {
-            c->onCollisionEnd(physB);
-        }
-    }
-    for(auto & c : bComponents)
-    {
-        if(begin)
-        {
-            c->onCollisionStart(physA);
-        }
-        else
-        {
-            c->onCollisionEnd(physA);
-        }
-    }
+	auto fixA = contact->GetFixtureA();
+	auto fixB = contact->GetFixtureB();
+	PhysicsComponent* physA = physicsComponentLookup[fixA];
+	PhysicsComponent* physB = physicsComponentLookup[fixB];
+	auto& aComponents = physA->getGameObject()->getComponents();
+	auto& bComponents = physB->getGameObject()->getComponents();
+	for (auto& c : aComponents)
+	{
+		if (begin)
+		{
+			c->onCollisionStart(physB);
+		}
+		else
+		{
+			c->onCollisionEnd(physB);
+		}
+	}
+	for (auto& c : bComponents)
+	{
+		if (begin)
+		{
+			c->onCollisionStart(physA);
+		}
+		else
+		{
+			c->onCollisionEnd(physA);
+		}
+	}
 }
 
 std::shared_ptr<GameObject> SpaceShoot::createGameObject()
 {
-    auto obj = shared_ptr<GameObject>(new GameObject());
-    sceneObjects.push_back(obj);
-    return obj;
+	auto obj = shared_ptr<GameObject>(new GameObject());
+	sceneObjects.push_back(obj);
+	return obj;
 }

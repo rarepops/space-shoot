@@ -6,138 +6,101 @@
 #include <glm/gtx/norm.hpp>
 #include "PhysicsComponent.hpp"
 #include "SpaceShoot.hpp"
-#include "ShipController.hpp"
 #include <iostream>
 #include <glm/gtx/log_base.hpp>
 #include <glm/gtx/rotate_vector.inl>
+#include "TurretController.hpp"
+#include <glm/gtx/compatibility.hpp>
+#include <glm/gtx/fast_trigonometry.inl>
 using namespace std;
 
-ShipController::ShipController(GameObject* gameObject) : Component(gameObject)
-
+TurretController::TurretController(GameObject* gameObject) : Component(gameObject)
 {
-	characterPhysics = gameObject->addComponent<PhysicsComponent>();
-
-	auto physicsScale = SpaceShoot::instance->physicsScale;
-	auto radius = 0.50f;
-	characterPhysics->initCircle(b2_dynamicBody, radius, {0, 0}, 1);
-	spriteComponent = gameObject->getComponent<SpriteComponent>();
+	game = SpaceShoot::instance;
+	physicsComponent = gameObject->getComponent<PhysicsComponent>();
 }
 
-void ShipController::update(float deltaTime)
+void TurretController::update(float deltaTime)
 {
-	glm::vec2 movement{0, 0};
-	auto rotation = gameObject->getRotation();
 
-	if (up)
-	{
-		movement.y++;
-	}
-	if (down)
-	{
-		movement.y--;
-	}
-	if (left)
-	{
-		movement.x--;
-	}
-	if (right)
-	{
-		movement.x++;
-	}
 
-	if (!rotateCCW || !rotateCW)
-		rotation = 0;
+	for (int i = 0; i < numberOfTurrets; ++i)
+	{
+		auto turret = turrets[i];
+		auto position = gameObject->getPosition();
+		auto offset = glm::rotate(turretsOffests[i], glm::radians(physicsComponent->getBody()->GetAngle()));
 
-	if (rotateCCW)
-	{
-		rotation += 1000000;
-	}
-	if (rotateCW)
-	{
-		rotation -= 1000000;
+		turret->setPosition(position + offset);
+
+		float deltaY = turret->getPosition().y - (turret->getPosition().y + mouseY);
+		float deltaX = turret->getPosition().x - (turret->getPosition().x + mouseX);
+
+		float angle = glm::atan(deltaX, deltaY);
+
+		cout << angle << endl;
+
+		turret->setRotation(180+ glm::degrees(angle));
 	}
 
-	auto linearVelocity = characterPhysics->getLinearVelocity();
-
-	glm::vec2 direction{0,0};
-	if (movement.x != 0|| movement.y != 0)
-	{
-		direction = glm::rotateZ(glm::vec3(movement.x / 10, movement.y / 10, 0),
-		                         glm::radians(characterPhysics->getBody()->GetAngle()));
-	}
-	characterPhysics->addImpulse((movement + direction) * accelerationSpeed);
-
-	linearVelocity = characterPhysics->getLinearVelocity();
-
-	characterPhysics->setAngularVelocity(glm::radians(rotation));
-	characterPhysics->setLinearVelocity((linearVelocity + direction) * (1.0f - drag * deltaTime));
-
-	cout << getGameObject()->getPosition().x << " " << getGameObject()->getPosition().y << endl;
-	cout << movement.x << " " << movement.y << endl;
-	cout << characterPhysics->getBody()->GetAngle() << endl;
+	cout << mouseX << " "  << mouseY << endl;
 }
 
 
-bool ShipController::onKey(SDL_Event& keyEvent)
+bool TurretController::onKey(SDL_Event& keyEvent)
 {
-	switch (keyEvent.key.keysym.sym)
-	{
-	case SDLK_UP:
-		{
-			up = keyEvent.type == SDL_KEYDOWN;
-		}
-		break;
-	case SDLK_DOWN:
-		{
-			down = keyEvent.type == SDL_KEYDOWN;
-		}
-		break;
-	case SDLK_w:
-		{
-			up = keyEvent.type == SDL_KEYDOWN;
-		}
-		break;
-	case SDLK_s:
-		{
-			down = keyEvent.type == SDL_KEYDOWN;
-		}
-		break;
+//	if (keyEvent.type != SDL_MOUSEMOTION) return false;
+//	if (keyEvent.motion.xrel < 0)
+//		deltaX -= 1;
+//	else if (keyEvent.motion.xrel > 0)
+//		deltaX += 1;
+//
+//	if (keyEvent.motion.yrel < 0)
+//		deltaY -= 1;
+//	else if (keyEvent.motion.yrel > 0)
+//		deltaY += 1;
+//
+//	rotationX = deltaX * 0.5;
+//	rotationY = deltaY * 0.5;
 
-	case SDLK_a:
-		{
-			left = keyEvent.type == SDL_KEYDOWN;
-		}
-		break;
-	case SDLK_d:
-		{
-			right = keyEvent.type == SDL_KEYDOWN;
-		}
-		break;
+	return false;
+	
+}
 
-	case SDLK_q:
-		{
-			rotateCCW = keyEvent.type == SDL_KEYDOWN;
-		}
-		break;
-	case SDLK_e:
-		{
-			rotateCW = keyEvent.type == SDL_KEYDOWN;
-		}
-		break;
-	}
+bool TurretController::onMouse(SDL_Event& event)
+{
+	if (event.type != SDL_MOUSEMOTION) return false;
+
+	mouseX = event.motion.x - game->windowSize.x * 0.5f;
+	mouseY = event.motion.y - game->windowSize.y * 0.5f;
 
 	return false;
 }
 
-void ShipController::onCollisionStart(PhysicsComponent* comp)
+void TurretController::setSprite(sre::Sprite sprite)
 {
+	this->sprite = sprite;
 }
 
-void ShipController::onCollisionEnd(PhysicsComponent* comp)
+void TurretController::offsetTurrets(glm::vec2 turret1, glm::vec2 turret2, glm::vec2 turret3, glm::vec2 turret4, glm::vec2 turret5,
+	glm::vec2 turret6)
 {
+	turretsOffests.push_back(turret1);
+	turretsOffests.push_back(turret2);
+	turretsOffests.push_back(turret3);
+	turretsOffests.push_back(turret4);
+	turretsOffests.push_back(turret5);
+	turretsOffests.push_back(turret6);
 }
 
-float32 ShipController::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
+void TurretController::initTurrets()
 {
-	return 0;
+	for (int i = 0; i < numberOfTurrets; ++i)
+	{
+		auto turret = game->createGameObject();
+		turret->name = "Turret" + i;
+		auto turretSprite = turret->addComponent<SpriteComponent>();
+		turretSprite->setSprite(sprite);
+		turrets.push_back(turret);
+	}
 }
+

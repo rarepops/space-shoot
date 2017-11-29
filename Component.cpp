@@ -29,6 +29,11 @@ bool Component::onKey(SDL_Event &event)
     return false;
 }
 
+bool Component::onMouse(SDL_Event &event)
+{
+    return false;
+}
+
 void Component::onCollisionStart(PhysicsComponent* comp)
 {
 
