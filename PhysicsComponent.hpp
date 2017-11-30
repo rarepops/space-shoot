@@ -12,9 +12,9 @@ public:
     explicit PhysicsComponent(GameObject *gameObject);
     virtual ~PhysicsComponent();
 
-    void initCircle(b2BodyType type, float radius, glm::vec2 center, float density);
+    void initCircle(b2BodyType type, float radius, glm::vec2 center, float density, int16 collisionIndex = 1);
 
-    void initBox(b2BodyType type, glm::vec2 size, glm::vec2 center, float density);
+    void initBox(b2BodyType type, glm::vec2 size, glm::vec2 center, float density, int16 collisionIndex = 1);
 
     void addForce(glm::vec2 force);     // Force gradually affects the velocity over time
 

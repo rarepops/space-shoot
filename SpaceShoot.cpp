@@ -7,8 +7,9 @@
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 #include "SpaceShoot.hpp"
 #include "SpaceShipComponent.hpp"
-#include "ShipController.hpp"
-#include "TurretController.hpp"
+#include "ShipComponent.hpp"
+#include "TurretComponent.hpp"
+#include <iostream>
 
 using namespace glm;
 using namespace std;
@@ -16,6 +17,7 @@ using namespace sre;
 
 const glm::vec2 SpaceShoot::windowSize(800, 600);
 SpaceShoot* SpaceShoot::instance = nullptr;
+int SpaceShoot::PLAYER_GROUP = -1;
 
 SpaceShoot::SpaceShoot() : debugDraw(physicsScale)
 {
@@ -26,8 +28,6 @@ SpaceShoot::SpaceShoot() : debugDraw(physicsScale)
 	renderer.setWindowTitle("SpaceShoot");
 	renderer.init(SDL_INIT_EVERYTHING, SDL_WINDOW_OPENGL);
 
-//	SDL_SetWindowGrab(renderer.getSDLWindow(), SDL_TRUE);
-//	SDL_SetRelativeMouseMode(SDL_TRUE);
 	bool useVsync = true;
 
 	bgColor = glm::vec4(0.01, 0.01, 0.01, 1);
@@ -56,14 +56,6 @@ SpaceShoot::SpaceShoot() : debugDraw(physicsScale)
 	renderer.startEventLoop();
 }
 
-void SpaceShoot::BeginContact(b2Contact* contact)
-{
-}
-
-void SpaceShoot::EndContact(b2Contact* contact)
-{
-}
-
 shared_ptr<GameObject> player;
 
 void SpaceShoot::init()
@@ -73,10 +65,10 @@ void SpaceShoot::init()
 	player = createGameObject();
 	player->name = "Player";
 	auto playerSprite = player->addComponent<SpriteComponent>();
-	auto spaceShip = player->addComponent<ShipController>();
+	auto spaceShip = player->addComponent<ShipComponent>();
 	auto sprite = atlas->get("Spaceship.png");
 	playerSprite->setSprite(sprite);
-	auto turretController = player->addComponent<TurretController>();
+	auto turretController = player->addComponent<TurretComponent>();
 	turretController->setSprite(atlas->get("Turret1.png"));
 	turretController->offsetTurrets(
 		{-15,31},
@@ -87,6 +79,7 @@ void SpaceShoot::init()
 		{17,-25}
 	);
 	turretController->initTurrets();
+	turretController->setBulletSprite(atlas->get("bullet.PNG"));
 
 	auto junk = createGameObject();
 	auto junkSprite = junk->addComponent<SpriteComponent>();
@@ -117,11 +110,17 @@ void SpaceShoot::initPhysics()
 
 void SpaceShoot::update(float time)
 {
+	sceneObjects.erase(std::remove_if(sceneObjects.begin(), sceneObjects.end(), [](std::shared_ptr<GameObject> object)
+                                  {
+	                                  return object.get()->destroyed;
+                                  }), sceneObjects.end());
+
 	updatePhysics();
 	if (time > 0.03) // if framerate approx 30 fps then run two physics steps
 	{
 		updatePhysics();
 	}
+	
 	for (int i = 0; i < sceneObjects.size(); i++)
 	{
 		sceneObjects[i]->update(time);
@@ -185,9 +184,9 @@ void SpaceShoot::onKey(SDL_Event& event)
 
 void SpaceShoot::onMouse(SDL_Event& event)
 {
-	for (auto& gameObject : sceneObjects)
+	for (int i = 0; i < sceneObjects.size(); ++i)
 	{
-		for (auto& c : gameObject->getComponents())
+		for (auto& c : sceneObjects[i]->getComponents())
 		{
 			bool consumed = c->onMouse(event);
 			if (consumed)
@@ -196,7 +195,6 @@ void SpaceShoot::onMouse(SDL_Event& event)
 			}
 		}
 	}
-
 }
 
 void SpaceShoot::render()
@@ -240,15 +238,21 @@ void SpaceShoot::registerPhysicsComponent(PhysicsComponent* r)
 void SpaceShoot::deregisterPhysicsComponent(PhysicsComponent* r)
 {
 	auto iter = physicsComponentLookup.find(r->getFixture());
-	if (iter != physicsComponentLookup.end())
-	{
-		physicsComponentLookup.erase(iter);
-	}
-	else
-	{
-		assert(false); // cannot find physics object
-	}
+	physicsComponentLookup.erase(iter);
 }
+
+void SpaceShoot::BeginContact(b2Contact* contact)
+{
+	b2ContactListener::BeginContact(contact);
+	handleContact(contact, true);
+}
+
+void SpaceShoot::EndContact(b2Contact* contact)
+{
+	//	b2ContactListener::EndContact(contact);
+	//	handleContact(contact, false);
+}
+
 
 void SpaceShoot::handleContact(b2Contact* contact, bool begin)
 {

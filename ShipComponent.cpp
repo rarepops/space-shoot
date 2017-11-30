@@ -6,24 +6,24 @@
 #include <glm/gtx/norm.hpp>
 #include "PhysicsComponent.hpp"
 #include "SpaceShoot.hpp"
-#include "ShipController.hpp"
+#include "ShipComponent.hpp"
 #include <iostream>
 #include <glm/gtx/log_base.hpp>
 #include <glm/gtx/rotate_vector.inl>
 using namespace std;
 
-ShipController::ShipController(GameObject* gameObject) : Component(gameObject)
+ShipComponent::ShipComponent(GameObject* gameObject) : Component(gameObject)
 
 {
 	characterPhysics = gameObject->addComponent<PhysicsComponent>();
 
 	auto physicsScale = SpaceShoot::instance->physicsScale;
 	auto radius = 0.50f;
-	characterPhysics->initCircle(b2_dynamicBody, radius, {0, 0}, 1);
+	characterPhysics->initCircle(b2_dynamicBody, radius, {0, 0}, 1, SpaceShoot::PLAYER_GROUP);
 	spriteComponent = gameObject->getComponent<SpriteComponent>();
 }
 
-void ShipController::update(float deltaTime)
+void ShipComponent::update(float deltaTime)
 {
 	glm::vec2 movement{0, 0};
 	auto rotation = gameObject->getRotation();
@@ -78,7 +78,7 @@ void ShipController::update(float deltaTime)
 }
 
 
-bool ShipController::onKey(SDL_Event& keyEvent)
+bool ShipComponent::onKey(SDL_Event& keyEvent)
 {
 	switch (keyEvent.key.keysym.sym)
 	{
@@ -129,15 +129,15 @@ bool ShipController::onKey(SDL_Event& keyEvent)
 	return false;
 }
 
-void ShipController::onCollisionStart(PhysicsComponent* comp)
+void ShipComponent::onCollisionStart(PhysicsComponent* comp)
 {
 }
 
-void ShipController::onCollisionEnd(PhysicsComponent* comp)
+void ShipComponent::onCollisionEnd(PhysicsComponent* comp)
 {
 }
 
-float32 ShipController::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
+float32 ShipComponent::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
 {
 	return 0;
 }

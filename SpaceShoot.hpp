@@ -25,6 +25,10 @@ public:
 	const float physicsScale = 100;
 
 
+	std::shared_ptr<sre::SpriteAtlas> atlas;
+
+	static int PLAYER_GROUP;
+
 private:
 
     void init();
@@ -38,7 +42,6 @@ private:
     std::vector<std::shared_ptr<GameObject>> sceneObjects;
 
     glm::vec4 bgColor;
-    std::shared_ptr<sre::SpriteAtlas> atlas;
     sre::SDLRenderer renderer;
 
     void registerPhysicsComponent(PhysicsComponent *r);
@@ -52,4 +55,5 @@ private:
     Box2DDebugDraw debugDraw;
     bool isDebugDraw = false;
     friend class PhysicsComponent;
+	friend class BulletComponent;
 };

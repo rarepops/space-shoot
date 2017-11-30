@@ -3,10 +3,10 @@
 #include "SpriteComponent.hpp"
 
 
-class ShipController : public Component, public b2RayCastCallback
+class ShipComponent : public Component, public b2RayCastCallback
 {
 public:
-	explicit ShipController(GameObject *gameObject);
+	explicit ShipComponent(GameObject *gameObject);
 
 
 	void update(float deltaTime) override;

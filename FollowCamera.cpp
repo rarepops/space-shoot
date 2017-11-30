@@ -30,12 +30,7 @@ void FollowCamera::update(float deltaTime) {
         vec3 at (position, -1);
         vec3 up (0, 1, 0);
         camera.lookAt(eye, at, up);
-
-
     }
-
-//	std::cout << "CAM:" << getGameObject()->getPosition().x << " " << getGameObject()->getPosition().y << std::endl;
-
 }
 
 void FollowCamera::setFollowObject(std::shared_ptr<GameObject> followObject, glm::vec2 offset) {
