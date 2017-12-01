@@ -23,7 +23,7 @@ public:
     
 private:
 	std::shared_ptr<SpriteComponent> spriteComponent;
-	std::shared_ptr<PhysicsComponent> characterPhysics;
+	std::shared_ptr<PhysicsComponent> shipPhysics;
 
 	bool left = false;
 	bool right = false;

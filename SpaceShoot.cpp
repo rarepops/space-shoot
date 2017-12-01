@@ -25,7 +25,7 @@ SpaceShoot::SpaceShoot() : debugDraw(physicsScale)
 	srand(time(NULL));
 
 	renderer.setWindowSize(windowSize);
-	renderer.setWindowTitle("SpaceShoot");
+	renderer.setWindowTitle("SpaceShooter");
 	renderer.init(SDL_INIT_EVERYTHING, SDL_WINDOW_OPENGL);
 
 	bool useVsync = true;
@@ -66,10 +66,10 @@ void SpaceShoot::init()
 	player->name = "Player";
 	auto playerSprite = player->addComponent<SpriteComponent>();
 	auto spaceShip = player->addComponent<ShipComponent>();
-	auto sprite = atlas->get("Spaceship.png");
+	auto sprite = atlas->get("playerspaceship.png");
 	playerSprite->setSprite(sprite);
 	auto turretController = player->addComponent<TurretComponent>();
-	turretController->setSprite(atlas->get("Turret1.png"));
+	turretController->setSprite(atlas->get("turret1.png"));
 	turretController->offsetTurrets(
 		{-15,31},
 		{-15,15},
@@ -79,7 +79,7 @@ void SpaceShoot::init()
 		{17,-25}
 	);
 	turretController->initTurrets();
-	turretController->setBulletSprite(atlas->get("bullet.PNG"));
+	turretController->setBulletSprite(atlas->get("particlepurple.png"));
 
 	auto junk = createGameObject();
 	auto junkSprite = junk->addComponent<SpriteComponent>();
@@ -92,7 +92,7 @@ void SpaceShoot::init()
 	auto cam = createGameObject();
 	cam->name = "Camera";
 	this->camera = cam->addComponent<FollowCamera>();
-	camera->setFollowObject(player, -windowSize * 0.5f);
+	camera->setFollowObject(player);
 }
 
 void SpaceShoot::initPhysics()

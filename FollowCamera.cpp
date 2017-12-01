@@ -9,31 +9,63 @@
 using namespace glm;
 
 FollowCamera::FollowCamera(GameObject *gameObject)
-        : Component(gameObject)
+    : Component(gameObject)
 {
     camera.setWindowCoordinates();
 }
 
-sre::Camera &FollowCamera::getCamera() {
+sre::Camera &FollowCamera::getCamera()
+{
     return camera;
 }
 
-void FollowCamera::update(float deltaTime) {
-    if (followObject != nullptr){
+void FollowCamera::update(float deltaTime)
+{
+    if(followObject != nullptr)
+    {
+        float zoomMultiplier = 0.4f;
+        if(isZooming)
+        {
+            zoomMultiplier = 1;
+        }
+
+        camera.setOrthographicProjection(SpaceShoot::windowSize.y / zoomMultiplier, -1, 1);
         auto position = followObject->getPosition();
 
-        position.x += offset.x;
-        position.y += offset.y;
+        position = followObject->getPosition() + offset;
 
-        gameObject->setPosition(position);
-        vec3 eye (position, 0);
-        vec3 at (position, -1);
-        vec3 up (0, 1, 0);
+        vec3 eye(position, 0);
+        vec3 at(position, -1);
+        vec3 up(0, 1, 0);
         camera.lookAt(eye, at, up);
     }
 }
 
-void FollowCamera::setFollowObject(std::shared_ptr<GameObject> followObject, glm::vec2 offset) {
+
+bool FollowCamera::onKey(SDL_Event& keyEvent)
+{
+    switch(keyEvent.key.keysym.sym)
+    {
+        case SDLK_z:
+        {
+            if(keyEvent.type == SDL_KEYUP)
+            {
+                setZoom(!isZooming);
+            }
+        }
+        break;
+    }
+
+    return false;
+}
+
+void FollowCamera::setFollowObject(std::shared_ptr<GameObject> followObject, glm::vec2 offset)
+{
     this->followObject = followObject;
     this->offset = offset;
+}
+
+void FollowCamera::setZoom(bool zoom)
+{
+    isZooming = zoom;
 }

@@ -11,12 +11,16 @@ public:
 
     void update(float deltaTime) override;
 
-    void setFollowObject(std::shared_ptr<GameObject> followObject, glm::vec2 offset);
-    
+    void setFollowObject(std::shared_ptr<GameObject> followObject, glm::vec2 offset = glm::vec2());
+    void setZoom(bool zoom);
+
+    bool FollowCamera::onKey(SDL_Event& keyEvent);
     sre::Camera& getCamera();
 private:
     sre::Camera camera;
     std::shared_ptr<GameObject> followObject;
     glm::vec2 offset;
+
+    bool isZooming = true;
 };
 
