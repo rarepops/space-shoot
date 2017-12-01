@@ -12,6 +12,7 @@ FollowCamera::FollowCamera(GameObject *gameObject)
     : Component(gameObject)
 {
     camera.setWindowCoordinates();
+    currentZoom = zoomLevels[currentZoomLevel];
 }
 
 sre::Camera &FollowCamera::getCamera()
@@ -23,13 +24,8 @@ void FollowCamera::update(float deltaTime)
 {
     if(followObject != nullptr)
     {
-        float zoomMultiplier = 1;
-        if(isZooming)
-        {
-            zoomMultiplier = 2;
-        }
-
-        camera.setOrthographicProjection(SpaceShoot::windowSize.y / zoomMultiplier, -1, 1);
+        
+        camera.setOrthographicProjection(SpaceShoot::windowSize.y / currentZoom, -1, 1);
         auto position = followObject->getPosition();
 
         position = followObject->getPosition() + offset;
@@ -42,6 +38,7 @@ void FollowCamera::update(float deltaTime)
 }
 
 
+
 bool FollowCamera::onKey(SDL_Event& keyEvent)
 {
     switch(keyEvent.key.keysym.sym)
@@ -50,7 +47,7 @@ bool FollowCamera::onKey(SDL_Event& keyEvent)
         {
             if(keyEvent.type == SDL_KEYUP)
             {
-                setZoom(!isZooming);
+                changeZoom();
             }
         }
         break;
@@ -65,7 +62,24 @@ void FollowCamera::setFollowObject(std::shared_ptr<GameObject> followObject, glm
     this->offset = offset;
 }
 
-void FollowCamera::setZoom(bool zoom)
+void FollowCamera::setZoomLevel(int zoomLevel)
 {
-    isZooming = zoom;
+    if(zoomLevel >= 0 && zoomLevel <= zoomLevels.size())
+    {
+        currentZoomLevel = zoomLevel;
+        setZoom(zoomLevels[currentZoomLevel]);
+    }
+}
+
+void FollowCamera::setZoom(float zoom)
+{
+    currentZoom = zoom;
+}
+
+void FollowCamera::changeZoom()
+{
+    ++currentZoomLevel;
+    currentZoomLevel %= zoomLevels.size();
+
+    setZoom(zoomLevels[currentZoomLevel]);
 }
