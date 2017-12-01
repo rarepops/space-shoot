@@ -23,10 +23,10 @@ void FollowCamera::update(float deltaTime)
 {
     if(followObject != nullptr)
     {
-        float zoomMultiplier = 0.4f;
+        float zoomMultiplier = 1;
         if(isZooming)
         {
-            zoomMultiplier = 1;
+            zoomMultiplier = 2;
         }
 
         camera.setOrthographicProjection(SpaceShoot::windowSize.y / zoomMultiplier, -1, 1);

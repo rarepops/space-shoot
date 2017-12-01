@@ -2,7 +2,7 @@
 
 {
 	"filename": "bulletstandard.png",
-	"frame": {"x":346,"y":1,"w":8,"h":8},
+	"frame": {"x":345,"y":1,"w":8,"h":8},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":8},
@@ -20,7 +20,7 @@
 },
 {
 	"filename": "particleblue.png",
-	"frame": {"x":356,"y":1,"w":8,"h":8},
+	"frame": {"x":355,"y":1,"w":8,"h":8},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":8},
@@ -29,7 +29,7 @@
 },
 {
 	"filename": "particlegreen.png",
-	"frame": {"x":366,"y":1,"w":8,"h":8},
+	"frame": {"x":365,"y":1,"w":8,"h":8},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":8},
@@ -38,7 +38,7 @@
 },
 {
 	"filename": "particlepurple.png",
-	"frame": {"x":376,"y":1,"w":8,"h":8},
+	"frame": {"x":375,"y":1,"w":8,"h":8},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":8},
@@ -47,7 +47,7 @@
 },
 {
 	"filename": "particlered.png",
-	"frame": {"x":386,"y":1,"w":8,"h":8},
+	"frame": {"x":385,"y":1,"w":8,"h":8},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":8},
@@ -56,7 +56,7 @@
 },
 {
 	"filename": "particlewhite.png",
-	"frame": {"x":396,"y":1,"w":8,"h":8},
+	"frame": {"x":395,"y":1,"w":8,"h":8},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":8},
@@ -74,7 +74,7 @@
 },
 {
 	"filename": "squarewhite.png",
-	"frame": {"x":328,"y":1,"w":16,"h":16},
+	"frame": {"x":327,"y":1,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -83,7 +83,7 @@
 },
 {
 	"filename": "turret1.png",
-	"frame": {"x":294,"y":1,"w":32,"h":32},
+	"frame": {"x":259,"y":1,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -92,7 +92,7 @@
 },
 {
 	"filename": "Turret1.png",
-	"frame": {"x":294,"y":1,"w":32,"h":32},
+	"frame": {"x":259,"y":1,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -101,11 +101,11 @@
 },
 {
 	"filename": "turret2.png",
-	"frame": {"x":259,"y":1,"w":33,"h":32},
+	"frame": {"x":293,"y":1,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":33,"h":32},
-	"sourceSize": {"w":33,"h":32},
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32},
 	"pivot": {"x":0.5,"y":0.5}
 }],
 "meta": {
@@ -115,6 +115,6 @@
 	"format": "RGBA8888",
 	"size": {"w":512,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:de44c78982a9a512a96bee4bc18a7d76:a0ed9809e03a6ec0b2b1a61ec67cb8bd:1eabdf11f75e3a4fe3147baf7b5be24b$"
+	"smartupdate": "$TexturePacker:SmartUpdate:80b02ec6ad16d78d85d4768901e5e604:04d157af4f49d25645ffa5c042d174f3:1eabdf11f75e3a4fe3147baf7b5be24b$"
 }
 }
