@@ -1,9 +1,6 @@
-//
-// Created by Morten Nobel-Jørgensen on 10/10/2017.
-//
-
 #include "FollowCamera.hpp"
 #include "SpaceShoot.hpp"
+#include <glm/gtc/random.hpp>
 #include <iostream>
 
 using namespace glm;
@@ -24,11 +21,22 @@ void FollowCamera::update(float deltaTime)
 {
     if(followObject != nullptr)
     {
-        
+        glm::vec2 shakeVector = {0, 0};
+        if(shakeAmount > 0)
+        {
+            shakeVector = glm::circularRand(shakeAmount);
+
+            shakeAmount /= 3;
+        }
+        else
+        {
+            shakeAmount = 0;
+        }
+
         camera.setOrthographicProjection(SpaceShoot::windowSize.y / currentZoom, -1, 1);
         auto position = followObject->getPosition();
 
-        position = followObject->getPosition() + offset;
+        position = followObject->getPosition() + offset + shakeVector;
 
         vec3 eye(position, 0);
         vec3 at(position, -1);
@@ -36,8 +44,6 @@ void FollowCamera::update(float deltaTime)
         camera.lookAt(eye, at, up);
     }
 }
-
-
 
 bool FollowCamera::onKey(SDL_Event& keyEvent)
 {
@@ -56,7 +62,7 @@ bool FollowCamera::onKey(SDL_Event& keyEvent)
     return false;
 }
 
-void FollowCamera::setFollowObject(std::shared_ptr<GameObject> followObject, glm::vec2 offset)
+void FollowCamera::init(std::shared_ptr<GameObject> followObject, glm::vec2 offset)
 {
     this->followObject = followObject;
     this->offset = offset;
@@ -84,7 +90,12 @@ void FollowCamera::changeZoom()
     setZoom(zoomLevels[currentZoomLevel]);
 }
 
+void FollowCamera::shake(float amount)
+{
+    shakeAmount += amount;
+}
+
 float FollowCamera::getZoom()
 {
-	return currentZoom/2;
+    return currentZoom;
 }

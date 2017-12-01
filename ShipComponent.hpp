@@ -8,6 +8,7 @@ class ShipComponent : public Component, public b2RayCastCallback
 public:
 	explicit ShipComponent(GameObject *gameObject);
 
+    void init(float speed);
 
 	void update(float deltaTime) override;
 
@@ -29,13 +30,13 @@ private:
 	bool right = false;
 	bool up = false;
 	bool down = false;
-	bool thrust = false;
 
 
 	bool rotateCCW = false;
 	bool rotateCW =false;
 
-	float accelerationSpeed = 0.001f;
-	float drag = 0.950f;
+	float thrustSpeed = 1;
+    float rotationSpeed = 90;
+	float drag = 0.95f;
 };
 

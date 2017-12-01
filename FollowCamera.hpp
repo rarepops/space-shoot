@@ -12,18 +12,19 @@ public:
 
     void update(float deltaTime) override;
 
-    void setFollowObject(std::shared_ptr<GameObject> followObject, glm::vec2 offset = glm::vec2());
-    
+    void init(std::shared_ptr<GameObject> followObject, glm::vec2 offset = {0, 0});
+
     // Sets the zoom level
     void setZoomLevel(int zoomLevel);
 
     // Sets a custom zoom level. Lower = more zoomed out.
     void setZoom(float zoom);
+    float getZoom();
 
     // Goes through the zoom levels.
     void changeZoom();
 
-	float getZoom();
+    void shake(float amount=50);
 
     bool FollowCamera::onKey(SDL_Event& keyEvent);
     sre::Camera& getCamera();
@@ -34,6 +35,7 @@ private:
 
     std::vector<float> zoomLevels = {0.5f, 1, 2};
     int currentZoomLevel = 0;
-    float currentZoom;
+    float currentZoom = 0;
+    float shakeAmount = 0;
 };
 

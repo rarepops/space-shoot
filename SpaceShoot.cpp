@@ -79,7 +79,7 @@ void SpaceShoot::init()
 		{44,-64}
 	);
 	turretController->initTurrets();
-	turretController->setBulletSprite(atlas->get("particlepurple.png"));
+	turretController->setBulletSprite(atlas->get("bulletstandard.png"));
 
 	auto junk = createGameObject();
 	auto junkSprite = junk->addComponent<SpriteComponent>();
@@ -92,7 +92,7 @@ void SpaceShoot::init()
 	auto cam = createGameObject();
 	cam->name = "Camera";
 	this->camera = cam->addComponent<FollowCamera>();
-	camera->setFollowObject(player);
+	camera->init(player);
 }
 
 void SpaceShoot::initPhysics()

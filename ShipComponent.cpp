@@ -23,10 +23,14 @@ ShipComponent::ShipComponent(GameObject* gameObject) : Component(gameObject)
     spriteComponent = gameObject->getComponent<SpriteComponent>();
 }
 
+void ShipComponent::init(float speed)
+{
+    thrustSpeed = speed;
+}
+
 void ShipComponent::update(float deltaTime)
 {
     glm::vec2 movement{0, 0};
-    auto rotation = gameObject->getRotation();
 
     if(up)
     {
@@ -45,16 +49,15 @@ void ShipComponent::update(float deltaTime)
         movement.x++;
     }
 
-    if(!rotateCCW || !rotateCW)
-        rotation = 0;
+    float rotation = 0;
 
     if(rotateCCW)
     {
-        rotation += 1000000;
+        rotation += rotationSpeed;
     }
-    if(rotateCW)
+    else if(rotateCW)
     {
-        rotation -= 1000000;
+        rotation -= rotationSpeed;
     }
 
     auto linearVelocity = shipPhysics->getLinearVelocity();
@@ -65,13 +68,13 @@ void ShipComponent::update(float deltaTime)
         direction = glm::rotateZ(glm::vec3(movement.x / 10, movement.y / 10, 0),
             glm::radians(shipPhysics->getBody()->GetAngle()));
     }
-    shipPhysics->addImpulse((movement + direction) * accelerationSpeed);
+    shipPhysics->addForce(direction * thrustSpeed);
 
     linearVelocity = shipPhysics->getLinearVelocity();
 
-    shipPhysics->setAngularVelocity(glm::radians(rotation));
-    shipPhysics->setLinearVelocity((linearVelocity + direction) * (1.0f - drag * deltaTime));
-    //
+    shipPhysics->setAngularVelocity(rotation);
+    shipPhysics->setLinearVelocity((linearVelocity + direction) * drag);
+
     //	cout << getGameObject()->getPosition().x << " " << getGameObject()->getPosition().y << endl;
     //	cout << movement.x << " " << movement.y << endl;
     //	cout << characterPhysics->getBody()->GetAngle() << endl;
