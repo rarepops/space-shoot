@@ -83,3 +83,8 @@ void FollowCamera::changeZoom()
 
     setZoom(zoomLevels[currentZoomLevel]);
 }
+
+float FollowCamera::getZoom()
+{
+	return currentZoom/2;
+}

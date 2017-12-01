@@ -26,6 +26,8 @@ public:
 
 
 	std::shared_ptr<sre::SpriteAtlas> atlas;
+	std::shared_ptr<FollowCamera> camera;
+
 
 	static int PLAYER_GROUP;
 
@@ -49,7 +51,6 @@ private:
     void handleContact(b2Contact *contact, bool begin);
     std::map<b2Fixture*, PhysicsComponent*> physicsComponentLookup;
 
-	std::shared_ptr<FollowCamera> camera;
 
     b2World *world = nullptr;
     Box2DDebugDraw debugDraw;

@@ -23,6 +23,8 @@ public:
     // Goes through the zoom levels.
     void changeZoom();
 
+	float getZoom();
+
     bool FollowCamera::onKey(SDL_Event& keyEvent);
     sre::Camera& getCamera();
 private:

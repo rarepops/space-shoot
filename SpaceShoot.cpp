@@ -71,12 +71,12 @@ void SpaceShoot::init()
 	auto turretController = player->addComponent<TurretComponent>();
 	turretController->setSprite(atlas->get("turret1.png"));
 	turretController->offsetTurrets(
-		{-15,31},
-		{-15,15},
-		{-17,-25},
-		{15,31},
-		{15,15},
-		{17,-25}
+		{-39,80},
+		{-39,38},
+		{-44,-64},
+		{ 39,80 },
+		{39,38},
+		{44,-64}
 	);
 	turretController->initTurrets();
 	turretController->setBulletSprite(atlas->get("particlepurple.png"));
@@ -120,7 +120,7 @@ void SpaceShoot::update(float time)
 	{
 		updatePhysics();
 	}
-	
+
 	for (int i = 0; i < sceneObjects.size(); i++)
 	{
 		sceneObjects[i]->update(time);

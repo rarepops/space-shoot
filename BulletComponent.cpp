@@ -27,7 +27,7 @@ BulletComponent::BulletComponent(GameObject* gameObject) : Component(gameObject)
 void BulletComponent::update(float deltaTime)
 {
 	const auto acceleration = 0.1f;
-	const glm::vec2 direction = glm::rotateZ(glm::vec3(0, acceleration, 0), glm::radians(rotation - 180));
+	const glm::vec2 direction = glm::rotateZ(glm::vec3(0, acceleration, 0), glm::radians(rotation));
 
 	auto from = physicsComponent->getPosition();
 	b2Vec2 to{from.x + direction.x, from.y - direction.y};
@@ -44,7 +44,7 @@ void BulletComponent::setRotation(float rotation)
 	this->rotation = rotation;
 
 	const auto acceleration = 0.1f;
-	const glm::vec2 direction = glm::rotateZ(glm::vec3(0, acceleration, 0), glm::radians(rotation - 180));
+	const glm::vec2 direction = glm::rotateZ(glm::vec3(0, acceleration, 0), glm::radians(rotation));
 	auto position = physicsComponent->getPosition();
 
 	b2Vec2 directionB{direction.x, direction.y};
@@ -58,6 +58,8 @@ void BulletComponent::onCollisionStart(PhysicsComponent* comp)
 {
 	gameObject->removeComponent(gameObject->getComponent<SpriteComponent>());
 	gameObject->destroyed = true;
+
+	// Add code here
 }
 
 void BulletComponent::onCollisionEnd(PhysicsComponent* comp)
