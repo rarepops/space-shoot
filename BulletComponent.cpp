@@ -37,6 +37,7 @@ void BulletComponent::init(float bulletDamage, float rotation, float speed, floa
 
 void BulletComponent::update(float deltaTime)
 {
+	auto obj = gameObject->getComponent<SpriteComponent>();
     speed = 5;
     const glm::vec2 direction = glm::rotateZ(glm::vec3(0, speed, 0), glm::radians(rotation));
 

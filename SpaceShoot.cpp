@@ -69,16 +69,16 @@ void SpaceShoot::init()
 	playerSprite->setSprite(sprite);
 	auto turretController = player->addComponent<TurretController>();
 	turretController->setSprite(atlas->get("turret1.png"));
-	turretController->offsetTurrets(
-		{-39,80},
-		{-39,38},
-		{-44,-64},
-		{ 39,80 },
-		{39,38},
-		{44,-64}
-	);
-	turretController->initTurrets();
 	turretController->setBulletSprite(atlas->get("particlepurple.png"));
+	turretController->initTurrets({
+			{-39,80},
+			{-39,38},
+			{-44,-64},
+			{39,80},
+			{39,38},
+			{44,-64}
+		}
+	);
 
 	auto junk = createGameObject();
 	auto junkSprite = junk->addComponent<SpriteComponent>();
@@ -109,12 +109,12 @@ void SpaceShoot::initPhysics()
 
 void SpaceShoot::update(float time)
 {
-    world->SetContactListener(nullptr);
+	world->SetContactListener(nullptr);
 	sceneObjects.erase(std::remove_if(sceneObjects.begin(), sceneObjects.end(), [](std::shared_ptr<GameObject> object)
                                   {
 	                                  return object.get()->destroyed;
                                   }), sceneObjects.end());
-    world->SetContactListener(this);
+	world->SetContactListener(this);
 
 	updatePhysics();
 	if (time > 0.03) // if framerate approx 30 fps then run two physics steps
@@ -250,44 +250,44 @@ void SpaceShoot::BeginContact(b2Contact* contact)
 
 void SpaceShoot::EndContact(b2Contact* contact)
 {
-		b2ContactListener::EndContact(contact);
-		handleContact(contact, false);
+	b2ContactListener::EndContact(contact);
+	handleContact(contact, false);
 }
 
 
 void SpaceShoot::handleContact(b2Contact* contact, bool begin)
 {
-    auto fixA = contact->GetFixtureA();
-    auto fixB = contact->GetFixtureB();
-    auto physA = physicsComponentLookup.find(fixA);
-    auto physB = physicsComponentLookup.find(fixB);
-    if(physA != physicsComponentLookup.end() && physB != physicsComponentLookup.end())
-    {
-        auto & aComponents = physA->second->getGameObject()->getComponents();
-        auto & bComponents = physB->second->getGameObject()->getComponents();
-        for(auto & c : aComponents)
-        {
-            if(begin)
-            {
-                c->onCollisionStart(physB->second);
-            }
-            else
-            {
-                c->onCollisionEnd(physB->second);
-            }
-        }
-        for(auto & c : bComponents)
-        {
-            if(begin)
-            {
-                c->onCollisionStart(physA->second);
-            }
-            else
-            {
-                c->onCollisionEnd(physA->second);
-            }
-        }
-    }
+	auto fixA = contact->GetFixtureA();
+	auto fixB = contact->GetFixtureB();
+	auto physA = physicsComponentLookup.find(fixA);
+	auto physB = physicsComponentLookup.find(fixB);
+	if (physA != physicsComponentLookup.end() && physB != physicsComponentLookup.end())
+	{
+		auto& aComponents = physA->second->getGameObject()->getComponents();
+		auto& bComponents = physB->second->getGameObject()->getComponents();
+		for (auto& c : aComponents)
+		{
+			if (begin)
+			{
+				c->onCollisionStart(physB->second);
+			}
+			else
+			{
+				c->onCollisionEnd(physB->second);
+			}
+		}
+		for (auto& c : bComponents)
+		{
+			if (begin)
+			{
+				c->onCollisionStart(physA->second);
+			}
+			else
+			{
+				c->onCollisionEnd(physA->second);
+			}
+		}
+	}
 }
 
 std::shared_ptr<GameObject> SpaceShoot::createGameObject()

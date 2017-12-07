@@ -1,42 +1,52 @@
 #pragma once
 #include "Component.hpp"
 #include "SpriteComponent.hpp"
+#include "SpaceShoot.hpp"
+
+enum AimMode { mouse, point };
 
 
-class TurretController : public Component
+class TurretComponent : public Component
 {
 public:
-	explicit TurretController(GameObject* gameObject);
+	explicit TurretComponent(GameObject* gameObject);
 
 	void update(float deltaTime) override;
 
 	bool onKey(SDL_Event& event) override;
 
 	bool onMouse(SDL_Event& event) override;
-	void setSprite(sre::Sprite sprite);
+
 	void setBulletSprite(sre::Sprite sprite);
-	void initTurrets(std::vector<glm::vec2> turretOffsets);
-	void fireProjectile(std::shared_ptr<GameObject> turret);
+	void setController(GameObject* controller);
+
+	void offsetTurret(glm::vec2 turret);
+	void fireProjectile();
+
+	void setAimMode(AimMode mode);
 	void setAimAt(glm::vec2 point);
 
 	float mouseX = 0;
 	float mouseY = 0;
 	int numberOfTurrets = 6;
 
-	std::vector<std::shared_ptr<GameObject>> turrets;
-	std::vector<glm::vec2> turretOffsets;
+	glm::vec2 turretOffset;
 private:
 	std::shared_ptr<SpriteComponent> spriteComponent;
 	std::shared_ptr<PhysicsComponent> physicsComponent;
 	sre::Sprite sprite;
 	sre::Sprite bulletSprite;
 
-	SpaceShoot * game;
+	GameObject* controller;
+
+	SpaceShoot* game;
+
+	AimMode aimMode = mouse;
 
 	bool fire = false;
 
 	float deltaX = 0;
 	float deltaY = 0;
-	glm::vec2 aimAt;
 
+	glm::vec2 aimAt;
 };
