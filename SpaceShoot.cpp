@@ -78,7 +78,7 @@ void SpaceShoot::init()
 		{44,-64}
 	);
 	turretController->initTurrets();
-	turretController->setBulletSprite(atlas->get("bulletstandard.png"));
+	turretController->setBulletSprite(atlas->get("particlepurple.png"));
 
 	auto junk = createGameObject();
 	auto junkSprite = junk->addComponent<SpriteComponent>();
