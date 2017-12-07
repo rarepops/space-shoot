@@ -8,7 +8,7 @@
 #include "SpaceShoot.hpp"
 #include "SpaceShipComponent.hpp"
 #include "ShipComponent.hpp"
-#include "TurretComponent.hpp"
+#include "TurretController.hpp"
 #include <iostream>
 
 using namespace glm;
@@ -68,7 +68,7 @@ void SpaceShoot::init()
 	auto spaceShip = player->addComponent<ShipComponent>();
 	auto sprite = atlas->get("playerspaceship.png");
 	playerSprite->setSprite(sprite);
-	auto turretController = player->addComponent<TurretComponent>();
+	auto turretController = player->addComponent<TurretController>();
 	turretController->setSprite(atlas->get("turret1.png"));
 	turretController->offsetTurrets(
 		{-39,80},
@@ -256,34 +256,37 @@ void SpaceShoot::EndContact(b2Contact* contact)
 
 void SpaceShoot::handleContact(b2Contact* contact, bool begin)
 {
-	auto fixA = contact->GetFixtureA();
-	auto fixB = contact->GetFixtureB();
-	PhysicsComponent* physA = physicsComponentLookup[fixA];
-	PhysicsComponent* physB = physicsComponentLookup[fixB];
-	auto& aComponents = physA->getGameObject()->getComponents();
-	auto& bComponents = physB->getGameObject()->getComponents();
-	for (auto& c : aComponents)
-	{
-		if (begin)
-		{
-			c->onCollisionStart(physB);
-		}
-		else
-		{
-			c->onCollisionEnd(physB);
-		}
-	}
-	for (auto& c : bComponents)
-	{
-		if (begin)
-		{
-			c->onCollisionStart(physA);
-		}
-		else
-		{
-			c->onCollisionEnd(physA);
-		}
-	}
+    auto fixA = contact->GetFixtureA();
+    auto fixB = contact->GetFixtureB();
+    auto physA = physicsComponentLookup.find(fixA);
+    auto physB = physicsComponentLookup.find(fixB);
+    if(physA != physicsComponentLookup.end() && physB != physicsComponentLookup.end())
+    {
+        auto & aComponents = physA->second->getGameObject()->getComponents();
+        auto & bComponents = physB->second->getGameObject()->getComponents();
+        for(auto & c : aComponents)
+        {
+            if(begin)
+            {
+                c->onCollisionStart(physB->second);
+            }
+            else
+            {
+                c->onCollisionEnd(physB->second);
+            }
+        }
+        for(auto & c : bComponents)
+        {
+            if(begin)
+            {
+                c->onCollisionStart(physA->second);
+            }
+            else
+            {
+                c->onCollisionEnd(physA->second);
+            }
+        }
+    }
 }
 
 std::shared_ptr<GameObject> SpaceShoot::createGameObject()

@@ -9,20 +9,20 @@
 #include <iostream>
 #include <glm/gtx/log_base.hpp>
 #include <glm/gtx/rotate_vector.inl>
-#include "TurretComponent.hpp"
+#include "TurretController.hpp"
 #include <glm/gtx/compatibility.hpp>
 #include <glm/gtx/fast_trigonometry.inl>
 #include "BulletComponent.hpp"
 using namespace std;
 
-TurretComponent::TurretComponent(GameObject* gameObject) : Component(gameObject)
+TurretController::TurretController(GameObject* gameObject) : Component(gameObject)
 {
     game = SpaceShoot::instance;
     physicsComponent = gameObject->getComponent<PhysicsComponent>();
 }
 
 
-void TurretComponent::update(float deltaTime)
+void TurretController::update(float deltaTime)
 {
     for(int i = 0; i < numberOfTurrets; ++i)
     {
@@ -44,13 +44,13 @@ void TurretComponent::update(float deltaTime)
 }
 
 
-bool TurretComponent::onKey(SDL_Event& keyEvent)
+bool TurretController::onKey(SDL_Event& keyEvent)
 {
     return false;
 }
 
 
-bool TurretComponent::onMouse(SDL_Event& event)
+bool TurretController::onMouse(SDL_Event& event)
 {
     if(event.button.button == SDL_BUTTON_LEFT && event.button.type == SDL_MOUSEBUTTONDOWN)
     {
@@ -69,17 +69,17 @@ bool TurretComponent::onMouse(SDL_Event& event)
     return false;
 }
 
-void TurretComponent::setSprite(sre::Sprite sprite)
+void TurretController::setSprite(sre::Sprite sprite)
 {
     this->sprite = sprite;
 }
 
-void TurretComponent::setBulletSprite(sre::Sprite sprite)
+void TurretController::setBulletSprite(sre::Sprite sprite)
 {
     this->bulletSprite = sprite;
 }
 
-void TurretComponent::offsetTurrets(glm::vec2 turret1, glm::vec2 turret2, glm::vec2 turret3, glm::vec2 turret4,
+void TurretController::offsetTurrets(glm::vec2 turret1, glm::vec2 turret2, glm::vec2 turret3, glm::vec2 turret4,
     glm::vec2 turret5,
     glm::vec2 turret6)
 {
@@ -91,7 +91,7 @@ void TurretComponent::offsetTurrets(glm::vec2 turret1, glm::vec2 turret2, glm::v
     turretOffsets.push_back(turret6);
 }
 
-void TurretComponent::initTurrets()
+void TurretController::initTurrets()
 {
     for(int i = 0; i < numberOfTurrets; ++i)
     {
@@ -103,7 +103,7 @@ void TurretComponent::initTurrets()
     }
 }
 
-void TurretComponent::fireProjectile(std::shared_ptr<GameObject> turret)
+void TurretController::fireProjectile(std::shared_ptr<GameObject> turret)
 {
     auto projectile = game->createGameObject();
     projectile->name = "Projectile";

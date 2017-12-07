@@ -1,7 +1,3 @@
-//
-// Created by Morten Nobel-Jørgensen on 19/10/2017.
-//
-
 #include <Box2D/Box2D.h>
 #include <glm/gtx/norm.hpp>
 #include "PhysicsComponent.hpp"
@@ -9,7 +5,7 @@
 #include <iostream>
 #include <glm/gtx/log_base.hpp>
 #include <glm/gtx/rotate_vector.inl>
-#include "TurretComponent.hpp"
+#include "TurretController.hpp"
 #include <glm/gtx/compatibility.hpp>
 #include <glm/gtx/fast_trigonometry.inl>
 #include "BulletComponent.hpp"

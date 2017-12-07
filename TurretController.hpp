@@ -3,10 +3,10 @@
 #include "SpriteComponent.hpp"
 
 
-class TurretComponent : public Component
+class TurretController : public Component
 {
 public:
-	explicit TurretComponent(GameObject* gameObject);
+	explicit TurretController(GameObject* gameObject);
 
 
 	void update(float deltaTime) override;
