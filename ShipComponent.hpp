@@ -1,6 +1,8 @@
 #pragma once
 #include "Component.hpp"
 #include "SpriteComponent.hpp"
+#include "Capacitor.hpp"
+#include "Regenerator.hpp"
 
 
 class ShipComponent : public Component, public b2RayCastCallback
@@ -25,6 +27,9 @@ public:
 private:
 	std::shared_ptr<SpriteComponent> spriteComponent;
 	std::shared_ptr<PhysicsComponent> shipPhysics;
+    std::shared_ptr<Capacitor> hull;
+    std::shared_ptr<Regenerator> shieldGenerator;
+    std::shared_ptr<Regenerator> energyGenerator;
 
 	bool left = false;
 	bool right = false;

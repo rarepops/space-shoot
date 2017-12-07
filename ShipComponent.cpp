@@ -11,6 +11,11 @@ using namespace std;
 ShipComponent::ShipComponent(GameObject* gameObject) : Component(gameObject)
 
 {
+    hull = gameObject->addComponent<Capacitor>();
+    shieldGenerator = gameObject->addComponent<Regenerator>();
+    energyGenerator = gameObject->addComponent<Regenerator>();
+
+
     shipPhysics = gameObject->addComponent<PhysicsComponent>();
 
     auto physicsScale = SpaceShoot::instance->physicsScale;
@@ -27,6 +32,8 @@ void ShipComponent::init(float speed)
 void ShipComponent::update(float deltaTime)
 {
     glm::vec2 movement{0, 0};
+
+    printf("%f %f %f \r\n", hull->getCapacity(), shieldGenerator->getCapacity(), energyGenerator->getCapacity());
 
     if(up)
     {
