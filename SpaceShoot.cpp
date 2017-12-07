@@ -6,7 +6,6 @@
 #include "SpriteComponent.hpp"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 #include "SpaceShoot.hpp"
-#include "SpaceShipComponent.hpp"
 #include "ShipComponent.hpp"
 #include "TurretController.hpp"
 #include <iostream>
@@ -110,10 +109,12 @@ void SpaceShoot::initPhysics()
 
 void SpaceShoot::update(float time)
 {
+    world->SetContactListener(nullptr);
 	sceneObjects.erase(std::remove_if(sceneObjects.begin(), sceneObjects.end(), [](std::shared_ptr<GameObject> object)
                                   {
 	                                  return object.get()->destroyed;
                                   }), sceneObjects.end());
+    world->SetContactListener(this);
 
 	updatePhysics();
 	if (time > 0.03) // if framerate approx 30 fps then run two physics steps
@@ -249,8 +250,8 @@ void SpaceShoot::BeginContact(b2Contact* contact)
 
 void SpaceShoot::EndContact(b2Contact* contact)
 {
-	//	b2ContactListener::EndContact(contact);
-	//	handleContact(contact, false);
+		b2ContactListener::EndContact(contact);
+		handleContact(contact, false);
 }
 
 

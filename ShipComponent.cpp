@@ -68,7 +68,7 @@ void ShipComponent::update(float deltaTime)
 
     linearVelocity = shipPhysics->getLinearVelocity();
 
-    shipPhysics->setAngularVelocity(rotation*100000);
+    shipPhysics->setAngularVelocity(rotation);
     shipPhysics->setLinearVelocity((linearVelocity + direction) * drag);
 
     //	cout << getGameObject()->getPosition().x << " " << getGameObject()->getPosition().y << endl;
