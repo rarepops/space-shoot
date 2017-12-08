@@ -2,7 +2,7 @@
 
 {
 	"filename": "crosshair.png",
-	"frame": {"x":192,"y":0,"w":32,"h":32},
+	"frame": {"x":159,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -11,7 +11,7 @@
 },
 {
 	"filename": "enemyspaceship.png",
-	"frame": {"x":256,"y":64,"w":256,"h":256},
+	"frame": {"x":0,"y":163,"w":256,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":256},
@@ -20,7 +20,7 @@
 },
 {
 	"filename": "explosion.png",
-	"frame": {"x":224,"y":0,"w":32,"h":32},
+	"frame": {"x":33,"y":33,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -29,7 +29,7 @@
 },
 {
 	"filename": "particleblue.png",
-	"frame": {"x":288,"y":0,"w":32,"h":32},
+	"frame": {"x":0,"y":33,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -38,7 +38,7 @@
 },
 {
 	"filename": "particlegreen.png",
-	"frame": {"x":256,"y":0,"w":32,"h":32},
+	"frame": {"x":99,"y":33,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -47,7 +47,7 @@
 },
 {
 	"filename": "particleorange.png",
-	"frame": {"x":32,"y":0,"w":32,"h":32},
+	"frame": {"x":66,"y":33,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -56,7 +56,7 @@
 },
 {
 	"filename": "particlepurple.png",
-	"frame": {"x":0,"y":0,"w":32,"h":32},
+	"frame": {"x":192,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -65,7 +65,7 @@
 },
 {
 	"filename": "particlered.png",
-	"frame": {"x":160,"y":0,"w":32,"h":32},
+	"frame": {"x":93,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -74,7 +74,7 @@
 },
 {
 	"filename": "particlewhite.png",
-	"frame": {"x":64,"y":0,"w":32,"h":32},
+	"frame": {"x":126,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -83,7 +83,7 @@
 },
 {
 	"filename": "particleyellow.png",
-	"frame": {"x":128,"y":0,"w":32,"h":32},
+	"frame": {"x":27,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -92,7 +92,7 @@
 },
 {
 	"filename": "playerspaceship.png",
-	"frame": {"x":0,"y":64,"w":256,"h":256},
+	"frame": {"x":0,"y":420,"w":256,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":256},
@@ -101,7 +101,7 @@
 },
 {
 	"filename": "squarewhite.png",
-	"frame": {"x":96,"y":0,"w":32,"h":32},
+	"frame": {"x":60,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -109,8 +109,35 @@
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
+	"filename": "star1.png",
+	"frame": {"x":9,"y":0,"w":8,"h":8},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":8},
+	"sourceSize": {"w":8,"h":8},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "star2.png",
+	"frame": {"x":0,"y":0,"w":8,"h":8},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":8},
+	"sourceSize": {"w":8,"h":8},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "star3.png",
+	"frame": {"x":18,"y":0,"w":8,"h":8},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":8},
+	"sourceSize": {"w":8,"h":8},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
 	"filename": "turret1.png",
-	"frame": {"x":320,"y":0,"w":64,"h":64},
+	"frame": {"x":132,"y":33,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -119,7 +146,7 @@
 },
 {
 	"filename": "turret2.png",
-	"frame": {"x":384,"y":0,"w":64,"h":64},
+	"frame": {"x":0,"y":98,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -131,8 +158,8 @@
 	"version": "1.0",
 	"image": "spaceshooter.png",
 	"format": "RGBA8888",
-	"size": {"w":512,"h":512},
+	"size": {"w":256,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:eeadc29250ed75d58028bd4ec8d2e99a:4b5cbfac1e2faffb96fb080103faefba:2b0614e2bfe6d9f853cae928c214d566$"
+	"smartupdate": "$TexturePacker:SmartUpdate:91cd2cedd0e2af504863aacfe62c37ef:562a780505e3ae97c18e93d695cdfa58:2b0614e2bfe6d9f853cae928c214d566$"
 }
 }

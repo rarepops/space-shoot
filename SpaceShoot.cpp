@@ -19,6 +19,9 @@ SpaceShoot* SpaceShoot::instance = nullptr;
 int SpaceShoot::PLAYER_GROUP = -1;
 int SpaceShoot::enemiesKilled = 0;
 
+int starsNumber = 500;
+float gameBounds = 20000;
+
 SpaceShoot::SpaceShoot() : debugDraw(physicsScale)
 {
     instance = this;
@@ -56,6 +59,18 @@ void SpaceShoot::init()
 {
     initPhysics();
 
+    // Spawn Stars
+    Sprite starSprites[3] = {atlas->get("star1.png"), atlas->get("star2.png"), atlas->get("star3.png")};
+    for(int i = 0; i < starsNumber; ++i)
+    {
+        std::shared_ptr<GameObject> star = createGameObject();
+        auto starSprite = star->addComponent<SpriteComponent>();
+        starSprite->setSprite(starSprites[rand() % 3]);
+        star->setPosition(glm::vec2(rand() % (2 * (int)gameBounds) - ((int)gameBounds + 1), rand() % (2 * (int)gameBounds) - ((int)gameBounds + 1)));
+        star->setRotation(rand() % 720 - 360);
+    }
+
+    // Spawn Player
     player = createGameObject().get();
     player->name = "Player";
     auto playerSprite = player->addComponent<SpriteComponent>();
@@ -75,13 +90,28 @@ void SpaceShoot::init()
     }
     );
 
+
+
+    // Spawn Enemies
     auto junk = createGameObject();
     auto junkSprite = junk->addComponent<SpriteComponent>();
     junk->setPosition(windowSize * 0.5f);
-    junkSprite->setSprite(sprite);
+    junkSprite->setSprite(atlas->get("enemyspaceship.png"));
     auto comp = junk->addComponent<PhysicsComponent>();
-    comp->initBox(b2_staticBody, {0.20, 0.20}, junk->getPosition() / physicsScale, 1);
-
+    comp->initBox(b2_dynamicBody, {0.5, 1}, junk->getPosition() / physicsScale, 1);
+    auto turretControllerJunk = junk->addComponent<TurretController>();
+    turretControllerJunk->setSprite(atlas->get("turret2.png"));
+    turretControllerJunk->setBulletSprite(atlas->get("particlered.png"));
+    turretControllerJunk->initTurrets({
+        {-39, 80},
+        {-39, 38},
+        {-44, -64},
+        {39, 80},
+        {39, 38},
+        {44, -64}
+    }
+    );
+    
 
     auto cam = createGameObject();
     cam->name = "Camera";

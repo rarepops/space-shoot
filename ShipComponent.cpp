@@ -11,17 +11,16 @@ using namespace std;
 ShipComponent::ShipComponent(GameObject* gameObject) : Component(gameObject)
 
 {
+    spriteComponent = gameObject->getComponent<SpriteComponent>();
+    
     hull = gameObject->addComponent<Capacitor>();
     shieldGenerator = gameObject->addComponent<Regenerator>();
     energyGenerator = gameObject->addComponent<Regenerator>();
-
-
     shipPhysics = gameObject->addComponent<PhysicsComponent>();
 
     auto physicsScale = SpaceShoot::instance->physicsScale;
     auto radius = 0.50f;
     shipPhysics->initCircle(b2_dynamicBody, radius, {0, 0}, 1, SpaceShoot::PLAYER_GROUP);
-    spriteComponent = gameObject->getComponent<SpriteComponent>();
 }
 
 void ShipComponent::init(float speed)
@@ -126,7 +125,7 @@ bool ShipComponent::isPlayer()
     return player;
 }
 
-bool ShipComponent::setPlayer(bool state)
+void ShipComponent::setIsPlayer(bool state)
 {
     player = player;
 }

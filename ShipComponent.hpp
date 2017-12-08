@@ -19,7 +19,7 @@ public:
 	void onCollisionEnd(PhysicsComponent *comp) override;
 
     bool isPlayer();
-    bool setPlayer(bool state);
+    void setIsPlayer(bool state);
 
     std::shared_ptr<Capacitor> getHull();
     std::shared_ptr<Capacitor> getShieldGenerator();
