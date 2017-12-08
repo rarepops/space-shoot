@@ -2,6 +2,7 @@
 
 #include "Component.hpp"
 #include "SpriteComponent.hpp"
+#include "TurretComponent.hpp"
 
 
 class TurretController : public Component
@@ -15,10 +16,11 @@ public:
 
 	bool onMouse(SDL_Event& event) override;
 	void setSprite(sre::Sprite sprite);
-	void setBulletSprite(sre::Sprite sprite);
+	void setBulletSprite(sre::Sprite sprite,int bulletLayer);
 	void initTurrets(std::vector<glm::vec2> turretOffsets);
-	void fireProjectile(std::shared_ptr<GameObject> turret);
-	void setAimAt(glm::vec2 point);
+	void fireProjectile();
+	void setAimAt(std::shared_ptr<GameObject> object);
+	void setAimMode(AimMode mode);
 
 	float mouseX = 0;
 	float mouseY = 0;
@@ -32,12 +34,15 @@ private:
 	sre::Sprite sprite;
 	sre::Sprite bulletSprite;
 
+	AimMode aimMode = mouse;
+
 	SpaceShoot * game;
 
 	bool fire = false;
 
+	int bulletLayer;
+
 	float deltaX = 0;
 	float deltaY = 0;
-	glm::vec2 aimAt;
-
+	std::shared_ptr<GameObject> aimAt;
 };

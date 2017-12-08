@@ -23,12 +23,13 @@ public:
     void BeginContact(b2Contact *contact) override;
     void EndContact(b2Contact *contact) override;
 
-    GameObject* getPlayer();
+    std::shared_ptr<GameObject> getPlayer();
 
     std::shared_ptr<sre::SpriteAtlas> atlas;
     std::shared_ptr<FollowCamera> camera;
 
     static int PLAYER_GROUP;
+    static int ENEMY_GROUP;
     static int enemiesKilled;
 private:
     glm::vec4 bgColor;
@@ -49,7 +50,7 @@ private:
     void handleContact(b2Contact *contact, bool begin);
     std::map<b2Fixture*, PhysicsComponent*> physicsComponentLookup;
 
-    GameObject *player = nullptr;
+	std::shared_ptr<GameObject> player;
     b2World *world = nullptr;
     Box2DDebugDraw debugDraw;
     bool isDebugDraw = false;

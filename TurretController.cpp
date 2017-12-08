@@ -20,7 +20,7 @@ TurretController::TurretController(GameObject* gameObject) : Component(gameObjec
 
 void TurretController::update(float deltaTime)
 {
-
+	if(aimMode == mouse) return;
 	for (auto turret : turrets)
 	{
 		auto turretComponent = turret->getComponent<TurretComponent>();
@@ -45,9 +45,10 @@ void TurretController::setSprite(sre::Sprite sprite)
     this->sprite = sprite;
 }
 
-void TurretController::setBulletSprite(sre::Sprite sprite)
+void TurretController::setBulletSprite(sre::Sprite sprite, int bulletLayer)
 {
     this->bulletSprite = sprite;
+	this->bulletLayer = bulletLayer;
 }
 
 
@@ -62,19 +63,29 @@ void TurretController::initTurrets(std::vector<glm::vec2> turretOffsets)
         auto turretSprite = turret->addComponent<SpriteComponent>();
         turretSprite->setSprite(sprite);
 		auto turretComponent = turret->addComponent<TurretComponent>();
-		turretComponent->setBulletSprite(this->bulletSprite);
+		turretComponent->setBulletSprite(this->bulletSprite, bulletLayer);
 		turretComponent->offsetTurret(turretOffsets[i]);
 		turretComponent->setController(this->gameObject);
         turrets.push_back(turret);
     }
 }
 
-void TurretController::fireProjectile(std::shared_ptr<GameObject> turret)
-{
-	turret->getComponent<TurretComponent>()->fireProjectile();
+void TurretController::fireProjectile()
+{	
+	for (int i = 0; i < numberOfTurrets; ++i)
+	{
+		auto turret = game->createGameObject();
+		turret->getComponent<TurretComponent>()->fireProjectile();
+	}
 }
 
-void TurretController::setAimAt(glm::vec2 point)
+void TurretController::setAimAt(shared_ptr<GameObject> object)
 {
-	aimAt = point;
+	setAimMode(point);
+	aimAt = object;
+}
+
+void TurretController::setAimMode(AimMode mode)
+{
+	aimMode = mode;
 }

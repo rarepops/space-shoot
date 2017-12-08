@@ -15,12 +15,14 @@ BulletComponent::BulletComponent(GameObject* gameObject) : Component(gameObject)
 {
     game = SpaceShoot::instance;
     physicsComponent = gameObject->addComponent<PhysicsComponent>();
-    physicsComponent->initBox(b2_dynamicBody, {0.01, 0.01}, gameObject->getPosition() / 100.0f, 1,
-        SpaceShoot::PLAYER_GROUP);
+    
 }
 
-void BulletComponent::init(float bulletDamage, float rotation, float speed, float lifetime, glm::vec2 inheritedVelocity)
+void BulletComponent::init(float bulletDamage, float rotation, float speed, float lifetime, glm::vec2 inheritedVelocity, int bulletLayer)
 {
+	physicsComponent->initBox(b2_kinematicBody, { 0.01, 0.01 }, gameObject->getPosition() / 100.0f, 1,
+		bulletLayer);
+
     setRotation(rotation);
     this->lifetime = lifetime;
     this->speed = speed;

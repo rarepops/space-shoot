@@ -18,15 +18,15 @@ public:
 
 	bool onMouse(SDL_Event& event) override;
 
-	void setBulletSprite(sre::Sprite sprite);
+	void setBulletSprite(sre::Sprite sprite, int bulletLayer);
 	void setController(GameObject* controller);
 
 	void offsetTurret(glm::vec2 turret);
 	void fireProjectile();
 
 	void setAimMode(AimMode mode);
-	void setAimAt(glm::vec2 point);
-
+	void setAimAt(std::shared_ptr<GameObject> object);
+	
 	float mouseX = 0;
 	float mouseY = 0;
 	int numberOfTurrets = 6;
@@ -49,5 +49,7 @@ private:
 	float deltaX = 0;
 	float deltaY = 0;
 
-	glm::vec2 aimAt;
+	std::shared_ptr<GameObject> aimAt;
+
+	int bulletLayer;
 };

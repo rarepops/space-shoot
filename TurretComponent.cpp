@@ -35,8 +35,8 @@ void TurretComponent::update(float deltaTime)
 		deltaX = mouseX - offset.x;
 		break;
 	case point:
-		deltaY = aimAt.y - gameObject->getPosition().y;
-		deltaX = aimAt.x - gameObject->getPosition().x;
+		deltaY = aimAt->getPosition().y - gameObject->getPosition().y;
+		deltaX = aimAt->getPosition().x - gameObject->getPosition().x;
 		break;
 	}
 
@@ -70,9 +70,10 @@ bool TurretComponent::onMouse(SDL_Event& event)
 }
 
 
-void TurretComponent::setBulletSprite(sre::Sprite sprite)
+void TurretComponent::setBulletSprite(sre::Sprite sprite, int bulletLayer)
 {
 	this->bulletSprite = sprite;
+	this->bulletLayer = bulletLayer;
 }
 
 void TurretComponent::setController(GameObject* controller)
@@ -95,7 +96,7 @@ void TurretComponent::fireProjectile()
 	auto bulletController = projectile->addComponent<BulletComponent>();
 	bulletController->setRotation(gameObject->getRotation());
 	bulletController->init(10, gameObject->getRotation(), 0.1f, 5,
-	                       controller->getComponent<PhysicsComponent>()->getLinearVelocity());
+	                       controller->getComponent<PhysicsComponent>()->getLinearVelocity(), bulletLayer);
 }
 
 void TurretComponent::setAimMode(AimMode mode)
@@ -103,8 +104,8 @@ void TurretComponent::setAimMode(AimMode mode)
 	aimMode = mode;
 }
 
-void TurretComponent::setAimAt(glm::vec2 point)
+void TurretComponent::setAimAt(shared_ptr<GameObject> object)
 {
-	setAimMode(AimMode::point);
-	aimAt = point;
+	setAimMode(point);
+	aimAt = object;
 }

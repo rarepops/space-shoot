@@ -17,6 +17,7 @@ using namespace sre;
 const glm::vec2 SpaceShoot::windowSize(1000, 800);
 SpaceShoot* SpaceShoot::instance = nullptr;
 int SpaceShoot::PLAYER_GROUP = -1;
+int SpaceShoot::ENEMY_GROUP = -2;
 int SpaceShoot::enemiesKilled = 0;
 
 int starsNumber = 500;
@@ -71,7 +72,7 @@ void SpaceShoot::init()
     }
 
     // Spawn Player
-    player = createGameObject().get();
+    player = createGameObject();
     player->name = "Player";
     auto playerSprite = player->addComponent<SpriteComponent>();
     auto spaceShip = player->addComponent<ShipComponent>();
@@ -79,7 +80,7 @@ void SpaceShoot::init()
     playerSprite->setSprite(sprite);
     auto turretController = player->addComponent<TurretController>();
     turretController->setSprite(atlas->get("turret1.png"));
-    turretController->setBulletSprite(atlas->get("particlepurple.png"));
+    turretController->setBulletSprite(atlas->get("particlepurple.png"), PLAYER_GROUP);
     turretController->initTurrets({
         {-39, 80},
         {-39, 38},
@@ -98,10 +99,11 @@ void SpaceShoot::init()
     junk->setPosition(windowSize * 0.5f);
     junkSprite->setSprite(atlas->get("enemyspaceship.png"));
     auto comp = junk->addComponent<PhysicsComponent>();
-    comp->initBox(b2_dynamicBody, {0.5, 1}, junk->getPosition() / physicsScale, 1);
+    comp->initBox(b2_dynamicBody, {0.5, 1}, junk->getPosition() / physicsScale, 1,ENEMY_GROUP);
     auto turretControllerJunk = junk->addComponent<TurretController>();
     turretControllerJunk->setSprite(atlas->get("turret2.png"));
-    turretControllerJunk->setBulletSprite(atlas->get("particlered.png"));
+    turretControllerJunk->setBulletSprite(atlas->get("particlered.png"), ENEMY_GROUP);
+	turretControllerJunk->setAimAt(player);
     turretControllerJunk->initTurrets({
         {-39, 80},
         {-39, 38},
@@ -116,7 +118,7 @@ void SpaceShoot::init()
     auto cam = createGameObject();
     cam->name = "Camera";
     this->camera = cam->addComponent<FollowCamera>();
-    camera->init(player);
+    camera->init(player.get());
 }
 
 void SpaceShoot::initPhysics()
@@ -292,7 +294,7 @@ void SpaceShoot::EndContact(b2Contact* contact)
     handleContact(contact, false);
 }
 
-GameObject * SpaceShoot::getPlayer()
+shared_ptr<GameObject> SpaceShoot::getPlayer()
 {
     return player;
 }

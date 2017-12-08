@@ -19,7 +19,7 @@ ShipComponent::ShipComponent(GameObject* gameObject) : Component(gameObject)
     shipPhysics = gameObject->addComponent<PhysicsComponent>();
 
     auto physicsScale = SpaceShoot::instance->physicsScale;
-    auto radius = 0.50f;
+    auto radius = 1.0f;
     shipPhysics->initCircle(b2_dynamicBody, radius, {0, 0}, 1, SpaceShoot::PLAYER_GROUP);
 }
 
@@ -32,7 +32,7 @@ void ShipComponent::update(float deltaTime)
 {
     glm::vec2 movement{0, 0};
 
-    printf("%f %f %f \r\n", hull->getCapacity(), shieldGenerator->getCapacity(), energyGenerator->getCapacity());
+//    printf("%f %f %f \r\n", hull->getCapacity(), shieldGenerator->getCapacity(), energyGenerator->getCapacity());
 
     if(up)
     {
