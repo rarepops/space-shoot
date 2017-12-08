@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Component.hpp"
 #include "SpriteComponent.hpp"
 #include "Capacitor.hpp"
@@ -11,14 +12,18 @@ public:
 	explicit ShipComponent(GameObject *gameObject);
 
     void init(float speed);
-
 	void update(float deltaTime) override;
-
 	bool onKey(SDL_Event &event) override;
 
 	void onCollisionStart(PhysicsComponent *comp) override;
-
 	void onCollisionEnd(PhysicsComponent *comp) override;
+
+    bool isPlayer();
+    bool setPlayer(bool state);
+
+    std::shared_ptr<Capacitor> getHull();
+    std::shared_ptr<Capacitor> getShieldGenerator();
+    std::shared_ptr<Capacitor> getEnergyGenerator();
 
 	// raycast callback
 	virtual float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point,
@@ -36,6 +41,7 @@ private:
 	bool up = false;
 	bool down = false;
 
+    bool player = false;
 
 	bool rotateCCW = false;
 	bool rotateCW =false;

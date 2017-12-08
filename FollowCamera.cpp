@@ -62,7 +62,7 @@ bool FollowCamera::onKey(SDL_Event& keyEvent)
     return false;
 }
 
-void FollowCamera::init(std::shared_ptr<GameObject> followObject, glm::vec2 offset)
+void FollowCamera::init(GameObject* followObject, glm::vec2 offset)
 {
     this->followObject = followObject;
     this->offset = offset;

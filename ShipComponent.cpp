@@ -98,18 +98,6 @@ bool ShipComponent::onKey(SDL_Event& keyEvent)
             down = keyEvent.type == SDL_KEYDOWN;
         }
         break;
-
-        /*case SDLK_a:
-        {
-            left = keyEvent.type == SDL_KEYDOWN;
-        }
-        break;
-        case SDLK_d:
-        {
-            right = keyEvent.type == SDL_KEYDOWN;
-        }
-        break;*/
-
         case SDLK_a:
         {
             rotateCCW = keyEvent.type == SDL_KEYDOWN;
@@ -131,6 +119,31 @@ void ShipComponent::onCollisionStart(PhysicsComponent* comp)
 
 void ShipComponent::onCollisionEnd(PhysicsComponent* comp)
 {
+}
+
+bool ShipComponent::isPlayer()
+{
+    return player;
+}
+
+bool ShipComponent::setPlayer(bool state)
+{
+    player = player;
+}
+
+std::shared_ptr<Capacitor> ShipComponent::getHull()
+{
+    return hull;
+}
+
+std::shared_ptr<Capacitor> ShipComponent::getShieldGenerator()
+{
+    return shieldGenerator;
+}
+
+std::shared_ptr<Capacitor> ShipComponent::getEnergyGenerator()
+{
+    return energyGenerator;
 }
 
 float32 ShipComponent::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)

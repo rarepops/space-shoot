@@ -12,7 +12,7 @@ public:
 
     void update(float deltaTime) override;
 
-    void init(std::shared_ptr<GameObject> followObject, glm::vec2 offset = {0, 0});
+    void init(GameObject* followObject, glm::vec2 offset = {0, 0});
 
     // Sets the zoom level
     void setZoomLevel(int zoomLevel);
@@ -30,7 +30,7 @@ public:
     sre::Camera& getCamera();
 private:
     sre::Camera camera;
-    std::shared_ptr<GameObject> followObject;
+    GameObject* followObject;
     glm::vec2 offset;
 
     std::vector<float> zoomLevels = {0.5f, 1, 2};

@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Component.hpp"
 #include "SpriteComponent.hpp"
 

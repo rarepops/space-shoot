@@ -3,6 +3,13 @@
 #include <algorithm>
 #include "Component.hpp"
 
+int GameObject::instances = 0;
+
+GameObject::GameObject()
+{
+    ++instances;
+}
+
 GameObject::~GameObject()
 {
     // remove reference to this in components
@@ -10,6 +17,8 @@ GameObject::~GameObject()
     {
         c->gameObject = nullptr;
     }
+
+    --instances;
 }
 
 bool GameObject::removeComponent(std::shared_ptr<Component> component)

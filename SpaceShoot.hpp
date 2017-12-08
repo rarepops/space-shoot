@@ -15,46 +15,44 @@ class SpaceShoot : public b2ContactListener
 public:
     SpaceShoot();
     static constexpr float32 timeStep = 1.0f / 60.0f;
-
+    const float physicsScale = 100;
     static SpaceShoot* instance;
     static const glm::vec2 windowSize;
 
-	std::shared_ptr<GameObject> createGameObject();
+    std::shared_ptr<GameObject> createGameObject();
     void BeginContact(b2Contact *contact) override;
     void EndContact(b2Contact *contact) override;
-	const float physicsScale = 100;
 
+    GameObject* getPlayer();
 
-	std::shared_ptr<sre::SpriteAtlas> atlas;
-	std::shared_ptr<FollowCamera> camera;
+    std::shared_ptr<sre::SpriteAtlas> atlas;
+    std::shared_ptr<FollowCamera> camera;
 
-
-	static int PLAYER_GROUP;
-
+    static int PLAYER_GROUP;
+    static int enemiesKilled;
 private:
+    glm::vec4 bgColor;
+    sre::SDLRenderer renderer;
 
     void init();
     void initPhysics();
     void update(float time);
     void updatePhysics();
     void onKey(SDL_Event &event);
-	void onMouse(SDL_Event& event);
-	void render();
+    void onMouse(SDL_Event& event);
+    void render();
 
     std::vector<std::shared_ptr<GameObject>> sceneObjects;
-
-    glm::vec4 bgColor;
-    sre::SDLRenderer renderer;
 
     void registerPhysicsComponent(PhysicsComponent *r);
     void deregisterPhysicsComponent(PhysicsComponent *r);
     void handleContact(b2Contact *contact, bool begin);
     std::map<b2Fixture*, PhysicsComponent*> physicsComponentLookup;
 
-
+    GameObject *player = nullptr;
     b2World *world = nullptr;
     Box2DDebugDraw debugDraw;
     bool isDebugDraw = false;
     friend class PhysicsComponent;
-	friend class BulletComponent;
+    friend class BulletComponent;
 };
