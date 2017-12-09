@@ -65,16 +65,16 @@ void SpaceShoot::init()
 	initPhysics();
 
 	// Spawn Stars
-	Sprite starSprites[3] = {atlas->get("star1.png"), atlas->get("star2.png"), atlas->get("star3.png")};
-	for (int i = 0; i < starsNumber; ++i)
-	{
-		std::shared_ptr<GameObject> star = createGameObject();
-		auto starSprite = star->addComponent<SpriteComponent>();
-		starSprite->setSprite(starSprites[rand() % 3]);
-		star->setPosition(glm::vec2(rand() % (2 * (int)gameBounds) - ((int)gameBounds + 1),
-		                            rand() % (2 * (int)gameBounds) - ((int)gameBounds + 1)));
-		star->setRotation(rand() % 720 - 360);
-	}
+//	Sprite starSprites[3] = {atlas->get("star1.png"), atlas->get("star2.png"), atlas->get("star3.png")};
+//	for (int i = 0; i < starsNumber; ++i)
+//	{
+//		std::shared_ptr<GameObject> star = createGameObject();
+//		auto starSprite = star->addComponent<SpriteComponent>();
+//		starSprite->setSprite(starSprites[rand() % 3]);
+//		star->setPosition(glm::vec2(rand() % (2 * (int)gameBounds) - ((int)gameBounds + 1),
+//		                            rand() % (2 * (int)gameBounds) - ((int)gameBounds + 1)));
+//		star->setRotation(rand() % 720 - 360);
+//	}
 
 	// Spawn Player
 	player = createGameObject();
@@ -108,7 +108,7 @@ void SpaceShoot::init()
 	junkSprite->setSprite(atlas->get("enemyspaceship.png"));
 	junkShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.5, 1}, junk->getPosition() / physicsScale, 1, ENEMY_GROUP);
 	auto turretControllerJunk = junk->addComponent<TurretController>();
-	turretController->setTarget(player);
+	turretControllerJunk->setTarget(player);
 	turretControllerJunk->init({
 		{-39, 80},
 		{-39, 38},
@@ -116,6 +116,7 @@ void SpaceShoot::init()
 		{39, 80}
 	}, atlas->get("turret2.png"));
     junk->destroyed = true;
+	turretControllerJunk->destroyTurrets();
 	
 
 
@@ -145,6 +146,7 @@ void SpaceShoot::update(float time)
                                   {
 	                                  return object.get()->destroyed;
                                   }), sceneObjects.end());
+
 	world->SetContactListener(this);
 
 	updatePhysics();

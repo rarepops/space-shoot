@@ -10,14 +10,14 @@ public:
     explicit TurretComponent(GameObject* gameObject);
     ~TurretComponent();
 
-    void init(glm::vec2 offset, float fireRate, float energyRequired, sre::Sprite bulletSprite, int bulletLayer, std::shared_ptr<TurretController> tc);
+    void init(glm::vec2 offset, float fireRate, float energyRequired, sre::Sprite bulletSprite, int bulletLayer, TurretController * tc);
     void update(float deltaTime) override;
 
     void updateTurret(glm::vec2 aimPosition);
     void fireProjectile();
 
     glm::vec2 turretOffset;
-    std::shared_ptr<TurretController> turretController;
+    TurretController * turretController;
 private:
 
     sre::Sprite bulletSprite;

@@ -13,10 +13,11 @@ TurretComponent::TurretComponent(GameObject * gameObject) : Component(gameObject
 
 TurretComponent::~TurretComponent()
 {
+	turretController = nullptr;
 
 }
 
-void TurretComponent::init(glm::vec2 offset, float fireRate, float energyRequired, sre::Sprite bulletSprite, int bulletLayer, std::shared_ptr<TurretController> tc)
+void TurretComponent::init(glm::vec2 offset, float fireRate, float energyRequired, sre::Sprite bulletSprite, int bulletLayer, TurretController * tc)
 {
     this->turretOffset = offset;
     this->fireRate = fireRate;

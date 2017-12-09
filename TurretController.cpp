@@ -18,13 +18,21 @@ TurretController::TurretController(GameObject * gameObject) :Component(gameObjec
 
 TurretController::~TurretController()
 {
-    for(int i = turrets.size() - 1; i >= 0; --i)
-    {
-        turrets[i]->destroyed = true;
-        turrets[i]->getComponent<TurretComponent>()->turretController = nullptr;
-        turrets.erase(turrets.begin() + i);
-    }
+
+	target.reset();
+	energyGenerator.reset();
 }
+
+
+void TurretController::destroyTurrets()
+{
+	for (int i = turrets.size() - 1; i >= 0; --i)
+	{
+		turrets[i]->destroyed = true;
+		turrets[i].reset();
+	}
+}
+
 
 void TurretController::init(std::vector<glm::vec2> turretOffsets, sre::Sprite turretSprite)
 {
@@ -40,7 +48,7 @@ void TurretController::init(std::vector<glm::vec2> turretOffsets, sre::Sprite tu
         auto turretComponent = turret->addComponent<TurretComponent>();
 
         int bulletLayer = gameObject->getComponent<ShipComponent>()->isPlayer()?SpaceShoot::PLAYER_GROUP:SpaceShoot::ENEMY_GROUP;
-        turretComponent->init(turretOffsets[i], 120, 50, SpaceShoot::instance->atlas->get("particlepurple.png"), bulletLayer, std::shared_ptr<TurretController>(this));
+        turretComponent->init(turretOffsets[i], 120, 50, SpaceShoot::instance->atlas->get("particlepurple.png"), bulletLayer, this);
 
         turrets.push_back(turret);
     }

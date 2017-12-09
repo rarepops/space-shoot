@@ -19,8 +19,9 @@ public:
     bool onMouse(SDL_Event& event) override;
 
     bool hasEnergy(float amount);
+	void destroyTurrets();
 
-    bool fireState = false;
+	bool fireState = false;
     bool isMouseControlled;
 private:
     std::shared_ptr<GameObject> target;
