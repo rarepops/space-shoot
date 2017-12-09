@@ -8,6 +8,7 @@ class TurretComponent : public Component
 {
 public:
     explicit TurretComponent(GameObject* gameObject);
+    ~TurretComponent();
 
     void init(glm::vec2 offset, float fireRate, float energyRequired, sre::Sprite bulletSprite, int bulletLayer, std::shared_ptr<TurretController> tc);
     void update(float deltaTime) override;
@@ -16,9 +17,8 @@ public:
     void fireProjectile();
 
     glm::vec2 turretOffset;
-private:
     std::shared_ptr<TurretController> turretController;
-    std::shared_ptr<GameObject> target;
+private:
 
     sre::Sprite bulletSprite;
 

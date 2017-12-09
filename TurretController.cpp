@@ -3,6 +3,7 @@
 #include "TurretComponent.hpp"
 #include "SpaceShoot.hpp"
 #include "ShipComponent.hpp"
+#include <iostream>
 
 TurretController::TurretController(GameObject * gameObject) :Component(gameObject)
 {
@@ -12,6 +13,16 @@ TurretController::TurretController(GameObject * gameObject) :Component(gameObjec
     if(!isMouseControlled)
     {
         target = SpaceShoot::instance->getPlayer();
+    }
+}
+
+TurretController::~TurretController()
+{
+    for(int i = turrets.size() - 1; i >= 0; --i)
+    {
+        turrets[i]->destroyed = true;
+        turrets[i]->getComponent<TurretComponent>()->turretController = nullptr;
+        turrets.erase(turrets.begin() + i);
     }
 }
 

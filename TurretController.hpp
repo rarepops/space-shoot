@@ -7,6 +7,7 @@ class TurretController : public Component
 {
 public:
     explicit TurretController(GameObject* gameObject);
+    ~TurretController();
 
     void init(std::vector<glm::vec2> turretOffsets, sre::Sprite turretSprite);
     

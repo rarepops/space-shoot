@@ -11,6 +11,11 @@ TurretComponent::TurretComponent(GameObject * gameObject) : Component(gameObject
 
 }
 
+TurretComponent::~TurretComponent()
+{
+
+}
+
 void TurretComponent::init(glm::vec2 offset, float fireRate, float energyRequired, sre::Sprite bulletSprite, int bulletLayer, std::shared_ptr<TurretController> tc)
 {
     this->turretOffset = offset;
@@ -59,6 +64,10 @@ bool TurretComponent::canFire()
 
 void TurretComponent::updateTurret(glm::vec2 aimPosition)
 {
+    if(!turretController->getGameObject())
+    {
+        return;
+    }
     auto parentPhys = turretController->getGameObject()->getComponent<PhysicsComponent>();
     auto position = turretController->getGameObject()->getPosition();
     auto offset = glm::rotate(turretOffset, parentPhys->getBody()->GetAngle());

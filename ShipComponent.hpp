@@ -48,7 +48,7 @@ private:
 	bool rotateCW =false;
 
 	float thrustSpeed = 1;
-    float rotationSpeed = 2;
+    float rotationSpeed = 90;
 	float drag = 0.95f;
 
     friend class TurretController;

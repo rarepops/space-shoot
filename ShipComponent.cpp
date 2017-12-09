@@ -66,7 +66,7 @@ void ShipComponent::update(float deltaTime)
 
 	const auto linearVelocity = shipPhysics->getLinearVelocity();
 
-    shipPhysics->setAngularVelocity(rotation);
+    shipPhysics->setAngularVelocity(glm::radians(rotation));
     shipPhysics->setLinearVelocity((linearVelocity + direction) * drag);
 }
 

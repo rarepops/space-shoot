@@ -115,19 +115,8 @@ void SpaceShoot::init()
 		{-44, -64},
 		{39, 80}
 	}, atlas->get("turret2.png"));
-
-	/*turretControllerJunk->setSprite(atlas->get("turret2.png"));
-	turretControllerJunk->setBulletSprite(atlas->get("particlered.png"), ENEMY_GROUP);
-	turretControllerJunk->setAimAt(player);
-	turretControllerJunk->initTurrets({
-	    {-39, 80},
-	    {-39, 38},
-	    {-44, -64},
-	    {39, 80},
-	    {39, 38},
-	    {44, -64}
-	}
-	);*/
+    junk->destroyed = true;
+	
 
 
 	auto cam = createGameObject();
