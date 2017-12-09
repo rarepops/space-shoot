@@ -17,9 +17,6 @@ ShipComponent::ShipComponent(GameObject* gameObject) : Component(gameObject)
     shieldGenerator = gameObject->addComponent<Regenerator>();
     energyGenerator = gameObject->addComponent<Regenerator>();
     shipPhysics = gameObject->addComponent<PhysicsComponent>();
-
-    auto physicsScale = SpaceShoot::instance->physicsScale;
-    auto radius = 1.0f;
 }
 
 void ShipComponent::init(float speed)
@@ -59,33 +56,25 @@ void ShipComponent::update(float deltaTime)
         rotation -= rotationSpeed;
     }
 
-    auto linearVelocity = shipPhysics->getLinearVelocity();
-
     glm::vec2 direction{0, 0};
     if(movement.x != 0 || movement.y != 0)
     {
         direction = glm::rotateZ(glm::vec3(movement.x / 10, movement.y / 10, 0),
-            glm::radians(shipPhysics->getBody()->GetAngle()));
+            shipPhysics->getBody()->GetAngle());
     }
     shipPhysics->addForce(direction * thrustSpeed);
 
-    linearVelocity = shipPhysics->getLinearVelocity();
+	const auto linearVelocity = shipPhysics->getLinearVelocity();
 
     shipPhysics->setAngularVelocity(rotation);
     shipPhysics->setLinearVelocity((linearVelocity + direction) * drag);
-
-    //	cout << getGameObject()->getPosition().x << " " << getGameObject()->getPosition().y << endl;
-    //	cout << movement.x << " " << movement.y << endl;
-    //	cout << characterPhysics->getBody()->GetAngle() << endl;
 }
 
 
 bool ShipComponent::onKey(SDL_Event& keyEvent)
 {
-    if(!isPlayer())
-    {
-        return false;
-    }
+    if(!isPlayer()) return false;
+    
     switch(keyEvent.key.keysym.sym)
     {
         case SDLK_w:
