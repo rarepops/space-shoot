@@ -28,5 +28,6 @@ private:
 
     float fireRate = 120;
     float energyRequired = 100;
+    float shootError = 5;
     float shootTimer = 0;
 };

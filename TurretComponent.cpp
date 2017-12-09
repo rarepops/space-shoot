@@ -13,7 +13,7 @@ TurretComponent::TurretComponent(GameObject * gameObject) : Component(gameObject
 
 TurretComponent::~TurretComponent()
 {
-	turretController = nullptr;
+    turretController = nullptr;
 
 }
 
@@ -74,7 +74,7 @@ void TurretComponent::updateTurret(glm::vec2 aimPosition)
     auto offset = glm::rotate(turretOffset, parentPhys->getBody()->GetAngle());
     if(turretController)
     {
-		aimPosition -= turretController->isMouseControlled ? offset : gameObject->getPosition();
+        aimPosition -= turretController->isMouseControlled?offset:gameObject->getPosition();
     }
 
     gameObject->setPosition(position + offset);
@@ -83,7 +83,7 @@ void TurretComponent::updateTurret(glm::vec2 aimPosition)
     {
         float angle = glm::degrees(std::atan2(aimPosition.y, aimPosition.x));
         angle = angle > 0?angle:angle + 360;
-        gameObject->setRotation(angle-90);
+        gameObject->setRotation(angle - 90);
     }
 }
 
@@ -96,7 +96,7 @@ void TurretComponent::fireProjectile()
     sprite->setSprite(bulletSprite);
     auto bulletComponent = projectile->addComponent<BulletComponent>();
     bulletComponent->setRotation(gameObject->getRotation());
-    bulletComponent->init(10, gameObject->getRotation(), 0.1f, 5, turretController->getGameObject()->getComponent<PhysicsComponent>()->getLinearVelocity(), bulletLayer);
+    bulletComponent->init(10, gameObject->getRotation() + (rand() % ((int)shootError * 2)) - shootError, 0.1f, 5, turretController->getGameObject()->getComponent<PhysicsComponent>()->getLinearVelocity(), bulletLayer);
 
     shootTimer = 60 / fireRate;
 }

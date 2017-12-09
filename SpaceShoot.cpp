@@ -65,16 +65,16 @@ void SpaceShoot::init()
 	initPhysics();
 
 	// Spawn Stars
-//	Sprite starSprites[3] = {atlas->get("star1.png"), atlas->get("star2.png"), atlas->get("star3.png")};
-//	for (int i = 0; i < starsNumber; ++i)
-//	{
-//		std::shared_ptr<GameObject> star = createGameObject();
-//		auto starSprite = star->addComponent<SpriteComponent>();
-//		starSprite->setSprite(starSprites[rand() % 3]);
-//		star->setPosition(glm::vec2(rand() % (2 * (int)gameBounds) - ((int)gameBounds + 1),
-//		                            rand() % (2 * (int)gameBounds) - ((int)gameBounds + 1)));
-//		star->setRotation(rand() % 720 - 360);
-//	}
+	Sprite starSprites[3] = {atlas->get("star1.png"), atlas->get("star2.png"), atlas->get("star3.png")};
+	for (int i = 0; i < starsNumber; ++i)
+	{
+		std::shared_ptr<GameObject> star = createGameObject();
+		auto starSprite = star->addComponent<SpriteComponent>();
+		starSprite->setSprite(starSprites[rand() % 3]);
+		star->setPosition(glm::vec2(rand() % (2 * (int)gameBounds) - ((int)gameBounds + 1),
+		                            rand() % (2 * (int)gameBounds) - ((int)gameBounds + 1)));
+		star->setRotation(rand() % 720 - 360);
+	}
 
 	// Spawn Player
 	player = createGameObject();

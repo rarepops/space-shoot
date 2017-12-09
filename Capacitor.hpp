@@ -17,6 +17,6 @@ public:
     float capacityPercent();
 
 private:
-    float capacity = 500;
-    float maxCapacity = 1000;
+    float capacity = 2000;
+    float maxCapacity = 2000;
 };
