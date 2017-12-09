@@ -76,32 +76,41 @@ void SpaceShoot::init()
     player->name = "Player";
     auto playerSprite = player->addComponent<SpriteComponent>();
     auto spaceShip = player->addComponent<ShipComponent>();
+    spaceShip->setIsPlayer(true);
+    spaceShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.5, 1}, player->getPosition() / physicsScale, 1, PLAYER_GROUP);
     auto sprite = atlas->get("playerspaceship.png");
     playerSprite->setSprite(sprite);
     auto turretController = player->addComponent<TurretController>();
-    turretController->setSprite(atlas->get("turret1.png"));
-    turretController->setBulletSprite(atlas->get("particlepurple.png"), PLAYER_GROUP);
-    turretController->initTurrets({
+    turretController->init({
         {-39, 80},
         {-39, 38},
         {-44, -64},
         {39, 80},
         {39, 38},
         {44, -64}
-    }
-    );
+    }, atlas->get("turret1.png"));
 
 
 
     // Spawn Enemies
     auto junk = createGameObject();
+    junk->name = "Enemy";
+    auto junkShip = junk->addComponent<ShipComponent>();
     auto junkSprite = junk->addComponent<SpriteComponent>();
     junk->setPosition(windowSize * 0.5f);
+
+
     junkSprite->setSprite(atlas->get("enemyspaceship.png"));
-    auto comp = junk->addComponent<PhysicsComponent>();
-    comp->initBox(b2_dynamicBody, {0.5, 1}, junk->getPosition() / physicsScale, 1,ENEMY_GROUP);
+    junkShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.5, 1}, junk->getPosition() / physicsScale, 1,ENEMY_GROUP);
     auto turretControllerJunk = junk->addComponent<TurretController>();
-    turretControllerJunk->setSprite(atlas->get("turret2.png"));
+    turretControllerJunk->init({
+        {-39, 80},
+        {-39, 38},
+        {-44, -64},
+        {39, 80}
+    }, atlas->get("turret2.png"));
+
+    /*turretControllerJunk->setSprite(atlas->get("turret2.png"));
     turretControllerJunk->setBulletSprite(atlas->get("particlered.png"), ENEMY_GROUP);
 	turretControllerJunk->setAimAt(player);
     turretControllerJunk->initTurrets({
@@ -112,7 +121,7 @@ void SpaceShoot::init()
         {39, 38},
         {44, -64}
     }
-    );
+    );*/
     
 
     auto cam = createGameObject();

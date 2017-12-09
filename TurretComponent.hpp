@@ -2,54 +2,87 @@
 
 #include "Component.hpp"
 #include "SpriteComponent.hpp"
-#include "SpaceShoot.hpp"
-
-enum AimMode { mouse, point };
-
+#include "TurretController.hpp"
 
 class TurretComponent : public Component
 {
 public:
-	explicit TurretComponent(GameObject* gameObject);
+    explicit TurretComponent(GameObject* gameObject);
 
-	void update(float deltaTime) override;
+    void init(glm::vec2 offset, float fireRate, float energyRequired, sre::Sprite bulletSprite, int bulletLayer, std::shared_ptr<TurretController> tc);
+    void update(float deltaTime) override;
 
-	bool onKey(SDL_Event& event) override;
+    void updateTurret(glm::vec2 aimPosition);
+    void fireProjectile();
 
-	bool onMouse(SDL_Event& event) override;
-
-	void setBulletSprite(sre::Sprite sprite, int bulletLayer);
-	void setController(GameObject* controller);
-
-	void offsetTurret(glm::vec2 turret);
-	void fireProjectile();
-
-	void setAimMode(AimMode mode);
-	void setAimAt(std::shared_ptr<GameObject> object);
-	
-	float mouseX = 0;
-	float mouseY = 0;
-	int numberOfTurrets = 6;
-
-	glm::vec2 turretOffset;
+    glm::vec2 turretOffset;
 private:
-	std::shared_ptr<SpriteComponent> spriteComponent;
-	std::shared_ptr<PhysicsComponent> physicsComponent;
-	sre::Sprite sprite;
-	sre::Sprite bulletSprite;
+    std::shared_ptr<TurretController> turretController;
+    std::shared_ptr<GameObject> target;
 
-	GameObject* controller;
+    sre::Sprite bulletSprite;
 
-	SpaceShoot* game;
+    bool canFire();
 
-	AimMode aimMode = mouse;
+    int bulletLayer;
 
-	bool fire = false;
-
-	float deltaX = 0;
-	float deltaY = 0;
-
-	std::shared_ptr<GameObject> aimAt;
-
-	int bulletLayer;
+    float fireRate = 120;
+    float energyRequired = 100;
+    float shootTimer = 0;
 };
+//#include "Component.hpp"
+//#include "SpriteComponent.hpp"
+//#include "SpaceShoot.hpp"
+//#include "TurretController.hpp"
+//
+//class TurretComponent : public Component
+//{
+//public:
+//	explicit TurretComponent(GameObject* gameObject);
+//
+//    void init(float fireRate,float energyRequired);
+//
+//	void update(float deltaTime) override;
+//
+//	bool onKey(SDL_Event& event) override;
+//
+//	bool onMouse(SDL_Event& event) override;
+//
+//	void setBulletSprite(sre::Sprite sprite, int bulletLayer);
+//	void setController(TurretController* controller);
+//
+//	void offsetTurret(glm::vec2 turret);
+//	void fireProjectile();
+//
+//	void setAimMode(AimMode mode);
+//	void setAimAt(std::shared_ptr<GameObject> object);
+//	
+//	float mouseX = 0;
+//	float mouseY = 0;
+//	int numberOfTurrets = 6;
+//
+//	glm::vec2 turretOffset;
+//private:
+//	std::shared_ptr<SpriteComponent> spriteComponent;
+//	std::shared_ptr<PhysicsComponent> physicsComponent;
+//	sre::Sprite sprite;
+//	sre::Sprite bulletSprite;
+//
+//	GameObject* controller;
+//
+//	SpaceShoot* game;
+//
+//	AimMode aimMode = mouse;
+//
+//	bool fire = false;
+//
+//	float deltaX = 0;
+//	float deltaY = 0;
+//
+//	std::shared_ptr<GameObject> aimAt;
+//	int bulletLayer;
+//
+//    int fireRate=120;
+//    int timeUntilFire;
+//    int energyRequired;
+//};

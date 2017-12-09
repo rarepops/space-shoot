@@ -14,7 +14,7 @@ public:
     void disableRegen();
     bool isRegenDisabled();
 private:
-    float regenRate = 50;
+    float regenRate = 200;
     float currentRegenTimeout = 0;
     float maxRegenTimeout = 5;
 };

@@ -24,6 +24,7 @@ public:
     std::shared_ptr<Capacitor> getHull();
     std::shared_ptr<Capacitor> getShieldGenerator();
     std::shared_ptr<Capacitor> getEnergyGenerator();
+    std::shared_ptr<PhysicsComponent> getPhysicsComponent();
 
 	// raycast callback
 	virtual float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point,
@@ -49,5 +50,7 @@ private:
 	float thrustSpeed = 1;
     float rotationSpeed = 90;
 	float drag = 0.95f;
+
+    friend class TurretController;
 };
 

@@ -20,7 +20,6 @@ ShipComponent::ShipComponent(GameObject* gameObject) : Component(gameObject)
 
     auto physicsScale = SpaceShoot::instance->physicsScale;
     auto radius = 1.0f;
-    shipPhysics->initCircle(b2_dynamicBody, radius, {0, 0}, 1, SpaceShoot::PLAYER_GROUP);
 }
 
 void ShipComponent::init(float speed)
@@ -31,8 +30,6 @@ void ShipComponent::init(float speed)
 void ShipComponent::update(float deltaTime)
 {
     glm::vec2 movement{0, 0};
-
-//    printf("%f %f %f \r\n", hull->getCapacity(), shieldGenerator->getCapacity(), energyGenerator->getCapacity());
 
     if(up)
     {
@@ -85,6 +82,10 @@ void ShipComponent::update(float deltaTime)
 
 bool ShipComponent::onKey(SDL_Event& keyEvent)
 {
+    if(!isPlayer())
+    {
+        return false;
+    }
     switch(keyEvent.key.keysym.sym)
     {
         case SDLK_w:
@@ -127,7 +128,7 @@ bool ShipComponent::isPlayer()
 
 void ShipComponent::setIsPlayer(bool state)
 {
-    player = player;
+    player = state;
 }
 
 std::shared_ptr<Capacitor> ShipComponent::getHull()
@@ -143,6 +144,11 @@ std::shared_ptr<Capacitor> ShipComponent::getShieldGenerator()
 std::shared_ptr<Capacitor> ShipComponent::getEnergyGenerator()
 {
     return energyGenerator;
+}
+
+std::shared_ptr<PhysicsComponent> ShipComponent::getPhysicsComponent()
+{
+    return shipPhysics;
 }
 
 float32 ShipComponent::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
