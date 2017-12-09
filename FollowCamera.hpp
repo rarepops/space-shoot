@@ -24,7 +24,7 @@ public:
     // Goes through the zoom levels.
     void changeZoom();
 
-    void shake(float amount=50);
+    void shake(float amount = 50);
 
     bool FollowCamera::onKey(SDL_Event& keyEvent);
     sre::Camera& getCamera();

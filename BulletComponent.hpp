@@ -10,7 +10,7 @@ class BulletComponent : public Component, public b2RayCastCallback
 public:
     explicit BulletComponent(GameObject* gameObject);
 
-    void init(float bulletDamage,float rotation,float speed, float lifetime = 5, glm::vec2 parentVelocity = {0, 0}, int bulletLayer = 0);
+    void init(float bulletDamage, float rotation, float speed, float lifetime = 5, glm::vec2 parentVelocity = {0, 0}, int bulletLayer = 0);
 
     void update(float deltaTime) override;
 

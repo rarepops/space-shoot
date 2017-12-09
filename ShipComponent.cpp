@@ -12,7 +12,7 @@ ShipComponent::ShipComponent(GameObject* gameObject) : Component(gameObject)
 
 {
     spriteComponent = gameObject->getComponent<SpriteComponent>();
-    
+
     hull = gameObject->addComponent<Capacitor>();
     shieldGenerator = gameObject->addComponent<Regenerator>();
     energyGenerator = gameObject->addComponent<Regenerator>();
@@ -64,7 +64,7 @@ void ShipComponent::update(float deltaTime)
     }
     shipPhysics->addForce(direction * thrustSpeed);
 
-	const auto linearVelocity = shipPhysics->getLinearVelocity();
+    const auto linearVelocity = shipPhysics->getLinearVelocity();
 
     shipPhysics->setAngularVelocity(glm::radians(rotation));
     shipPhysics->setLinearVelocity((linearVelocity + direction) * drag);
@@ -74,7 +74,7 @@ void ShipComponent::update(float deltaTime)
 bool ShipComponent::onKey(SDL_Event& keyEvent)
 {
     if(!isPlayer()) return false;
-    
+
     switch(keyEvent.key.keysym.sym)
     {
         case SDLK_w:

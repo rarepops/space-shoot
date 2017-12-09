@@ -10,18 +10,20 @@ public:
     ~TurretController();
 
     void init(std::vector<glm::vec2> turretOffsets, sre::Sprite turretSprite);
-    
+
     void setTarget(std::shared_ptr<GameObject> target);
     std::shared_ptr<GameObject> getTarget();
     glm::vec2 getTargetPos();
 
+    void update(float deltaTime) override;
+    void radar(float range);
 
     bool onMouse(SDL_Event& event) override;
 
     bool hasEnergy(float amount);
-	void destroyTurrets();
+    void destroyTurrets();
 
-	bool fireState = false;
+    bool fireState = false;
     bool isMouseControlled;
 private:
     std::shared_ptr<GameObject> target;

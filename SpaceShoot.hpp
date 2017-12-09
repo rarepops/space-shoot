@@ -50,7 +50,7 @@ private:
     void handleContact(b2Contact *contact, bool begin);
     std::map<b2Fixture*, PhysicsComponent*> physicsComponentLookup;
 
-	std::shared_ptr<GameObject> player;
+    std::shared_ptr<GameObject> player;
     b2World *world = nullptr;
     Box2DDebugDraw debugDraw;
     bool isDebugDraw = false;

@@ -1,6 +1,6 @@
 #include "Regenerator.hpp"
 
-Regenerator::Regenerator(GameObject * gameObject):Capacitor(gameObject)
+Regenerator::Regenerator(GameObject * gameObject) :Capacitor(gameObject)
 {
 }
 

@@ -18,7 +18,6 @@ TurretController::TurretController(GameObject * gameObject) :Component(gameObjec
 
 TurretController::~TurretController()
 {
-
     target.reset();
     energyGenerator.reset();
 }
@@ -48,7 +47,8 @@ void TurretController::init(std::vector<glm::vec2> turretOffsets, sre::Sprite tu
         auto turretComponent = turret->addComponent<TurretComponent>();
 
         int bulletLayer = gameObject->getComponent<ShipComponent>()->isPlayer()?SpaceShoot::PLAYER_GROUP:SpaceShoot::ENEMY_GROUP;
-        turretComponent->init(turretOffsets[i], 120, 45, SpaceShoot::instance->atlas->get("particlepurple.png"), bulletLayer, this);
+        sre::Sprite bulletSprite = isMouseControlled?SpaceShoot::instance->atlas->get("particlepurple.png"):SpaceShoot::instance->atlas->get("particlered.png");
+        turretComponent->init(turretOffsets[i], 120, 45, bulletSprite, bulletLayer, this);
 
         turrets.push_back(turret);
     }
@@ -76,6 +76,27 @@ glm::vec2 TurretController::getTargetPos()
         aimPos = target->getPosition();
     }
     return aimPos;
+}
+
+void TurretController::update(float deltaTime)
+{
+    if(!isMouseControlled)
+    {
+        radar(1000);
+    }
+}
+
+void TurretController::radar(float range)
+{
+    fireState = false;
+    if(target)
+    {
+        float currentRange = glm::distance(gameObject->getPosition(), target->getPosition());
+        if(currentRange < range)
+        {
+            fireState = true;
+        }
+    }
 }
 
 bool TurretController::onMouse(SDL_Event& event)

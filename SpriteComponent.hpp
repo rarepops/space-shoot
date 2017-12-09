@@ -3,7 +3,8 @@
 #include "Component.hpp"
 #include "sre/Sprite.hpp"
 
-class SpriteComponent : public Component {
+class SpriteComponent : public Component
+{
 public:
     explicit SpriteComponent(GameObject *gameObject);
 

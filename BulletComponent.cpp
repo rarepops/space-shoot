@@ -9,19 +9,20 @@
 #include <glm/gtx/compatibility.hpp>
 #include <glm/gtx/fast_trigonometry.inl>
 #include "BulletComponent.hpp"
+#include "ShipComponent.hpp"
 using namespace std;
 
 BulletComponent::BulletComponent(GameObject* gameObject) : Component(gameObject)
 {
     game = SpaceShoot::instance;
     physicsComponent = gameObject->addComponent<PhysicsComponent>();
-    
+
 }
 
 void BulletComponent::init(float bulletDamage, float rotation, float speed, float lifetime, glm::vec2 inheritedVelocity, int bulletLayer)
 {
-	physicsComponent->initBox(b2_dynamicBody, { 0.01, 0.01 }, gameObject->getPosition() / 100.0f, 1,
-		bulletLayer);
+    physicsComponent->initBox(b2_dynamicBody, {0.01, 0.01}, gameObject->getPosition() / 100.0f, 1,
+        bulletLayer);
 
     setRotation(rotation);
     this->lifetime = lifetime;
@@ -39,7 +40,7 @@ void BulletComponent::init(float bulletDamage, float rotation, float speed, floa
 
 void BulletComponent::update(float deltaTime)
 {
-	auto obj = gameObject->getComponent<SpriteComponent>();
+    auto obj = gameObject->getComponent<SpriteComponent>();
     speed = 5;
     const glm::vec2 direction = glm::rotateZ(glm::vec3(0, speed, 0), glm::radians(rotation));
 
@@ -62,6 +63,8 @@ void BulletComponent::setRotation(float rotation)
 
 void BulletComponent::onCollisionStart(PhysicsComponent* comp)
 {
+    //printf("%f",comp->getGameObject()->getComponent<ShipComponent>()->getHull()->getCapacity());
+
     gameObject->removeComponent(gameObject->getComponent<SpriteComponent>());
     gameObject->destroyed = true;
 }
