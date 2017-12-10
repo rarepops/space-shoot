@@ -7,6 +7,7 @@
 #include "Box2DDebugDraw.hpp"
 #include "GameObject.hpp"
 #include "FollowCamera.hpp"
+#include "SDL_mixer.h"
 
 class PhysicsComponent;
 
@@ -25,6 +26,7 @@ public:
 
     void SpawnEnemies();
     void SpawnPlayer();
+    void resetGame();
 
     std::shared_ptr<GameObject> getPlayer();
 
@@ -40,6 +42,7 @@ public:
 private:
     glm::vec4 bgColor;
     sre::SDLRenderer renderer;
+    Mix_Music *music;
 
     void init();
     void initPhysics();
@@ -48,6 +51,7 @@ private:
     void onKey(SDL_Event &event);
     void onMouse(SDL_Event& event);
     void render();
+
 
     std::vector<std::shared_ptr<GameObject>> sceneObjects;
 

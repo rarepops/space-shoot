@@ -17,14 +17,16 @@ public:
 
     void update(float deltaTime) override;
     void radar(float range);
-    void toggleHideTurrets();
+    bool getFireState();
+
+    // Mode 0 = force false (unhide), Mode 1 = force true (hide), anything else = toggle
+    void toggleHideTurrets(int mode = 2);
 
     bool onMouse(SDL_Event& event) override;
 
     bool hasEnergy(float amount);
     void destroyTurrets();
 
-    bool fireState = false;
     bool isMouseControlled;
 private:
     std::shared_ptr<GameObject> target;
@@ -35,5 +37,7 @@ private:
     glm::vec2 mousePos;
 
     sre::Sprite turretSprite;
+    bool fireState = false;
+
     bool turretsHidden = false;
 };

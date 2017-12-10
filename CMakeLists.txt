@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 project(SpaceShoot CXX)
 
-file (GLOB sourcefiles "*.hpp" ".h" "*.cpp")
+file (GLOB sourcefiles "*.hpp" ".h" "*.cpp" "*.ogg")
 
 add_executable(SpaceShoot ${sourcefiles})
 target_link_libraries(SpaceShoot ${all_libs})

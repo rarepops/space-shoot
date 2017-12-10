@@ -58,6 +58,23 @@ SpaceShoot::SpaceShoot() : debugDraw(physicsScale)
         render();
     };
 
+    if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+    {
+        cout << "Cannot initialize audio output" << endl;
+        return;
+    }
+
+    music = Mix_LoadMUS("danger.ogg");
+
+    if(music == nullptr)
+    {
+        cout << "Cannot load music!" << endl;
+    }
+
+    Mix_FadeInMusic(music, -1, 2000);
+    // Set the volume to half.
+    Mix_VolumeMusic(64);
+
     renderer.startEventLoop();
 }
 
@@ -121,6 +138,11 @@ void SpaceShoot::update(float time)
         sceneObjects[i]->update(time);
     }
 
+    if(!gameEnded)
+    {
+        elapsedTime += time;
+    }
+
     SpawnEnemies();
 }
 
@@ -160,8 +182,19 @@ void SpaceShoot::onKey(SDL_Event& event)
     {
         switch(event.key.keysym.sym)
         {
+            case SDLK_ESCAPE:
+            {
+                if(gameEnded)
+                {
+                    gameEnded = !gameEnded;
+                    enemiesKilled = 0;
+                    elapsedTime = 0;
+                    SpawnPlayer();
+                    break;
+                }
+            }
             case SDLK_x:
-                // press 'x' for physics debug
+            {
                 isDebugDraw = !isDebugDraw;
                 if(isDebugDraw)
                 {
@@ -172,6 +205,7 @@ void SpaceShoot::onKey(SDL_Event& event)
                     world->SetDebugDraw(nullptr);
                 }
                 break;
+            }
         }
     }
 }
@@ -230,13 +264,20 @@ void SpaceShoot::render()
         ImGui::SetNextWindowSize(playerWindowSize, ImGuiSetCond_Always);
         ImGui::Begin("", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 
-        ImGui::TextColored({1, 0.05f, 0.05f, 1}, "Hull: %3.2f%%",
-            player->getComponent<ShipComponent>()->getHull()->capacityPercent() * 100);
-        ImGui::TextColored({0, 0.5f, 1, 1}, "Shield: %3.2f%%",
-            player->getComponent<ShipComponent>()->getShieldGenerator()->capacityPercent() * 100);
-        ImGui::TextColored({1, 1, 0, 1}, "Energy: %3.2f%%",
-            player->getComponent<ShipComponent>()->getEnergyGenerator()->capacityPercent() * 100);
-        ImGui::TextColored({0.5f, 1, 0.5f, 0.8f}, "Score: %d", enemiesKilled);
+        if(!gameEnded)
+        {
+            ImGui::TextColored({1, 0.05f, 0.05f, 1}, "Hull: %3.2f%%", player->getComponent<ShipComponent>()->getHull()->capacityPercent() * 100);
+            ImGui::TextColored({0, 0.5f, 1, 1}, "Shield: %3.2f%%", player->getComponent<ShipComponent>()->getShieldGenerator()->capacityPercent() * 100);
+            ImGui::TextColored({1, 1, 0, 1}, "Energy: %3.2f%%", player->getComponent<ShipComponent>()->getEnergyGenerator()->capacityPercent() * 100);
+        }
+        else
+        {
+            ImGui::TextColored({1, 1, 1, 1}, "GAME OVER");
+            ImGui::TextColored({1, 1, 1, 1}, "PRESS ESC TO RESTART");
+            ImGui::TextColored({1, 1, 1, 1}, " ");
+        }
+
+        ImGui::TextColored({0.5f, 1, 0.5f, 0.8f}, "Score: %d | Time: %.1f", enemiesKilled, elapsedTime);
         ImGui::TextColored({1, 1, 1, 0.2f}, "GO Instances: %d", GameObject::instances);
 
         ImGui::End();
@@ -295,28 +336,42 @@ void SpaceShoot::SpawnEnemies()
 
 void SpaceShoot::SpawnPlayer()
 {
-    player = createGameObject();
-    player->name = "Player";
-    auto playerSprite = player->addComponent<SpriteComponent>();
-    auto spaceShip = player->addComponent<ShipComponent>();
-    spaceShip->setIsPlayer(true);
+    if(!player)
+    {
+        player = createGameObject();
+        player->name = "Player";
+        auto playerSprite = player->addComponent<SpriteComponent>();
+        auto spaceShip = player->addComponent<ShipComponent>();
+        spaceShip->setIsPlayer(true);
 
-    //spaceShip->init(100, 2000, 100, 10, 5000, 50);
-    spaceShip->init(10, 1, 1, 1, 5000, 50);
+        //spaceShip->init(100, 2000, 100, 10, 5000, 50);
+        spaceShip->init(10, 1, 1, 1, 5000, 50);
 
-    spaceShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.63, 1.15}, player->getPosition() / physicsScale, 1,
-        PLAYER_GROUP);
-    auto sprite = atlas->get("playerspaceship.png");
-    playerSprite->setSprite(sprite);
-    auto turretController = player->addComponent<TurretController>();
-    turretController->init({
-        {-39, 80},
-        {-39, 38},
-        {-44, -64},
-        {39, 80},
-        {39, 38},
-        {44, -64}
-    }, atlas->get("turret1.png"));
+        spaceShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.63, 1.15}, player->getPosition() / physicsScale, 1,
+            PLAYER_GROUP);
+        auto sprite = atlas->get("playerspaceship.png");
+        playerSprite->setSprite(sprite);
+        auto turretController = player->addComponent<TurretController>();
+        turretController->init({
+            {-39, 80},
+            {-39, 38},
+            {-44, -64},
+            {39, 80},
+            {39, 38},
+            {44, -64}
+        }, atlas->get("turret1.png"));
+    }
+    else
+    {
+        player->getComponent<TurretController>()->toggleHideTurrets(0);
+        player->getComponent<SpriteComponent>()->setSprite(atlas->get("playerspaceship.png"));
+        player->getComponent<ShipComponent>()->init(10, 1, 1, 1, 5000, 50);
+        player->setPosition(glm::vec2());
+    }
+}
+
+void SpaceShoot::resetGame()
+{
 }
 
 shared_ptr<GameObject> SpaceShoot::getPlayer()

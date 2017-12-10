@@ -51,7 +51,7 @@ bool TurretComponent::canFire()
     {
         if(turretController)
         {
-            if(turretController->fireState)
+            if(turretController->getFireState())
             {
                 if(turretController->hasEnergy(energyRequired))
                 {

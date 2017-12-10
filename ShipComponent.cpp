@@ -165,7 +165,7 @@ void ShipComponent::Destroy()
     else
     {
         SpaceShoot::instance->gameEnded = true;
-        gameObject->getComponent<TurretController>()->toggleHideTurrets();
+        gameObject->getComponent<TurretController>()->toggleHideTurrets(1);
         spriteComponent->setSprite(SpaceShoot::instance->atlas->get("explosionbig.png"));
     }
 }

@@ -4,6 +4,8 @@
 #include "SpaceShoot.hpp"
 #include "ShipComponent.hpp"
 #include <iostream>
+#include "sre/SDLRenderer.hpp"
+#include "SDL_mixer.h"
 
 TurretController::TurretController(GameObject * gameObject) :Component(gameObject)
 {
@@ -100,9 +102,31 @@ void TurretController::radar(float range)
     }
 }
 
-void TurretController::toggleHideTurrets()
+bool TurretController::getFireState()
 {
-    turretsHidden = !turretsHidden;
+    return fireState && !SpaceShoot::instance->gameEnded;
+}
+
+void TurretController::toggleHideTurrets(int mode)
+{
+    switch(mode)
+    {
+        case 0:
+        {
+            turretsHidden = false;
+            break;
+        }
+        case 1:
+        {
+            turretsHidden = true;
+            break;
+        }
+        default:
+        {
+            turretsHidden = !turretsHidden;
+        }
+    }
+
     for(std::shared_ptr<GameObject> tc : turrets)
     {
         if(turretsHidden)
@@ -124,7 +148,7 @@ bool TurretController::onMouse(SDL_Event& event)
         {
             if(event.button.type == SDL_MOUSEBUTTONDOWN)
             {
-                fireState = true && !SpaceShoot::instance->gameEnded;
+                fireState = true;
             }
             else if(event.button.type == SDL_MOUSEBUTTONUP)
             {
