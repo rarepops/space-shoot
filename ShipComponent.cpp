@@ -144,7 +144,7 @@ void ShipComponent::TakeDamage(float amount)
         hull->removeCapacity(amount);
     }
 
-    if(hull->isEmpty())
+    if(hull->isEmpty() && !gameObject->destroyed)
     {
         Destroy();
     }
