@@ -18,6 +18,7 @@ ShipComponent::ShipComponent(GameObject* gameObject) : Component(gameObject)
     hull = gameObject->addComponent<Capacitor>();
     shieldGenerator = gameObject->addComponent<Regenerator>();
     energyGenerator = gameObject->addComponent<Regenerator>();
+    gameObject->setRotation(rand() % 360);
     shipPhysics = gameObject->addComponent<PhysicsComponent>();
 }
 
@@ -154,7 +155,7 @@ void ShipComponent::Destroy()
 {
     gameObject->destroyed = true;
     gameObject->getComponent<TurretController>()->destroyTurrets();
-    if(isPlayer())
+    if(!isPlayer())
     {
         SpaceShoot::instance->enemiesKilled++;
         SpaceShoot::instance->currentEnemies--;
