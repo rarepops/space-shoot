@@ -23,6 +23,9 @@ public:
     void BeginContact(b2Contact *contact) override;
     void EndContact(b2Contact *contact) override;
 
+    void SpawnEnemy();
+    void SpawnPlayer();
+
     std::shared_ptr<GameObject> getPlayer();
 
     std::shared_ptr<sre::SpriteAtlas> atlas;
@@ -30,7 +33,9 @@ public:
 
     static int PLAYER_GROUP;
     static int ENEMY_GROUP;
-    static int enemiesKilled;
+    int enemiesKilled = 0;
+    int currentEnemies = 0;
+    const int maxEnemies = 10;
 private:
     glm::vec4 bgColor;
     sre::SDLRenderer renderer;

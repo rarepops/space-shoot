@@ -3,6 +3,7 @@
 #include "PhysicsComponent.hpp"
 #include "SpaceShoot.hpp"
 #include "ShipComponent.hpp"
+#include "TurretController.hpp"
 #include <iostream>
 #include <glm/gtx/log_base.hpp>
 #include <glm/gtx/rotate_vector.inl>
@@ -108,6 +109,31 @@ void ShipComponent::onCollisionStart(PhysicsComponent* comp)
 
 void ShipComponent::onCollisionEnd(PhysicsComponent* comp)
 {
+}
+
+void ShipComponent::TakeDamage(float amount)
+{
+    ShipComponent* sc = gameObject->getComponent<ShipComponent>().get();
+    if(sc->isPlayer())
+    {
+
+    }
+    else
+    {
+
+    }
+}
+
+void ShipComponent::Destroy()
+{
+    gameObject->destroyed = true;
+    gameObject->getComponent<TurretController>()->destroyTurrets();
+    ShipComponent* sc = gameObject->getComponent<ShipComponent>().get();
+    if(sc->isPlayer())
+    {
+        SpaceShoot::instance->enemiesKilled++;
+        SpaceShoot::instance->currentEnemies--;
+    }
 }
 
 bool ShipComponent::isPlayer()

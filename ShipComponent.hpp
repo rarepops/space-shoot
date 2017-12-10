@@ -18,6 +18,10 @@ public:
     void onCollisionStart(PhysicsComponent *comp) override;
     void onCollisionEnd(PhysicsComponent *comp) override;
 
+    void TakeDamage(float amount);
+    void Destroy();
+
+
     bool isPlayer();
     void setIsPlayer(bool state);
 

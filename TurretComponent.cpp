@@ -96,7 +96,9 @@ void TurretComponent::fireProjectile()
     sprite->setSprite(bulletSprite);
     auto bulletComponent = projectile->addComponent<BulletComponent>();
     bulletComponent->setRotation(gameObject->getRotation());
-    bulletComponent->init(10, gameObject->getRotation() + (rand() % ((int)shootError * 2)) - shootError, 0.1f, 5, turretController->getGameObject()->getComponent<PhysicsComponent>()->getLinearVelocity(), bulletLayer);
+    bulletComponent->init(60, gameObject->getRotation() + (rand() % ((int)shotErrorAngle * 2)) - shotErrorAngle, 0.3f, 3, turretController->getGameObject()->getComponent<PhysicsComponent>()->getLinearVelocity(), bulletLayer);
 
-    shootTimer = 60 / fireRate;
+
+    float calculatedFireRate = fireRate + (fireRate*((rand() % ((int)shotErrorTime * 2) - shotErrorTime) / 100));
+    shootTimer = 60 / calculatedFireRate;
 }

@@ -82,7 +82,7 @@ void TurretController::update(float deltaTime)
 {
     if(!isMouseControlled)
     {
-        radar(1000);
+        radar(1111);
     }
 }
 

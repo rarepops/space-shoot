@@ -10,6 +10,12 @@
 #include "TurretController.hpp"
 #include <iostream>
 
+// Controls: W/S - move forwards/backwards
+// A/D - rotate left/right
+// mouse left click - shoot
+// x - debug draw
+// z - camera zoom
+
 using namespace glm;
 using namespace std;
 using namespace sre;
@@ -18,9 +24,8 @@ const glm::vec2 SpaceShoot::windowSize(1000, 800);
 SpaceShoot* SpaceShoot::instance = nullptr;
 int SpaceShoot::PLAYER_GROUP = -1;
 int SpaceShoot::ENEMY_GROUP = -2;
-int SpaceShoot::enemiesKilled = 0;
 
-int starsNumber = 500;
+int starsNumber = 600;
 float gameBounds = 20000;
 
 SpaceShoot::SpaceShoot() : debugDraw(physicsScale)
@@ -78,7 +83,7 @@ void SpaceShoot::init()
     auto playerSprite = player->addComponent<SpriteComponent>();
     auto spaceShip = player->addComponent<ShipComponent>();
     spaceShip->setIsPlayer(true);
-    spaceShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.5, 1}, player->getPosition() / physicsScale, 1,
+    spaceShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.63, 1.15}, player->getPosition() / physicsScale, 1,
         PLAYER_GROUP);
     auto sprite = atlas->get("playerspaceship.png");
     playerSprite->setSprite(sprite);
@@ -92,24 +97,21 @@ void SpaceShoot::init()
         {44, -64}
     }, atlas->get("turret1.png"));
 
-
     // Spawn Enemies
     auto junk = createGameObject();
     junk->name = "Enemy";
     auto junkShip = junk->addComponent<ShipComponent>();
     auto junkSprite = junk->addComponent<SpriteComponent>();
     junk->setPosition(windowSize * 0.5f);
-
+    
 
     junkSprite->setSprite(atlas->get("enemyspaceship.png"));
-    junkShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.5, 1}, junk->getPosition() / physicsScale, 1, ENEMY_GROUP);
+    junkShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.3, 0.51}, junk->getPosition() / physicsScale, 1, ENEMY_GROUP);
     auto turretControllerJunk = junk->addComponent<TurretController>();
     turretControllerJunk->setTarget(player);
     turretControllerJunk->init({
-        {-39, 80},
-        {-39, 38},
-        {-44, -64},
-        {39, 80}
+        {0, -10},
+        {0, 10}
     }, atlas->get("turret2.png"));
 
 
@@ -121,7 +123,7 @@ void SpaceShoot::init()
 
 void SpaceShoot::initPhysics()
 {
-    float gravity = 0; // 9.8 m/s2
+    float gravity = 0;
     delete world;
     world = new b2World(b2Vec2(0, gravity));
     world->SetContactListener(this);
@@ -189,11 +191,8 @@ void SpaceShoot::onKey(SDL_Event& event)
     {
         switch(event.key.keysym.sym)
         {
-            case SDLK_z:
-                //camera->setZoomMode(!camera->isZoomMode());
-                break;
             case SDLK_x:
-                // press 'd' for physics debug
+                // press 'x' for physics debug
                 isDebugDraw = !isDebugDraw;
                 if(isDebugDraw)
                 {
@@ -230,7 +229,6 @@ void SpaceShoot::render()
         .withClearColor(true, bgColor)
         .build();
 
-    //auto pos = camera->getGameObject()->getPosition();
 
     if(isDebugDraw)
     {
@@ -254,24 +252,26 @@ void SpaceShoot::render()
         rp.drawLines(debugDraw.getLines());
         debugDraw.clear();
     }
+    else
+    {
+        ImGui::NewFrame();
+        ImVec2 playerWindowSize = {160, 100};
+        ImGui::SetNextWindowPos(ImVec2((windowSize.x - playerWindowSize.x) * 0.5f, (windowSize.y - playerWindowSize.y)),
+            ImGuiSetCond_Always);
+        ImGui::SetNextWindowSize(playerWindowSize, ImGuiSetCond_Always);
+        ImGui::Begin("", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 
-    ImGui::NewFrame();
-    ImVec2 playerWindowSize = {160, 100};
-    ImGui::SetNextWindowPos(ImVec2((windowSize.x - playerWindowSize.x) * 0.5f, (windowSize.y - playerWindowSize.y)),
-        ImGuiSetCond_Always);
-    ImGui::SetNextWindowSize(playerWindowSize, ImGuiSetCond_Always);
-    ImGui::Begin("", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+        ImGui::TextColored({1, 0.05f, 0.05f, 1}, "Hull: %3.2f%%",
+            player->getComponent<ShipComponent>()->getHull()->capacityPercent() * 100);
+        ImGui::TextColored({0, 0.5f, 1, 1}, "Shield: %3.2f%%",
+            player->getComponent<ShipComponent>()->getShieldGenerator()->capacityPercent() * 100);
+        ImGui::TextColored({1, 1, 0, 1}, "Energy: %3.2f%%",
+            player->getComponent<ShipComponent>()->getEnergyGenerator()->capacityPercent() * 100);
+        ImGui::TextColored({0.5f, 1, 0.5f, 0.8f}, "Score: %d", enemiesKilled);
+        ImGui::TextColored({1, 1, 1, 0.2f}, "GO Instances: %d", GameObject::instances);
 
-    ImGui::TextColored({1, 0.05f, 0.05f, 1}, "Hull: %3.2f%%",
-        player->getComponent<ShipComponent>()->getHull()->capacityPercent() * 100);
-    ImGui::TextColored({0, 0.5f, 1, 1}, "Shield: %3.2f%%",
-        player->getComponent<ShipComponent>()->getShieldGenerator()->capacityPercent() * 100);
-    ImGui::TextColored({1, 1, 0, 1}, "Energy: %3.2f%%",
-        player->getComponent<ShipComponent>()->getEnergyGenerator()->capacityPercent() * 100);
-    ImGui::TextColored({0.5f, 1, 0.5f, 0.8f}, "Score: %d", enemiesKilled);
-    ImGui::TextColored({1, 1, 1, 0.2f}, "GO Instances: %d", GameObject::instances);
-
-    ImGui::End();
+        ImGui::End();
+    }
 }
 
 void SpaceShoot::registerPhysicsComponent(PhysicsComponent* r)
@@ -295,6 +295,14 @@ void SpaceShoot::EndContact(b2Contact* contact)
 {
     b2ContactListener::EndContact(contact);
     handleContact(contact, false);
+}
+
+void SpaceShoot::SpawnEnemy()
+{
+}
+
+void SpaceShoot::SpawnPlayer()
+{
 }
 
 shared_ptr<GameObject> SpaceShoot::getPlayer()

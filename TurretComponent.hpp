@@ -28,6 +28,12 @@ private:
 
     float fireRate = 120;
     float energyRequired = 100;
-    float shootError = 5;
-    float shootTimer = 0;
+
+    // Will be used to randomize the angle of the shot. eulerAngles.
+    float shotErrorAngle = 5;
+
+    // Will be used to randomize the time of the shot. +- percentage of firerate.
+    float shotErrorTime = 10;
+
+    float shootTimer = 1;
 };
