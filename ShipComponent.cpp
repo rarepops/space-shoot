@@ -18,8 +18,8 @@ ShipComponent::ShipComponent(GameObject* gameObject) : Component(gameObject)
     hull = gameObject->addComponent<Capacitor>();
     shieldGenerator = gameObject->addComponent<Regenerator>();
     energyGenerator = gameObject->addComponent<Regenerator>();
-    gameObject->setRotation(rand() % 360);
     shipPhysics = gameObject->addComponent<PhysicsComponent>();
+    randomRotation = rand() % 720 - 360;
 }
 
 void ShipComponent::init(float speed, float maxHull, float maxShield, float shieldRegenRate, float maxEnergy, float energyRegenRate)
@@ -64,7 +64,7 @@ void ShipComponent::update(float deltaTime)
             rotation -= rotationSpeed;
         }
     }
-    
+
 
     glm::vec2 direction{0, 0};
     if(movement.x != 0 || movement.y != 0)
@@ -76,6 +76,11 @@ void ShipComponent::update(float deltaTime)
 
     const auto linearVelocity = shipPhysics->getLinearVelocity();
 
+    if(!isPlayer())
+    {
+        // Give random rotation to non-players between -360 and 360.
+        rotation = randomRotation;
+    }
     shipPhysics->setAngularVelocity(glm::radians(rotation));
     shipPhysics->setLinearVelocity((linearVelocity + direction) * drag);
 }
@@ -83,7 +88,10 @@ void ShipComponent::update(float deltaTime)
 
 bool ShipComponent::onKey(SDL_Event& keyEvent)
 {
-    if(!isPlayer()) return false;
+    if(!isPlayer())
+    {
+        return false;
+    }
 
     switch(keyEvent.key.keysym.sym)
     {
@@ -127,22 +135,16 @@ void ShipComponent::onCollisionEnd(PhysicsComponent* comp)
 
 void ShipComponent::TakeDamage(float amount)
 {
+    shieldGenerator->disableRegen();
     if(!shieldGenerator->isEmpty())
     {
-        shieldGenerator->removeCapacity(amount*0.8f);
-        if(shieldGenerator->isEmpty())
-        {
-            if(!shieldGenerator->isRegenDisabled())
-            {
-                shieldGenerator->disableRegen();
-            }
-        }
+        shieldGenerator->removeCapacity(amount*0.75f);
     }
     else
     {
         if(isPlayer() && !SpaceShoot::instance->gameEnded)
         {
-            SpaceShoot::instance->camera->shake(40);
+            SpaceShoot::instance->camera->shake();
         }
         hull->removeCapacity(amount);
     }

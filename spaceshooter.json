@@ -28,6 +28,15 @@
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
+	"filename": "enemystation.png",
+	"frame": {"x":0,"y":420,"w":256,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":256},
+	"sourceSize": {"w":256,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
 	"filename": "explosion.png",
 	"frame": {"x":33,"y":33,"w":32,"h":32},
 	"rotated": false,
@@ -38,7 +47,7 @@
 },
 {
 	"filename": "explosionbig.png",
-	"frame": {"x":0,"y":420,"w":256,"h":256},
+	"frame": {"x":0,"y":934,"w":256,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":256},
@@ -47,15 +56,6 @@
 },
 {
 	"filename": "particleblue.png",
-	"frame": {"x":0,"y":33,"w":32,"h":32},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32},
-	"pivot": {"x":0.5,"y":0.5}
-},
-{
-	"filename": "particlegreen.png",
 	"frame": {"x":99,"y":33,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -64,8 +64,17 @@
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
-	"filename": "particleorange.png",
+	"filename": "particlegreen.png",
 	"frame": {"x":66,"y":33,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "particleorange.png",
+	"frame": {"x":0,"y":33,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -176,8 +185,8 @@
 	"version": "1.0",
 	"image": "spaceshooter.png",
 	"format": "RGBA8888",
-	"size": {"w":256,"h":1024},
+	"size": {"w":256,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:d679cf082da10e68bff10f73da84f6f1:7c54953b4b4ff99337731b40b4eec23e:2b0614e2bfe6d9f853cae928c214d566$"
+	"smartupdate": "$TexturePacker:SmartUpdate:d468170d654810f9eea476a8e8af1af7:7d7ce294a6037c3c04db6f8b38d2e17f:2b0614e2bfe6d9f853cae928c214d566$"
 }
 }

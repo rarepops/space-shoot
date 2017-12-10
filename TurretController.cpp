@@ -51,7 +51,7 @@ void TurretController::init(std::vector<glm::vec2> turretOffsets, sre::Sprite tu
 
         int bulletLayer = gameObject->getComponent<ShipComponent>()->isPlayer()?SpaceShoot::PLAYER_GROUP:SpaceShoot::ENEMY_GROUP;
         sre::Sprite bulletSprite = isMouseControlled?SpaceShoot::instance->atlas->get("particlepurple.png"):SpaceShoot::instance->atlas->get("particlered.png");
-        turretComponent->init(turretOffsets[i], 120, 45, bulletSprite, bulletLayer, this);
+        turretComponent->init(turretOffsets[i],150,35, bulletSprite, bulletLayer, this);
 
         turrets.push_back(turret);
     }

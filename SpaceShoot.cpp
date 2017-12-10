@@ -96,9 +96,6 @@ void SpaceShoot::init()
 
     SpawnPlayer();
 
-
-
-
     auto cam = createGameObject();
     cam->name = "Camera";
     this->camera = cam->addComponent<FollowCamera>();
@@ -186,10 +183,7 @@ void SpaceShoot::onKey(SDL_Event& event)
             {
                 if(gameEnded)
                 {
-                    gameEnded = !gameEnded;
-                    enemiesKilled = 0;
-                    elapsedTime = 0;
-                    SpawnPlayer();
+                    resetGame();
                     break;
                 }
             }
@@ -319,16 +313,18 @@ void SpaceShoot::SpawnEnemies()
         auto junkSprite = junk->addComponent<SpriteComponent>();
         glm::vec2 pos = glm::vec2((rand() % (int)gameBounds) - gameBounds / 2, (rand() % (int)gameBounds) - gameBounds / 2);
         junk->setPosition(pos);
-        junkShip->init(100, 2000, 100, 10, 5000, 50);
+
+        junkShip->init(0, 1800, 1400, 20, 2000, 90);
         //junkShip->init(10, 1, 1, 1, 5000, 50);
 
-        junkSprite->setSprite(atlas->get("enemyspaceship.png"));
-        junkShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.3, 0.51}, junk->getPosition() / physicsScale, 1, ENEMY_GROUP);
+        junkSprite->setSprite(atlas->get("enemystation.png"));
+        junkShip->getPhysicsComponent()->initBox(b2_kinematicBody, {0.3, 0.51}, junk->getPosition() / physicsScale, 1, ENEMY_GROUP);
         auto turretControllerJunk = junk->addComponent<TurretController>();
         turretControllerJunk->setTarget(player);
         turretControllerJunk->init({
-            {0, -10},
-            {0, 10}
+            {0, 0},
+            {0, -28},
+            {0, 28}
         }, atlas->get("turret2.png"));
     }
 }
@@ -344,8 +340,8 @@ void SpaceShoot::SpawnPlayer()
         auto spaceShip = player->addComponent<ShipComponent>();
         spaceShip->setIsPlayer(true);
 
-        //spaceShip->init(100, 2000, 100, 10, 5000, 50);
-        spaceShip->init(10, 1, 1, 1, 5000, 50);
+        spaceShip->init(100, 4000, 2500, 45, 5000, 125);
+        //spaceShip->init(10, 1, 1, 1, 5000, 50);
 
         spaceShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.63, 1.15}, player->getPosition() / physicsScale, 1,
             PLAYER_GROUP);
@@ -365,13 +361,20 @@ void SpaceShoot::SpawnPlayer()
     {
         player->getComponent<TurretController>()->toggleHideTurrets(0);
         player->getComponent<SpriteComponent>()->setSprite(atlas->get("playerspaceship.png"));
-        player->getComponent<ShipComponent>()->init(10, 1, 1, 1, 5000, 50);
+        player->getComponent<ShipComponent>()->init(100, 4000, 2500, 45, 5000, 125);
+        
+        // Does not work V because PhysicsComponent
         player->setPosition(glm::vec2());
+        player->getComponent<PhysicsComponent>()->moveTo(glm::vec2(0, 0));
     }
 }
 
 void SpaceShoot::resetGame()
 {
+    gameEnded = !gameEnded;
+    enemiesKilled = 0;
+    elapsedTime = 0;
+    SpawnPlayer();
 }
 
 shared_ptr<GameObject> SpaceShoot::getPlayer()

@@ -21,6 +21,7 @@ BulletComponent::BulletComponent(GameObject* gameObject) : Component(gameObject)
 
 void BulletComponent::init(float bulletDamage, float rotation, float speed, float lifetime, glm::vec2 inheritedVelocity, int bulletLayer)
 {
+    this->bulletDamage = bulletDamage;
     physicsComponent->initBox(b2_dynamicBody, {0.01, 0.01}, gameObject->getPosition() / 100.0f, 1,
         bulletLayer);
 
