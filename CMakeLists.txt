@@ -8,8 +8,8 @@ target_link_libraries(SpaceShoot ${all_libs})
 
 
 # copy files to dest
-file(COPY spaceshooter.json spaceshooter.png DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
-file(COPY spaceshooter.json spaceshooter.png DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
+file(COPY spaceshooter.json spaceshooter.png danger.ogg DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
+file(COPY spaceshooter.json spaceshooter.png danger.ogg DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
 
 
 IF (WIN32)
