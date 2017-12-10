@@ -19,13 +19,14 @@ ShipComponent::ShipComponent(GameObject* gameObject) : Component(gameObject)
     shieldGenerator = gameObject->addComponent<Regenerator>();
     energyGenerator = gameObject->addComponent<Regenerator>();
     shipPhysics = gameObject->addComponent<PhysicsComponent>();
+
+    // We set the random rotation between -360 and 360. Will be used by non-players.
     randomRotation = rand() % 720 - 360;
 }
 
 void ShipComponent::init(float speed, float maxHull, float maxShield, float shieldRegenRate, float maxEnergy, float energyRegenRate)
 {
     thrustSpeed = speed;
-
     hull->init(maxHull);
     shieldGenerator->init(shieldRegenRate, maxShield);
     energyGenerator->init(energyRegenRate, maxEnergy);
@@ -33,6 +34,7 @@ void ShipComponent::init(float speed, float maxHull, float maxShield, float shie
 
 void ShipComponent::update(float deltaTime)
 {
+    // We use the movement vector to monitor the inputs. If player presses up&down, the sum will be 0, so it won't move in that direction.
     glm::vec2 movement{0, 0};
     float rotation = 0;
 
@@ -46,14 +48,14 @@ void ShipComponent::update(float deltaTime)
         {
             movement.y--;
         }
-        if(left)
+        /*if(left)
         {
             movement.x--;
         }
         if(right)
         {
             movement.x++;
-        }
+        }*/
 
         if(rotateCCW)
         {
@@ -69,8 +71,7 @@ void ShipComponent::update(float deltaTime)
     glm::vec2 direction{0, 0};
     if(movement.x != 0 || movement.y != 0)
     {
-        direction = glm::rotateZ(glm::vec3(movement.x / 10, movement.y / 10, 0),
-            shipPhysics->getBody()->GetAngle());
+        direction = glm::rotateZ(glm::vec3(movement.x, movement.y, 0), shipPhysics->getBody()->GetAngle());
     }
     shipPhysics->addForce(direction * thrustSpeed);
 
@@ -78,10 +79,12 @@ void ShipComponent::update(float deltaTime)
 
     if(!isPlayer())
     {
-        // Give random rotation to non-players between -360 and 360.
+        // Give random rotation to non-players between -360 and 360. Calculated in the constructor
         rotation = randomRotation;
     }
     shipPhysics->setAngularVelocity(glm::radians(rotation));
+
+    // We multiply the velocity by a drag factor, meaning it will diminish over time
     shipPhysics->setLinearVelocity((linearVelocity + direction) * drag);
 }
 
@@ -135,6 +138,7 @@ void ShipComponent::onCollisionEnd(PhysicsComponent* comp)
 
 void ShipComponent::TakeDamage(float amount)
 {
+    // We prevent the shields to regenerate if taking damage
     shieldGenerator->disableRegen();
     if(!shieldGenerator->isEmpty())
     {
@@ -144,6 +148,7 @@ void ShipComponent::TakeDamage(float amount)
     {
         if(isPlayer() && !SpaceShoot::instance->gameEnded)
         {
+            // If shields are down, shake camera
             SpaceShoot::instance->camera->shake();
         }
         hull->removeCapacity(amount);
@@ -166,6 +171,7 @@ void ShipComponent::Destroy()
     }
     else
     {
+        // We fake the destruction of the player
         SpaceShoot::instance->gameEnded = true;
         gameObject->getComponent<TurretController>()->toggleHideTurrets(1);
         spriteComponent->setSprite(SpaceShoot::instance->atlas->get("explosionbig.png"));

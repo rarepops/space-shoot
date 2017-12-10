@@ -24,7 +24,10 @@ public:
     void BeginContact(b2Contact *contact) override;
     void EndContact(b2Contact *contact) override;
 
+    /* Will spawn an enemy if enemy limit is not reached. */
     void SpawnEnemies();
+
+    /* Will spawn/respawn the player. */
     void SpawnPlayer();
     void resetGame();
 
@@ -33,12 +36,14 @@ public:
     std::shared_ptr<sre::SpriteAtlas> atlas;
     std::shared_ptr<FollowCamera> camera;
 
+    /* Collision layers. */
     static int PLAYER_GROUP;
     static int ENEMY_GROUP;
+
+    /* Max enemies allowed at one time. */
     const int maxEnemies = 10;
 
     bool gameEnded = false;
-
 private:
     glm::vec4 bgColor;
     sre::SDLRenderer renderer;
@@ -51,7 +56,6 @@ private:
     void onKey(SDL_Event &event);
     void onMouse(SDL_Event& event);
     void render();
-
 
     std::vector<std::shared_ptr<GameObject>> sceneObjects;
 

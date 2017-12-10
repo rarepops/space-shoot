@@ -104,6 +104,7 @@ void TurretController::radar(float range)
 
 bool TurretController::getFireState()
 {
+    // Will be set to false if the game ended
     return fireState && !SpaceShoot::instance->gameEnded;
 }
 
@@ -146,6 +147,7 @@ bool TurretController::onMouse(SDL_Event& event)
     {
         if(event.button.button == SDL_BUTTON_LEFT)
         {
+            // As SRE doesn't have a hold button function, we create our own
             if(event.button.type == SDL_MOUSEBUTTONDOWN)
             {
                 fireState = true;
@@ -156,6 +158,7 @@ bool TurretController::onMouse(SDL_Event& event)
             }
         }
 
+        // We calculate the mouse's position, taking the zoom level in consideration
         mousePos.x = (event.motion.x - SpaceShoot::windowSize.x * 0.5f);
         mousePos.y = -(event.motion.y - SpaceShoot::windowSize.y * 0.5f);
 

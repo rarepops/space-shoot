@@ -14,16 +14,17 @@ public:
 
     void init(GameObject* followObject, glm::vec2 offset = {0, 0});
 
-    // Sets the zoom level
+    /* Sets the zoom level. */
     void setZoomLevel(int zoomLevel);
 
-    // Sets a custom zoom level. Lower = more zoomed out.
+    /* Sets a custom zoom level. Lower = more zoomed out. */
     void setZoom(float zoom);
     float getZoom();
 
-    // Goes through the zoom levels.
+    /* Goes through the zoom levels. */
     void changeZoom();
 
+    /* Shakes the camera by an ammount. */
     void shake(float amount = 33);
 
     bool FollowCamera::onKey(SDL_Event& keyEvent);

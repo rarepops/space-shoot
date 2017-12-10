@@ -22,20 +22,24 @@ BulletComponent::BulletComponent(GameObject* gameObject) : Component(gameObject)
 void BulletComponent::init(float bulletDamage, float rotation, float speed, float lifetime, glm::vec2 inheritedVelocity, int bulletLayer)
 {
     this->bulletDamage = bulletDamage;
-    physicsComponent->initBox(b2_dynamicBody, {0.01, 0.01}, gameObject->getPosition() / 100.0f, 1,
-        bulletLayer);
+    physicsComponent->initCircle(b2_dynamicBody, 1 / game->physicsScale, gameObject->getPosition() / game->physicsScale, 1, bulletLayer);
 
+    // Won't work because B2D V
     setRotation(rotation);
     this->lifetime = lifetime;
     this->speed = speed;
 
+    //Calculates the direction vector. We create a new vector with the bullet speed as forwards, then we rotate it.
     const glm::vec2 direction = glm::rotateZ(glm::vec3(0, speed, 0), glm::radians(rotation));
     auto position = physicsComponent->getPosition();
 
     b2Vec2 directionB{direction.x, direction.y};
     b2Vec2 positionB{position.x, position.y};
 
+    // We apply the force as a Vector, from the bullet's position in the direction we calculated earlier
     physicsComponent->getBody()->ApplyForce(directionB, positionB, true);
+
+    // We add the parent's velocity to the bullet so it inherits it
     physicsComponent->setLinearVelocity(physicsComponent->getLinearVelocity() + inheritedVelocity);
 }
 
@@ -55,7 +59,7 @@ void BulletComponent::update(float deltaTime)
     game->world->RayCast(this, {from.x, from.y}, target);
 
     lifetime -= deltaTime;
-    if(lifetime < 0)
+    if(lifetime <= 0)
     {
         gameObject->destroyed = true;
     }
@@ -69,12 +73,6 @@ void BulletComponent::setRotation(float rotation)
 
 void BulletComponent::onCollisionStart(PhysicsComponent* comp)
 {
-    ShipComponent *sc = comp->getGameObject()->getComponent<ShipComponent>().get();
-    if(sc)
-    {
-
-    }
-
     gameObject->removeComponent(gameObject->getComponent<SpriteComponent>());
     gameObject->destroyed = true;
 }

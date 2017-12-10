@@ -30,7 +30,7 @@ private:
     sre::Sprite sprite;
 
     float rotation;
-    float lifetime;
+    float lifetime=0;
     float speed = 5;
     float bulletDamage = 5;
 

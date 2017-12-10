@@ -53,6 +53,8 @@ void Capacitor::removeCapacity(float capacity, bool& out)
 void Capacitor::addCapacity(float capacity)
 {
     this->currentCapacity += capacity;
+
+    // We prevent capacitor overflow
     this->currentCapacity = this->currentCapacity > this->maxCapacity?this->maxCapacity:this->currentCapacity;
 }
 

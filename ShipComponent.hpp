@@ -55,7 +55,7 @@ private:
     float rotationSpeed = 90;
     float drag = 0.95f;
 
-    // For non-players;
+    /* For non-players. */
     float randomRotation;
 
     friend class TurretController;

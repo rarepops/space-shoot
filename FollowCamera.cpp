@@ -26,6 +26,7 @@ void FollowCamera::update(float deltaTime)
         {
             shakeVector = glm::circularRand(shakeAmount);
 
+            // We diminish the shake amount each frame
             shakeAmount /= 3;
         }
         else
@@ -70,11 +71,11 @@ void FollowCamera::init(GameObject* followObject, glm::vec2 offset)
 
 void FollowCamera::setZoomLevel(int zoomLevel)
 {
-    if(zoomLevel >= 0 && zoomLevel <= zoomLevels.size())
-    {
-        currentZoomLevel = zoomLevel;
-        setZoom(zoomLevels[currentZoomLevel]);
-    }
+    // We clamp the zoom level so it stays within bounds
+    zoomLevel %= zoomLevels.size();
+
+    currentZoomLevel = zoomLevel;
+    setZoom(zoomLevels[currentZoomLevel]);
 }
 
 void FollowCamera::setZoom(float zoom)
@@ -85,9 +86,15 @@ void FollowCamera::setZoom(float zoom)
 void FollowCamera::changeZoom()
 {
     ++currentZoomLevel;
-    currentZoomLevel %= zoomLevels.size();
 
+    // We clamp the zoom level so it stays within bounds
+    currentZoomLevel %= zoomLevels.size();
     setZoom(zoomLevels[currentZoomLevel]);
+}
+
+float FollowCamera::getZoom()
+{
+    return currentZoom;
 }
 
 void FollowCamera::shake(float amount)
@@ -95,7 +102,3 @@ void FollowCamera::shake(float amount)
     shakeAmount += amount;
 }
 
-float FollowCamera::getZoom()
-{
-    return currentZoom;
-}
