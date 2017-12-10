@@ -1,6 +1,5 @@
 #include <sre/Profiler.hpp>
 #include <ctime>
-
 #include "sre/RenderPass.hpp"
 #include "PhysicsComponent.hpp"
 #include "SpriteComponent.hpp"
@@ -9,6 +8,7 @@
 #include "ShipComponent.hpp"
 #include "TurretController.hpp"
 #include <iostream>
+#include "glm/gtc/random.hpp"
 
 // Controls: W/S - move forwards/backwards
 // A/D - rotate left/right
@@ -26,7 +26,7 @@ int SpaceShoot::PLAYER_GROUP = -1;
 int SpaceShoot::ENEMY_GROUP = -2;
 
 int starsNumber = 600;
-float gameBounds = 20000;
+float gameBounds = 10000;
 
 SpaceShoot::SpaceShoot() : debugDraw(physicsScale)
 {
@@ -77,42 +77,9 @@ void SpaceShoot::init()
         star->setRotation(rand() % 720 - 360);
     }
 
-    // Spawn Player
-    player = createGameObject();
-    player->name = "Player";
-    auto playerSprite = player->addComponent<SpriteComponent>();
-    auto spaceShip = player->addComponent<ShipComponent>();
-    spaceShip->setIsPlayer(true);
-    spaceShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.63, 1.15}, player->getPosition() / physicsScale, 1,
-        PLAYER_GROUP);
-    auto sprite = atlas->get("playerspaceship.png");
-    playerSprite->setSprite(sprite);
-    auto turretController = player->addComponent<TurretController>();
-    turretController->init({
-        {-39, 80},
-        {-39, 38},
-        {-44, -64},
-        {39, 80},
-        {39, 38},
-        {44, -64}
-    }, atlas->get("turret1.png"));
+    SpawnPlayer();
 
-    // Spawn Enemies
-    auto junk = createGameObject();
-    junk->name = "Enemy";
-    auto junkShip = junk->addComponent<ShipComponent>();
-    auto junkSprite = junk->addComponent<SpriteComponent>();
-    junk->setPosition(windowSize * 0.5f);
-    
 
-    junkSprite->setSprite(atlas->get("enemyspaceship.png"));
-    junkShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.3, 0.51}, junk->getPosition() / physicsScale, 1, ENEMY_GROUP);
-    auto turretControllerJunk = junk->addComponent<TurretController>();
-    turretControllerJunk->setTarget(player);
-    turretControllerJunk->init({
-        {0, -10},
-        {0, 10}
-    }, atlas->get("turret2.png"));
 
 
     auto cam = createGameObject();
@@ -153,6 +120,8 @@ void SpaceShoot::update(float time)
     {
         sceneObjects[i]->update(time);
     }
+
+    SpawnEnemies();
 }
 
 void SpaceShoot::updatePhysics()
@@ -297,12 +266,53 @@ void SpaceShoot::EndContact(b2Contact* contact)
     handleContact(contact, false);
 }
 
-void SpaceShoot::SpawnEnemy()
+void SpaceShoot::SpawnEnemies()
 {
+    if(maxEnemies >= currentEnemies)
+    {
+        ++currentEnemies;
+
+        auto junk = createGameObject();
+        junk->name = "Enemy";
+        auto junkShip = junk->addComponent<ShipComponent>();
+        auto junkSprite = junk->addComponent<SpriteComponent>();
+        glm::vec2 pos = glm::vec2((rand() % (int)gameBounds) - gameBounds / 2, (rand() % (int)gameBounds) - gameBounds / 2);
+        junk->setPosition(pos);
+        junkShip->init(10, 1, 0, 0, 5000, 50);
+
+        junkSprite->setSprite(atlas->get("enemyspaceship.png"));
+        junkShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.3, 0.51}, junk->getPosition() / physicsScale, 1, ENEMY_GROUP);
+        auto turretControllerJunk = junk->addComponent<TurretController>();
+        turretControllerJunk->setTarget(player);
+        turretControllerJunk->init({
+            {0, -10},
+            {0, 10}
+        }, atlas->get("turret2.png"));
+    }
 }
+
 
 void SpaceShoot::SpawnPlayer()
 {
+    player = createGameObject();
+    player->name = "Player";
+    auto playerSprite = player->addComponent<SpriteComponent>();
+    auto spaceShip = player->addComponent<ShipComponent>();
+    spaceShip->setIsPlayer(true);
+    spaceShip->init(100, 2000, 100, 10, 5000, 50);
+    spaceShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.63, 1.15}, player->getPosition() / physicsScale, 1,
+        PLAYER_GROUP);
+    auto sprite = atlas->get("playerspaceship.png");
+    playerSprite->setSprite(sprite);
+    auto turretController = player->addComponent<TurretController>();
+    turretController->init({
+        {-39, 80},
+        {-39, 38},
+        {-44, -64},
+        {39, 80},
+        {39, 38},
+        {44, -64}
+    }, atlas->get("turret1.png"));
 }
 
 shared_ptr<GameObject> SpaceShoot::getPlayer()

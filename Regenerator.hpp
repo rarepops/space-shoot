@@ -7,6 +7,8 @@ class Regenerator : public Capacitor
 public:
     explicit Regenerator(GameObject *gameObject);
 
+    void init(float regenRate, float maxCapacity, float currentCapacityPercent = 1, float regenTimeout = 5);
+
     void update(float deltaTime) override;
 
     float getRegenRate();
@@ -14,7 +16,7 @@ public:
     void disableRegen();
     bool isRegenDisabled();
 private:
-    float regenRate = 200;
+    float regenRate = 100;
     float currentRegenTimeout = 0;
-    float maxRegenTimeout = 5;
+    float regenTimeout = 5;
 };

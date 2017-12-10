@@ -7,8 +7,10 @@ class Capacitor : public Component
 public:
     explicit Capacitor(GameObject* gameObject);
 
+    void init(float maxCapacity, float currentCapacityPercent = 1);
+
     float getCapacity();
-    float setCapacity(float capacity);
+    void setCapacity(float capacity);
     bool hasCapacity(float capacity);
     bool isEmpty();
     void removeCapacity(float capacity);
@@ -17,6 +19,6 @@ public:
     float capacityPercent();
 
 private:
-    float capacity = 2000;
+    float currentCapacity = 2000;
     float maxCapacity = 2000;
 };

@@ -23,7 +23,7 @@ public:
     void BeginContact(b2Contact *contact) override;
     void EndContact(b2Contact *contact) override;
 
-    void SpawnEnemy();
+    void SpawnEnemies();
     void SpawnPlayer();
 
     std::shared_ptr<GameObject> getPlayer();

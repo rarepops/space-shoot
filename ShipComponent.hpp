@@ -11,7 +11,7 @@ class ShipComponent : public Component, public b2RayCastCallback
 public:
     explicit ShipComponent(GameObject *gameObject);
 
-    void init(float speed);
+    void init(float speed,float maxHull,float maxShield,float shieldRegenRate,float maxEnergy,float energyRegenRate);
     void update(float deltaTime) override;
     bool onKey(SDL_Event &event) override;
 
@@ -26,8 +26,8 @@ public:
     void setIsPlayer(bool state);
 
     std::shared_ptr<Capacitor> getHull();
-    std::shared_ptr<Capacitor> getShieldGenerator();
-    std::shared_ptr<Capacitor> getEnergyGenerator();
+    std::shared_ptr<Regenerator> getShieldGenerator();
+    std::shared_ptr<Regenerator> getEnergyGenerator();
     std::shared_ptr<PhysicsComponent> getPhysicsComponent();
 
     // raycast callback

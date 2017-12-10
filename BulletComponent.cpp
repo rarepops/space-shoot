@@ -38,6 +38,11 @@ void BulletComponent::init(float bulletDamage, float rotation, float speed, floa
     physicsComponent->setLinearVelocity(physicsComponent->getLinearVelocity() + inheritedVelocity);
 }
 
+float BulletComponent::getBulletDamage()
+{
+    return bulletDamage;
+}
+
 void BulletComponent::update(float deltaTime)
 {
     auto obj = gameObject->getComponent<SpriteComponent>();
@@ -63,7 +68,11 @@ void BulletComponent::setRotation(float rotation)
 
 void BulletComponent::onCollisionStart(PhysicsComponent* comp)
 {
-    //printf("%f",comp->getGameObject()->getComponent<ShipComponent>()->getHull()->getCapacity());
+    ShipComponent *sc = comp->getGameObject()->getComponent<ShipComponent>().get();
+    if(sc)
+    {
+
+    }
 
     gameObject->removeComponent(gameObject->getComponent<SpriteComponent>());
     gameObject->destroyed = true;

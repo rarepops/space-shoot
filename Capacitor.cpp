@@ -4,46 +4,59 @@ Capacitor::Capacitor(GameObject* gameObject) : Component(gameObject)
 {
 }
 
-float Capacitor::getCapacity()
+void Capacitor::init(float maxCapacity, float currentCapacityPercent)
 {
-    return capacity;
+    this->maxCapacity = maxCapacity;
+    this->currentCapacity = maxCapacity*currentCapacityPercent;
 }
 
-float Capacitor::setCapacity(float capacity)
+float Capacitor::getCapacity()
 {
-    return 0.0f;
+    return currentCapacity;
+}
+
+void Capacitor::setCapacity(float capacity)
+{
+    this->currentCapacity = capacity;
 }
 
 bool Capacitor::hasCapacity(float capacity)
 {
-    return this->capacity - capacity >= 0;
+    return this->currentCapacity - capacity >= 0;
 }
 
 bool Capacitor::isEmpty()
 {
-    return this->capacity > 0;
+    return this->currentCapacity <= 0;
 }
 
 void Capacitor::removeCapacity(float capacity)
 {
-    this->capacity = isEmpty()?0:this->capacity - capacity;
+    if(!isEmpty())
+    {
+        this->currentCapacity -= capacity;
+        if(isEmpty())
+        {
+            this->currentCapacity = 0;
+        }
+    }
 }
 
 void Capacitor::removeCapacity(float capacity, bool& out)
 {
     if(out = hasCapacity(capacity))
     {
-        this->capacity -= capacity;
+        this->currentCapacity -= capacity;
     }
 }
 
 void Capacitor::addCapacity(float capacity)
 {
-    this->capacity += capacity;
-    this->capacity = this->capacity > this->maxCapacity?this->maxCapacity:this->capacity;
+    this->currentCapacity += capacity;
+    this->currentCapacity = this->currentCapacity > this->maxCapacity?this->maxCapacity:this->currentCapacity;
 }
 
 float Capacitor::capacityPercent()
 {
-    return this->capacity / this->maxCapacity;
+    return this->currentCapacity / this->maxCapacity;
 }

@@ -4,6 +4,13 @@ Regenerator::Regenerator(GameObject * gameObject) :Capacitor(gameObject)
 {
 }
 
+void Regenerator::init(float regenRate, float maxCapacity, float currentCapacityPercent, float regenTimeout)
+{
+    this->regenRate = regenRate;
+    this->regenTimeout = regenTimeout;
+    Capacitor::init(maxCapacity, currentCapacityPercent);
+}
+
 void Regenerator::update(float deltaTime)
 {
     if(!isRegenDisabled())
@@ -28,7 +35,7 @@ void Regenerator::setRegenRate(float regenRate)
 
 void Regenerator::disableRegen()
 {
-    this->currentRegenTimeout = this->maxRegenTimeout;
+    this->currentRegenTimeout = this->regenTimeout;
 }
 
 bool Regenerator::isRegenDisabled()

@@ -12,6 +12,8 @@ public:
 
     void init(float bulletDamage, float rotation, float speed, float lifetime = 5, glm::vec2 parentVelocity = {0, 0}, int bulletLayer = 0);
 
+    float getBulletDamage();
+
     void update(float deltaTime) override;
 
     void setRotation(float rotation);

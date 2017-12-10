@@ -7,6 +7,7 @@
 #include <iostream>
 #include <glm/gtx/log_base.hpp>
 #include <glm/gtx/rotate_vector.inl>
+#include "BulletComponent.hpp"
 using namespace std;
 
 ShipComponent::ShipComponent(GameObject* gameObject) : Component(gameObject)
@@ -20,9 +21,13 @@ ShipComponent::ShipComponent(GameObject* gameObject) : Component(gameObject)
     shipPhysics = gameObject->addComponent<PhysicsComponent>();
 }
 
-void ShipComponent::init(float speed)
+void ShipComponent::init(float speed, float maxHull, float maxShield, float shieldRegenRate, float maxEnergy, float energyRegenRate)
 {
     thrustSpeed = speed;
+
+    hull->init(maxHull);
+    shieldGenerator->init(shieldRegenRate, maxShield);
+    energyGenerator->init(energyRegenRate, maxEnergy);
 }
 
 void ShipComponent::update(float deltaTime)
@@ -105,6 +110,11 @@ bool ShipComponent::onKey(SDL_Event& keyEvent)
 
 void ShipComponent::onCollisionStart(PhysicsComponent* comp)
 {
+    BulletComponent* bullet = comp->getGameObject()->getComponent<BulletComponent>().get();
+    if(bullet)
+    {
+        TakeDamage(bullet->getBulletDamage());
+    }
 }
 
 void ShipComponent::onCollisionEnd(PhysicsComponent* comp)
@@ -113,14 +123,30 @@ void ShipComponent::onCollisionEnd(PhysicsComponent* comp)
 
 void ShipComponent::TakeDamage(float amount)
 {
-    ShipComponent* sc = gameObject->getComponent<ShipComponent>().get();
-    if(sc->isPlayer())
+    if(!shieldGenerator->isEmpty())
     {
-
+        shieldGenerator->removeCapacity(amount*0.8f);
+        if(shieldGenerator->isEmpty())
+        {
+            if(!shieldGenerator->isRegenDisabled())
+            {
+                shieldGenerator->disableRegen();
+            }
+        }
     }
     else
     {
+        if(isPlayer())
+        {
+            SpaceShoot::instance->camera->shake(40);
 
+        }
+        hull->removeCapacity(amount);
+    }
+
+    if(hull->isEmpty())
+    {
+        Destroy();
     }
 }
 
@@ -128,8 +154,7 @@ void ShipComponent::Destroy()
 {
     gameObject->destroyed = true;
     gameObject->getComponent<TurretController>()->destroyTurrets();
-    ShipComponent* sc = gameObject->getComponent<ShipComponent>().get();
-    if(sc->isPlayer())
+    if(isPlayer())
     {
         SpaceShoot::instance->enemiesKilled++;
         SpaceShoot::instance->currentEnemies--;
@@ -151,12 +176,12 @@ std::shared_ptr<Capacitor> ShipComponent::getHull()
     return hull;
 }
 
-std::shared_ptr<Capacitor> ShipComponent::getShieldGenerator()
+std::shared_ptr<Regenerator> ShipComponent::getShieldGenerator()
 {
     return shieldGenerator;
 }
 
-std::shared_ptr<Capacitor> ShipComponent::getEnergyGenerator()
+std::shared_ptr<Regenerator> ShipComponent::getEnergyGenerator()
 {
     return energyGenerator;
 }
