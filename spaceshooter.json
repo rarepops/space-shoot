@@ -2,11 +2,20 @@
 
 {
 	"filename": "crosshair.png",
-	"frame": {"x":159,"y":0,"w":32,"h":32},
+	"frame": {"x":201,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
 	"sourceSize": {"w":32,"h":32},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "empty.png",
+	"frame": {"x":18,"y":0,"w":8,"h":8},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":8},
+	"sourceSize": {"w":8,"h":8},
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
@@ -25,6 +34,15 @@
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
 	"sourceSize": {"w":32,"h":32},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "explosionbig.png",
+	"frame": {"x":0,"y":420,"w":256,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":256},
+	"sourceSize": {"w":256,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
@@ -56,7 +74,7 @@
 },
 {
 	"filename": "particlepurple.png",
-	"frame": {"x":192,"y":0,"w":32,"h":32},
+	"frame": {"x":102,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -65,7 +83,7 @@
 },
 {
 	"filename": "particlered.png",
-	"frame": {"x":93,"y":0,"w":32,"h":32},
+	"frame": {"x":168,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -74,7 +92,7 @@
 },
 {
 	"filename": "particlewhite.png",
-	"frame": {"x":126,"y":0,"w":32,"h":32},
+	"frame": {"x":36,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -83,7 +101,7 @@
 },
 {
 	"filename": "particleyellow.png",
-	"frame": {"x":27,"y":0,"w":32,"h":32},
+	"frame": {"x":135,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -92,7 +110,7 @@
 },
 {
 	"filename": "playerspaceship.png",
-	"frame": {"x":0,"y":420,"w":256,"h":256},
+	"frame": {"x":0,"y":677,"w":256,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":256},
@@ -101,7 +119,7 @@
 },
 {
 	"filename": "squarewhite.png",
-	"frame": {"x":60,"y":0,"w":32,"h":32},
+	"frame": {"x":69,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -110,15 +128,6 @@
 },
 {
 	"filename": "star1.png",
-	"frame": {"x":9,"y":0,"w":8,"h":8},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":8},
-	"sourceSize": {"w":8,"h":8},
-	"pivot": {"x":0.5,"y":0.5}
-},
-{
-	"filename": "star2.png",
 	"frame": {"x":0,"y":0,"w":8,"h":8},
 	"rotated": false,
 	"trimmed": false,
@@ -127,8 +136,17 @@
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
+	"filename": "star2.png",
+	"frame": {"x":9,"y":0,"w":8,"h":8},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":8},
+	"sourceSize": {"w":8,"h":8},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
 	"filename": "star3.png",
-	"frame": {"x":18,"y":0,"w":8,"h":8},
+	"frame": {"x":27,"y":0,"w":8,"h":8},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":8},
@@ -137,7 +155,7 @@
 },
 {
 	"filename": "turret1.png",
-	"frame": {"x":132,"y":33,"w":64,"h":64},
+	"frame": {"x":0,"y":98,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -146,7 +164,7 @@
 },
 {
 	"filename": "turret2.png",
-	"frame": {"x":0,"y":98,"w":64,"h":64},
+	"frame": {"x":132,"y":33,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -160,6 +178,6 @@
 	"format": "RGBA8888",
 	"size": {"w":256,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:91cd2cedd0e2af504863aacfe62c37ef:562a780505e3ae97c18e93d695cdfa58:2b0614e2bfe6d9f853cae928c214d566$"
+	"smartupdate": "$TexturePacker:SmartUpdate:d679cf082da10e68bff10f73da84f6f1:7c54953b4b4ff99337731b40b4eec23e:2b0614e2bfe6d9f853cae928c214d566$"
 }
 }

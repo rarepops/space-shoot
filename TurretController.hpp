@@ -17,6 +17,7 @@ public:
 
     void update(float deltaTime) override;
     void radar(float range);
+    void toggleHideTurrets();
 
     bool onMouse(SDL_Event& event) override;
 
@@ -32,4 +33,7 @@ private:
     std::vector<glm::vec2> turretOffsets;
 
     glm::vec2 mousePos;
+
+    sre::Sprite turretSprite;
+    bool turretsHidden = false;
 };

@@ -33,9 +33,10 @@ public:
 
     static int PLAYER_GROUP;
     static int ENEMY_GROUP;
-    int enemiesKilled = 0;
-    int currentEnemies = 0;
     const int maxEnemies = 10;
+
+    bool gameEnded = false;
+
 private:
     glm::vec4 bgColor;
     sre::SDLRenderer renderer;
@@ -59,6 +60,11 @@ private:
     b2World *world = nullptr;
     Box2DDebugDraw debugDraw;
     bool isDebugDraw = false;
+    int currentEnemies = 0;
+    int enemiesKilled = 0;
+    float elapsedTime = 0;
+
     friend class PhysicsComponent;
+    friend class ShipComponent;
     friend class BulletComponent;
 };

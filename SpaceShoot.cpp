@@ -278,7 +278,8 @@ void SpaceShoot::SpawnEnemies()
         auto junkSprite = junk->addComponent<SpriteComponent>();
         glm::vec2 pos = glm::vec2((rand() % (int)gameBounds) - gameBounds / 2, (rand() % (int)gameBounds) - gameBounds / 2);
         junk->setPosition(pos);
-        junkShip->init(10, 1, 0, 0, 5000, 50);
+        junkShip->init(100, 2000, 100, 10, 5000, 50);
+        //junkShip->init(10, 1, 1, 1, 5000, 50);
 
         junkSprite->setSprite(atlas->get("enemyspaceship.png"));
         junkShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.3, 0.51}, junk->getPosition() / physicsScale, 1, ENEMY_GROUP);
@@ -299,7 +300,10 @@ void SpaceShoot::SpawnPlayer()
     auto playerSprite = player->addComponent<SpriteComponent>();
     auto spaceShip = player->addComponent<ShipComponent>();
     spaceShip->setIsPlayer(true);
-    spaceShip->init(100, 2000, 100, 10, 5000, 50);
+
+    //spaceShip->init(100, 2000, 100, 10, 5000, 50);
+    spaceShip->init(10, 1, 1, 1, 5000, 50);
+
     spaceShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.63, 1.15}, player->getPosition() / physicsScale, 1,
         PLAYER_GROUP);
     auto sprite = atlas->get("playerspaceship.png");

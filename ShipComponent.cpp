@@ -34,34 +34,37 @@ void ShipComponent::init(float speed, float maxHull, float maxShield, float shie
 void ShipComponent::update(float deltaTime)
 {
     glm::vec2 movement{0, 0};
-
-    if(up)
-    {
-        movement.y++;
-    }
-    if(down)
-    {
-        movement.y--;
-    }
-    if(left)
-    {
-        movement.x--;
-    }
-    if(right)
-    {
-        movement.x++;
-    }
-
     float rotation = 0;
 
-    if(rotateCCW)
+    if(!SpaceShoot::instance->gameEnded)
     {
-        rotation += rotationSpeed;
+        if(up)
+        {
+            movement.y++;
+        }
+        if(down)
+        {
+            movement.y--;
+        }
+        if(left)
+        {
+            movement.x--;
+        }
+        if(right)
+        {
+            movement.x++;
+        }
+
+        if(rotateCCW)
+        {
+            rotation += rotationSpeed;
+        }
+        else if(rotateCW)
+        {
+            rotation -= rotationSpeed;
+        }
     }
-    else if(rotateCW)
-    {
-        rotation -= rotationSpeed;
-    }
+    
 
     glm::vec2 direction{0, 0};
     if(movement.x != 0 || movement.y != 0)
@@ -137,10 +140,9 @@ void ShipComponent::TakeDamage(float amount)
     }
     else
     {
-        if(isPlayer())
+        if(isPlayer() && !SpaceShoot::instance->gameEnded)
         {
             SpaceShoot::instance->camera->shake(40);
-
         }
         hull->removeCapacity(amount);
     }
@@ -153,12 +155,18 @@ void ShipComponent::TakeDamage(float amount)
 
 void ShipComponent::Destroy()
 {
-    gameObject->destroyed = true;
-    gameObject->getComponent<TurretController>()->destroyTurrets();
     if(!isPlayer())
     {
+        gameObject->destroyed = true;
+        gameObject->getComponent<TurretController>()->destroyTurrets();
         SpaceShoot::instance->enemiesKilled++;
         SpaceShoot::instance->currentEnemies--;
+    }
+    else
+    {
+        SpaceShoot::instance->gameEnded = true;
+        gameObject->getComponent<TurretController>()->toggleHideTurrets();
+        spriteComponent->setSprite(SpaceShoot::instance->atlas->get("explosionbig.png"));
     }
 }
 

@@ -36,6 +36,7 @@ void TurretController::destroyTurrets()
 void TurretController::init(std::vector<glm::vec2> turretOffsets, sre::Sprite turretSprite)
 {
     this->turretOffsets = turretOffsets;
+    this->turretSprite = turretSprite;
     for(int i = 0; i < turretOffsets.size(); ++i)
     {
         auto turret = SpaceShoot::instance->createGameObject();
@@ -89,12 +90,28 @@ void TurretController::update(float deltaTime)
 void TurretController::radar(float range)
 {
     fireState = false;
-    if(target)
+    if(target && !SpaceShoot::instance->gameEnded)
     {
         float currentRange = glm::distance(gameObject->getPosition(), target->getPosition());
         if(currentRange < range)
         {
             fireState = true;
+        }
+    }
+}
+
+void TurretController::toggleHideTurrets()
+{
+    turretsHidden = !turretsHidden;
+    for(std::shared_ptr<GameObject> tc : turrets)
+    {
+        if(turretsHidden)
+        {
+            tc->getComponent<SpriteComponent>()->setSprite(SpaceShoot::instance->atlas->get("empty.png"));
+        }
+        else
+        {
+            tc->getComponent<SpriteComponent>()->setSprite(turretSprite);
         }
     }
 }
@@ -107,7 +124,7 @@ bool TurretController::onMouse(SDL_Event& event)
         {
             if(event.button.type == SDL_MOUSEBUTTONDOWN)
             {
-                fireState = true;
+                fireState = true && !SpaceShoot::instance->gameEnded;
             }
             else if(event.button.type == SDL_MOUSEBUTTONUP)
             {
