@@ -1,5 +1,10 @@
 #pragma once
 
+//
+// Created by Morten Nobel-Jørgensen on 10/10/2017.
+//
+
+
 #include "sre/SpriteBatch.hpp"
 
 // Forward declaration
