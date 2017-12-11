@@ -73,8 +73,6 @@ void ShipComponent::update(float deltaTime)
     {
         direction = glm::rotateZ(glm::vec3(movement.x, movement.y, 0), shipPhysics->getBody()->GetAngle());
     }
-    shipPhysics->addForce(direction * thrustSpeed);
-
     const auto linearVelocity = shipPhysics->getLinearVelocity();
 
     if(!isPlayer())
@@ -84,8 +82,9 @@ void ShipComponent::update(float deltaTime)
     }
     shipPhysics->setAngularVelocity(glm::radians(rotation));
 
+    shipPhysics->addForce(direction * thrustSpeed);
     // We multiply the velocity by a drag factor, meaning it will diminish over time
-    shipPhysics->setLinearVelocity((linearVelocity + direction) * drag);
+    shipPhysics->setLinearVelocity(linearVelocity * drag);
 }
 
 

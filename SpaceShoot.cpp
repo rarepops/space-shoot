@@ -340,7 +340,7 @@ void SpaceShoot::SpawnPlayer()
         auto spaceShip = player->addComponent<ShipComponent>();
         spaceShip->setIsPlayer(true);
 
-        spaceShip->init(100, 4000, 2500, 45, 5000, 125);
+        spaceShip->init(25, 4000, 2500, 65, 5000, 165);
         //spaceShip->init(10, 1, 1, 1, 5000, 50);
 
         spaceShip->getPhysicsComponent()->initBox(b2_dynamicBody, {0.63, 1.15}, player->getPosition() / physicsScale, 1,
@@ -361,7 +361,7 @@ void SpaceShoot::SpawnPlayer()
     {
         player->getComponent<TurretController>()->toggleHideTurrets(0);
         player->getComponent<SpriteComponent>()->setSprite(atlas->get("playerspaceship.png"));
-        player->getComponent<ShipComponent>()->init(100, 4000, 2500, 45, 5000, 125);
+        player->getComponent<ShipComponent>()->init(25, 4000, 2500, 65, 5000, 165);
         
         // Does not work V because PhysicsComponent
         player->setPosition(glm::vec2());
