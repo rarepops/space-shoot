@@ -40,9 +40,6 @@ public:
     static int PLAYER_GROUP;
     static int ENEMY_GROUP;
 
-    /* Max enemies allowed at one time. */
-    const int maxEnemies = 10;
-
     bool gameEnded = false;
 private:
     glm::vec4 bgColor;

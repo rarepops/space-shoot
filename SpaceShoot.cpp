@@ -25,7 +25,9 @@ SpaceShoot* SpaceShoot::instance = nullptr;
 int SpaceShoot::PLAYER_GROUP = -1;
 int SpaceShoot::ENEMY_GROUP = -2;
 
-int starsNumber = 600;
+/* Max enemies allowed at one time. */
+const int maxEnemies = 20;
+const int starsNumber = 900;
 float gameBounds = 10000;
 
 SpaceShoot::SpaceShoot() : debugDraw(physicsScale)
