@@ -1,0 +1,17 @@
+# IDE / editor
+.vs/
+*.user
+*~
+
+# CMake in-source build leftovers
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+*.sln
+*.vcxproj*
+Debug/
+Release/
+
+# Runtime artifacts
+imgui.ini
