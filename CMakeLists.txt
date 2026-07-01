@@ -1,15 +1,15 @@
 cmake_minimum_required(VERSION 3.8)
 project(SpaceShoot CXX)
 
-file (GLOB sourcefiles "*.hpp" ".h" "*.cpp" "*.ogg")
+file(GLOB sourcefiles "src/*.hpp" "src/*.cpp")
 
 add_executable(SpaceShoot ${sourcefiles})
 target_link_libraries(SpaceShoot ${all_libs})
 
 
-# copy files to dest
-file(COPY spaceshooter.json spaceshooter.png danger.ogg DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
-file(COPY spaceshooter.json spaceshooter.png danger.ogg DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
+# copy assets to dest
+file(COPY assets/spaceshooter.json assets/spaceshooter.png assets/danger.ogg DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
+file(COPY assets/spaceshooter.json assets/spaceshooter.png assets/danger.ogg DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
 
 
 IF (WIN32)

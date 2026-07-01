@@ -43,20 +43,25 @@ course at the IT University of Copenhagen (autumn 2017).
 ## Project layout
 
 ```
-main.cpp                    entry point
-SpaceShoot.*                game loop, physics world, spawning, game state
-GameObject.* / Component.*  entity/component core
-PhysicsComponent.*          Box2D body wrapper
-Box2DDebugDraw.*            collision-shape debug rendering
-FollowCamera.*              player-tracking camera (zoom, shake)
-SpriteComponent.*           atlas sprite rendering
-ShipComponent.*             hull, damage, and destruction
-Capacitor.* / Regenerator.* energy/health pools
-TurretController.*          per-ship turret mounts and aiming
-TurretComponent.*           individual turret firing logic
-BulletComponent.*           projectile lifetime and collisions
-spaceshooter.json / .png    sprite atlas
-danger.ogg                  music
+CMakeLists.txt                builds the game as an SRE subproject
+src/
+  main.cpp                    entry point
+  SpaceShoot.*                game loop, physics world, spawning, game state
+  GameObject.* / Component.*  entity/component core
+  PhysicsComponent.*          Box2D body wrapper
+  Box2DDebugDraw.*            collision-shape debug rendering
+  FollowCamera.*              player-tracking camera (zoom, shake)
+  SpriteComponent.*           atlas sprite rendering
+  ShipComponent.*             hull, damage, and destruction
+  Capacitor.* / Regenerator.* energy/health pools
+  TurretController.*          per-ship turret mounts and aiming
+  TurretComponent.*           individual turret firing logic
+  BulletComponent.*           projectile lifetime and collisions
+assets/
+  spaceshooter.json / .png    sprite atlas
+  danger.ogg                  music
+docs/
+  Space Shooter.docx          original project report
 ```
 
 ## Building
